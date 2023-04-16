@@ -1,0 +1,39 @@
+
+.newgame   body {
+        background-color: #f8f9fa;
+    }
+    
+    .newgame  h1 {
+        color: #ffffff;
+        background-color: #343a40;
+        padding: 0.5em;
+    }
+    
+    .newgame   h3 {
+        color: #343a40;
+    }
+    
+    .newgame    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .newgame   li {
+        cursor: pointer;
+    }
+    
+    .newgame   li:hover,
+    .newgame  li.active {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+    
+    .newgame   button {
+        background-color: #007bff;
+        border: none;
+        color: #ffffff;
+    }
+    
+    .newgame   button:hover {
+        background-color: #0069d9;
+    }
