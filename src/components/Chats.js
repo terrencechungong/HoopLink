@@ -1,22 +1,24 @@
 import React, { useRef, useState, useInsertionEffect, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { ChatEngine } from "react-chat-engine";
-import { auth } from './firebase';
-import { currentUser } from "./Login";
-import { PeopleSettings } from 'react-chat-engine';
-import { useAuth } from '../components/contexts/AuthContexts';
 import axios from "axios";
 import { getDefaultNormalizer } from "@testing-library/react";
-const Chats = ()=> {
+import { useHistory } from "react-router-dom";
+import { ChatEngine } from "react-chat-engine";
+import { currentUser } from "./Login";
+import { PeopleSettings } from 'react-chat-engine';
+import { auth, database } from './firebase';
+import { useAuth } from '../components/contexts/AuthContexts';
+import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';;
+
+const Chats = () => {
     const history = useHistory();
     const { user } = useAuth();
     const [loading, setLoading] = useState(true)
-    console.log(user);
 
     const handleLogout = async () => {
         await auth.signOut();
         history.push('/login')
     }
+
 
     // const getFile = async (url) => {
     //     const response = await fetch(url);
@@ -25,38 +27,43 @@ const Chats = ()=> {
     // }
 
     useEffect(() => {
-        if(!user) {
+        if (!user) {
             history.push('/login')
             return;
         }
+        console.log(user.photoURL.split(" ")[0])
         axios.get('https://api.chatengine.io/users/me', {
-            headers:{
-                "project-id": "f9e47d2b-eca9-4ba4-afc5-41dd9a901f93",
-                "user-name": user.email,
-                "user-secret":user.uid
+            headers: {
+                "project-id": "271fe4e8-950e-44b3-92cb-24d0ee33a5a2",
+                "user-name": user.displayName,
+                "user-secret": user.uid
             }
         }).then(() => {
             setLoading(false);
         }).catch(() => {
             let formdata = new FormData();
+            let first_last = user.photoURL.split(" ");
+            formdata.append('username', user.displayName);
+            formdata.append('first_name', first_last[0]);
+            formdata.append('last_name', first_last[1]);
             formdata.append('email', user.email);
             formdata.append('secret', user.uid);
-            formdata.append('username', user.email);
-            // formdata.append('custom_json', {"wins":currentUser.wins,"losses":currentUser.losses,"mvp_count":currentUser.mvp_count});
-            axios.post('https://api.chatengine.io/users/', formdata, {headers: {"PRIVATE-KEY":"c784399d-3ff3-4366-b1ed-bd68a96ad42d"}})
-            .then(() => setLoading(false))
-            .catch((error) => (error.message))
+
+            axios.post('https://api.chatengine.io/users/', formdata, { headers: { "PRIVATE-KEY": "53c09ec1-8fbb-4d22-b220-f026026eb6b1" } })
+                .then(() => setLoading(false))
+                .catch((error) => (error.message))
         })
-    }, [user,history])
+    }, [user, history])
     //figure out how to edit html to add game creation functionality
 
-    if(!user||loading) return "Loading...";
+    if (!user || loading) return "Loading...";
+    console.log(user)
     return (
         <div className="chats-page">
             <div className="nav-bar">
                 <div className="logo-tab">
-                <a href="/home" style={{textDecoration:"none", color:"white"}}>Chat MVP - Home</a>
-                        
+                    <a href="/home" style={{ textDecoration: "none", color: "white" }}>Chat MVP - Home</a>
+
                 </div>
                 <div onClick={handleLogout} className="logout-tab">
                     Logout
@@ -64,11 +71,10 @@ const Chats = ()=> {
             </div>
             <ChatEngine
                 height="calc(100vh - 66px)"
-                projectID="f9e47d2b-eca9-4ba4-afc5-41dd9a901f93"
-                userName={user.email}
+                projectID="271fe4e8-950e-44b3-92cb-24d0ee33a5a2"
+                userName={user.displayName}
                 userSecret={user.uid}
-                
-                />
+            />
         </div>
     );
 }
