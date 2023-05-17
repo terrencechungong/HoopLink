@@ -1,6 +1,7 @@
 import React from "react"
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { AccountSettings } from "./AccountSettings";
 import { AuthProvider } from "./contexts/AuthContexts"
 import { Home } from './Home';
 import Chats from "./Chats"
@@ -22,6 +23,7 @@ function App() {
             <Route path="/stats" component={Stats} />
             <Route path="/login" component={Login} exact />
             <Route path="/signUp" component={Signup}/>
+            <Route path="/accountSettings" component={AccountSettings}/>
           </Switch>
         </AuthProvider>
       </Router>
