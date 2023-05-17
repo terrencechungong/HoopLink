@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'firebase/compat/app';
-import { auth } from '../firebase';
+import { auth } from '../../backend/firebase';
 
 const AuthContext = React.createContext();
 
@@ -15,7 +15,6 @@ export const AuthProvider = ({children}) => {
         auth.onAuthStateChanged((user) =>{
         setUser(user);
         setLoading(false);
-        
     })
     }, [user,history]);
 
