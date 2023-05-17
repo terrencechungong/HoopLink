@@ -1,6 +1,6 @@
 import { Home } from './Home';
 import { useAuth } from '../components/contexts/AuthContexts';
-import { auth, database } from './firebase';
+import { auth, database } from '../backend/firebase';
 import axios from "axios";
 import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';
 import { useState, useEffect } from "react";
@@ -13,7 +13,9 @@ export function AccountSettings() {
         async function grabUserData() {
             var getEmailinDB = query(ref(database, "Users/"), orderByChild("email"), equalTo(user.email));
             let dbQuery = await get(getEmailinDB);
+            alert(dbQuery[0])
             dbQuery.forEach(snap => {
+                alert(snap.val())
                 setData(snap.val());
                 let username = document.getElementById('first_name');
                 username.setAttribute('value', snap.val().first_name);
@@ -39,11 +41,11 @@ export function AccountSettings() {
             
         }
         axios.get('https://api.chatengine.io/users/me/', {
-                headers: {
-                    "project-id": "271fe4e8-950e-44b3-92cb-24d0ee33a5a2",
-                    "user-name": user.email,
-                    "user-secret": user.uid
-                }
+            headers: {
+                "project-id": "a1bc6c78-4617-4a6c-8506-443fea32c614",
+                "user-name": user.email,
+                "user-secret": user.uid
+              }
             }, {})
 
     }
