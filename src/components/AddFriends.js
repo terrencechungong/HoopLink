@@ -8,9 +8,7 @@ export function AddFriends() {
     const { user } = useAuth();
     let allPeople = {};
 
-    useEffect(() => {
-        ChatRequest.getData(user, {})
-    }, []);
+    useEffect(() => { ChatRequest.getData(user, {}) }, []);
 
     return (
         <div>

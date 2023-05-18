@@ -1,4 +1,7 @@
 import axios from "axios";
+import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';
+import { auth, database } from './firebase'
+
 
 export class ChatRequest {
   static async getChats(user) {
@@ -21,7 +24,7 @@ export class ChatRequest {
           headers: {
             "PRIVATE-KEY": "a3b2049c-2cbf-4a77-a5b2-f5da75a35afc"
           }
-        });
+        }).then((userJson) => { update(ref(database, "Users/" + user.uid), { chatEngine_id: userJson.data.id }); });
         return false;
       } catch (error) {
         throw new Error(error.message);
@@ -54,6 +57,7 @@ export class ChatRequest {
       }
     }).then((response) => {
       for (var chats of response.data) {
+        console.log(chats)
         // differentiate between chats and check if chat name is a duplicate
         allPeople[chats.title] = [];
         for (var personData of chats.people) {
@@ -87,4 +91,40 @@ export class ChatRequest {
     })
       .catch((error) => console.log(error.message))
   }
+
+  static async grabUserData(email) {
+    var getEmailinDB = query(ref(database, "Users/"), orderByChild("email"), equalTo(email));
+    let dbQuery = await get(getEmailinDB);
+    var returnn;
+    let returnObject = dbQuery.forEach(snap => {
+      returnn = snap.val();
+      let idField = document.getElementById("hidden-id");
+      idField.setAttribute('value', snap.val().chatEngine_id);
+      let username = document.getElementById("username");
+      username.setAttribute('value', snap.val().username);
+      let first_name = document.getElementById('first_name');
+      first_name.setAttribute('value', snap.val().first_name);
+      let last_name = document.getElementById('last_name');
+      last_name.setAttribute('value', snap.val().last_name);
+      let phone_number = document.getElementById('phone_number');
+      phone_number.setAttribute('value', snap.val().phone_number);
+    }
+    );
+    return returnn;
+  }
+
+  static saveChanges(user) {
+    var phoneNumber = document.getElementById("phone_number").value.trim();
+    var id = document.getElementById("hidden-id").value;
+    let updateData = {
+      first_name: document.getElementById("first_name").value.trim(),
+      last_name:  document.getElementById("last_name").value.trim(),
+    }
+//phone number??    
+    axios.patch(`https://api.chatengine.io/users/${id}/`, updateData, {
+      headers: { "PRIVATE-KEY": "a3b2049c-2cbf-4a77-a5b2-f5da75a35afc" }
+    }).then(() => alert("Update Successful")).catch((error) => alert(error.message))
+    update(ref(database, "Users/" + user.uid), updateData);
+  }
+
 }

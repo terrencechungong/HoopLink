@@ -1,5 +1,6 @@
 import { Home } from './Home';
 import { useAuth } from '../components/contexts/AuthContexts';
+import { ChatRequest } from '../backend/ChatRequest';
 import { auth, database } from '../backend/firebase';
 import axios from "axios";
 import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';
@@ -7,50 +8,8 @@ import { useState, useEffect } from "react";
 
 export function AccountSettings() {
     const { user } = useAuth();
-    const [data, setData] = useState({});
-
-    useEffect(() => {
-        async function grabUserData() {
-            var getEmailinDB = query(ref(database, "Users/"), orderByChild("email"), equalTo(user.email));
-            let dbQuery = await get(getEmailinDB);
-            alert(dbQuery[0])
-            dbQuery.forEach(snap => {
-                alert(snap.val())
-                setData(snap.val());
-                let username = document.getElementById('first_name');
-                username.setAttribute('value', snap.val().first_name);
-                let firstName = document.getElementById('last_name');
-                firstName.setAttribute('value', snap.val().last_name);
-                let lastName = document.getElementById('phone_number');
-                lastName.setAttribute('value', snap.val().phone_number);
-            }
-            );
-
-        }
-        grabUserData();
-    }, []);
-
-    function saveChanges() {
-        //remove white spaces
-        //allow username and email changes but put validation for it.
-        var firstName = document.getElementById("first_name").value.trim();
-        var lastName = document.getElementById("last_name").value.trim();
-        var phoneNumber = document.getElementById("phone_number").value.trim();
-        let updateData = {first_name: firstName,
-            last_name: lastName,
-            
-        }
-        axios.get('https://api.chatengine.io/users/me/', {
-            headers: {
-                "project-id": "a1bc6c78-4617-4a6c-8506-443fea32c614",
-                "user-name": user.email,
-                "user-secret": user.uid
-              }
-            }, {})
-
-    }
-
-
+    useEffect(() => { ChatRequest.grabUserData(user.email); }, []);
+    const callSaveChanges = () => { ChatRequest.saveChanges(user) }
     return (
         <div>
             <Home />
@@ -59,11 +18,11 @@ export function AccountSettings() {
                 <form className='settings-form'>
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input disabled className="settings-input" type="text" id="username" name="username" value={data.username} />
+                        <input disabled className="settings-input" type="text" id="username" name="username" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="username">Email</label>
-                        <input disabled className="settings-input" type="text" id="email" name="username" value={data.email} />
+                        <input disabled className="settings-input" type="text" id="email" name="username" value={user.email} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="username">First Name</label>
@@ -82,11 +41,9 @@ export function AccountSettings() {
                         <label className="settings-label">Password</label>
                         <a href="#" style={{ display: "block" }}>Click here to change your password</a>
                     </div>
-                    <button className='settings-submit-button' type="submit" onClick={saveChanges}>Save Changes</button>
-
+                    <input disabled style={{display:"none"}} type="text" id="hidden-id" name="hidden-id" />
+                    <button className='settings-submit-button' type="submit" onClick={callSaveChanges}>Save Changes</button>
                 </form>
-                {/* <button onClick={saveChanges}></button> */}
-                {/* <button onClick={grabUserData}>YO</button> */}
             </div>
         </div>
     )
