@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';
-import { auth, database } from './firebase'
+import { auth, database } from './firebase';
 
 
 export class ChatRequest {
@@ -64,7 +64,7 @@ export class ChatRequest {
       return allPeople
     })
       .catch((error) => console.log(error.message))
-      return data;
+    return data;
   }
 
   static async getData(user, allPeople) {
@@ -137,9 +137,10 @@ export class ChatRequest {
     var id = document.getElementById("hidden-id").value;
     let updateData = {
       first_name: document.getElementById("first_name").value.trim(),
-      last_name:  document.getElementById("last_name").value.trim(),
+      last_name: document.getElementById("last_name").value.trim(),
+      phone_number: phoneNumber
     }
-//phone number??    
+    //phone number??    
     axios.patch(`https://api.chatengine.io/users/${id}/`, updateData, {
       headers: { "PRIVATE-KEY": "ba82155d-92f1-4bd7-8bb6-7525c069fc44" }
     }).then(() => alert("Update Successful")).catch((error) => alert(error.message))
@@ -148,8 +149,8 @@ export class ChatRequest {
 
   static addFriend(i, data, user) {
     let friendRequest = {
-      "reciever" : data[i].email,
-      "is_active" : true
+      "reciever": data[i].email,
+      "is_active": true
     }
     set(ref(database, "FriendRequest/" + user.email), friendRequest)
   }
@@ -157,7 +158,7 @@ export class ChatRequest {
   static async getPeople(user) {
     let allPeople = []
     // Make the API request
-     let data = await axios.get('https://api.chatengine.io/chats/', {
+    let data = await axios.get('https://api.chatengine.io/chats/', {
       headers: {
         "project-id": "02a9053b-e45f-463f-9628-a8ea4b4f4164",
         "user-name": user.email,
@@ -166,15 +167,15 @@ export class ChatRequest {
     }).then((response) => {
       for (var chats of response.data) {
         for (var personData of chats.people) {
-          allPeople.push({"firstName": personData.person.first_name, "lastName": personData.person.last_name, "email": personData.person.username})
+          allPeople.push({ "firstName": personData.person.first_name, "lastName": personData.person.last_name, "email": personData.person.username })
         }
       }
       return allPeople
     })
-      .catch((error) =>{ 
+      .catch((error) => {
         alert("Nah bro")
         console.log(error.message)
-    })
+      })
     return data
   }
 

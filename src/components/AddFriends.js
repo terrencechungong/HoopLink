@@ -3,63 +3,86 @@ import { Home } from "./Home"
 import { useState, useEffect } from "react";
 import { useAuth } from "./contexts/AuthContexts";
 import axios from "axios";
+import { FriendRequests } from "../backend/FriendRequest";
+import { auth, database } from "../backend/firebase"
+import { ref, set, child, update, remove, orderByChild, equalTo, query, get } from "firebase/database";
 
 export function AddFriends() {
     const [data, setData] = useState(null);
+    const [friends, setFriends] = useState([]);
+    const [noConnection, setNoConnection] = useState([]);
+    const [receivedRequests, setReceivedRequests] = useState([]);
+    const [sentRequests, setSentRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useAuth();
 
     useEffect(() => {
-        let allPeople = []
-        // Make the API request
-        axios.get('https://api.chatengine.io/chats/', {
-            headers: {
-                "project-id": "02a9053b-e45f-463f-9628-a8ea4b4f4164",
-                "user-name": user.email,
-                "user-secret": user.uid
-            }
-        }).then((response) => {
-            for (var chats of response.data) {
-                //avoid duplicates
-                for (var personData of chats.people) {
-                    allPeople.push({ "firstName": personData.person.first_name, "lastName": personData.person.last_name, "email": personData.person.username, "chat": chats.title })
-                }
-            }
-            setData(allPeople)
-            setIsLoading(false)
-        })
-            .catch((error) => {
-                alert("Nah bro")
-                console.log(error.message)
-            })
+        const fetchData = async () => {
+            const [noConnection_, sentRequests_, receivedRequests_, friends_] = await FriendRequests.getRelationshipData();
+            setSentRequests(sentRequests_);
+            setReceivedRequests(receivedRequests_);
+            setFriends(friends_); //in friends list
+            setNoConnection(noConnection_); //not in any list
+            setData(noConnection_);
+            setIsLoading(false);
+        };
 
-        //api call logic
+        fetchData().catch((error) => {
+            alert("Error occurred: " + error.message);
+            console.log(error);
+        });
     }, []);
 
-    const callAddFriend = (i) => {
-        ChatRequest.addFriend(i, data, user);
-    }
+    const callAddFriend = (i) => { FriendRequests.sendRequest(i); }
+
+    const callAccept = (i) => { FriendRequests.acceptRequest(i); }
+
+    const callRemove = (i) => { FriendRequests.removeFriend(i) }
+
+    const callDeny = (i) => { FriendRequests.denyRequest(i) }
 
     if (isLoading) {
         return <div>Loading...</div>; // Show loading indicator or placeholder
     }
-
-    //Use states to set page settings
-
-
 
     return (
         <div>
             <Home />
             <div className="main-content" id="panel" style={{ width: "60%", margin: "auto" }}>
                 <div className="container-fluid pt-3">
-                    <div className="card mb-4">
-                        <div className="card-header pb-0" style={{ display: "inline", }}>
-                            <h6 style={{ display: "inline", cursor: "pointer" }}>Friends&nbsp;</h6>
-                            <h6 style={{ display: "inline", cursor: "pointer" }}>&nbsp;Sent Requests&nbsp;</h6>
-                            <h6 style={{ display: "inline", cursor: "pointer" }}>&nbsp;Received Request&nbsp;</h6>
-                            <h6 style={{ display: "inline", cursor: "pointer" }}>&nbsp;Recommended Friends&nbsp;</h6>
+                    <div className="card mb-4" >
+                        <div className="card-body px-0 pt-0 pb-2">
+                            <div className="table-responsive p-0">
+                                <table className="table align-items-center mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Friends</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Sent Requests</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Received Request</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Recommended Friends</h6>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                    </div>
+                    <div className="card mb-4">
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
                                 <table className="table align-items-center mb-0">
@@ -142,3 +165,11 @@ export function AddFriends() {
         </div>
     );
 }
+
+
+
+//let em send individual chats and see how it looks
+//set up game feature next
+//learn how to do this with aws
+//profile pictures
+//requested, sent, etc, etc next

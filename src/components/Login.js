@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Validation } from '../backend/Validations';
 
 function Login() {
-//fix logins
+  //fix logins
   const history = useHistory()
   const [badInput, setBadInput] = useState();
 
@@ -11,7 +11,7 @@ function Login() {
     const signInInput = document.getElementById("signIn-input").value;
     const passwordInput = document.getElementById("password-input").value;
     const loginFailed = Validation.signIn(signInInput, passwordInput);
-    if (loginFailed == true){
+    if (loginFailed == true) {
       setBadInput(loginFailed);
     } else {
       setBadInput(false)

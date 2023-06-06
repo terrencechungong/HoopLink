@@ -1,4 +1,4 @@
-import {auth, database} from "../backend/firebase"
+import { auth, database } from "../backend/firebase"
 import { ref, set, child, update, remove, orderByChild, equalTo, query, get } from "firebase/database";
 import { User } from "./domain/User";
 import { useHistory } from 'react-router-dom';
@@ -93,7 +93,7 @@ export class Validation {
 
         return auth.signInWithEmailAndPassword(signInInput, password).
             then(() => {
-                update(ref(database, "Users/" + auth.currentUser.uid), {last_login: Date.now()});
+                update(ref(database, "Users/" + auth.currentUser.uid), { last_login: Date.now() });
                 return false;
             })
             .catch((error) => {

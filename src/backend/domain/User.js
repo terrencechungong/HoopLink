@@ -17,3 +17,14 @@ export class User {
     //move this to the class
 }
 
+export class FriendRequest {
+    constructor(sender, receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.is_active = true;
+        // this.timestamp = Date.now(); // make it now
+    }
+}
+
+
+
