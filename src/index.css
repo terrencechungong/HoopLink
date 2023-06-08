@@ -39,9 +39,9 @@
   cursor: pointer;
 }
 
-.login-css{
- background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
- height: 100vh;
+.login-css {
+  background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+  height: 100vh;
 
   top: 0px;
   bottom: 0px;
@@ -50,12 +50,14 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar space */
-  background: transparent; /* Optional: just make scrollbar invisible */
+  width: 0;
+  /* Remove scrollbar space */
+  background: transparent;
+  /* Optional: just make scrollbar invisible */
 }
 
 
-.transp{
+.transp {
   background: rgba(0, 0, 0, 0);
   color: white;
   border: .5px solid white;
@@ -63,7 +65,7 @@
 
 ::placeholder {
   color: white;
-  opacity: 1; 
+  opacity: 1;
 }
 
 
@@ -124,7 +126,7 @@
 }
 
 .people-dropdown:hover {
-  background:#f3f3f3;
+  background: #f3f3f3;
 }
 
 /* Add friends Page */
@@ -168,7 +170,7 @@
 }
 
 /* Update Profile */
-.settings-container{
+.settings-container {
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;

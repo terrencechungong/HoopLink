@@ -6,6 +6,9 @@ import axios from "axios";
 import { FriendRequests } from "../backend/FriendRequest";
 import { auth, database } from "../backend/firebase"
 import { ref, set, child, update, remove, orderByChild, equalTo, query, get } from "firebase/database";
+import { FriendRequests } from "../backend/FriendRequest";
+import { auth, database } from "../backend/firebase"
+import { ref, set, child, update, remove, orderByChild, equalTo, query, get } from "firebase/database";
 
 export function AddFriends() {
     const [friends, setFriends] = useState({});
@@ -27,6 +30,10 @@ export function AddFriends() {
             setIsLoading(false);
         };
 
+        fetchData().catch((error) => {
+            alert("Error occurred: " + error.message);
+            console.log(error);
+        });
         fetchData().catch((error) => {
             alert("Error occurred: " + error.message);
             console.log(error);
@@ -97,6 +104,38 @@ export function AddFriends() {
             <div className="main-content" id="panel" style={{ width: "60%", margin: "auto" }}>
                 <div className="container-fluid pt-3">
                     <div className="card mb-4" >
+                        <div className="card-body px-0 pt-0 pb-2">
+                            <div className="table-responsive p-0">
+                                <table className="table align-items-center mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Friends</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Sent Requests</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Received Request</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex px-2 py-1">
+                                                    <h6>Recommended Friends</h6>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card mb-4">
                         <div className="card-body px-0 pt-0 pb-2">
                             <div className="table-responsive p-0">
                                 <table className="table align-items-center mb-0">

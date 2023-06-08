@@ -30,18 +30,18 @@ export function AccountSettings() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="username">Last Name</label>
-                        <input className="settings-input" type="text" id="last_name" name="username"  />
+                        <input className="settings-input" type="text" id="last_name" name="username" />
                     </div>
                     <div className="form-group">
                         <label className="settings-label">Phone Number</label>
-                        <input className="settings-input" id="phone_number"/>
+                        <input className="settings-input" id="phone_number" />
                     </div>
                     {/* Put change password option */}
                     <div className="form-group">
                         <label className="settings-label">Password</label>
                         <a href="#" style={{ display: "block" }}>Click here to change your password</a>
                     </div>
-                    <input disabled style={{display:"none"}} type="text" id="hidden-id" name="hidden-id" />
+                    <input disabled style={{ display: "none" }} type="text" id="hidden-id" name="hidden-id" />
                     <button className='settings-submit-button' type="submit" onClick={callSaveChanges}>Save Changes</button>
                 </form>
             </div>
