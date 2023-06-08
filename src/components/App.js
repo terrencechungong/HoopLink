@@ -8,7 +8,7 @@ import { Stats } from "../Stats";
 import Login from "./Login"
 import Signup from './SignUp';
 import { NewGame } from "./NewGame";
-import {AddFriends} from "./AddFriends.js";
+import { AddFriends } from "./AddFriends.js";
 
 
 function App() {
@@ -23,8 +23,8 @@ function App() {
             <Route path="/newGame" component={NewGame} />
             <Route path="/stats" component={Stats} />
             <Route path="/login" component={Login} exact />
-            <Route path="/signUp" component={Signup}/>
-            <Route path="/accountSettings" component={AccountSettings}/>
+            <Route path="/signUp" component={Signup} />
+            <Route path="/accountSettings" component={AccountSettings} />
           </Switch>
         </AuthProvider>
       </Router>

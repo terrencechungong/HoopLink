@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { GoogleOutlined, FacebookOutlined, SettingOutlined, FastForwardFilled } from '@ant-design/icons';
-import {auth, database} from "../backend/firebase"
+import { auth, database } from "../backend/firebase"
 import { ref, set, child, update, remove, get, orderByChild, equalTo, query } from 'firebase/database';
 import { validate_username } from './SignUp';
 import { handleLogout } from './Chats';
@@ -14,7 +14,7 @@ export function Home() {
     await auth.signOut();
     history.push('/login')
   }
-  
+
   return (
     <div>
       <header>
@@ -30,7 +30,7 @@ export function Home() {
                   <a class="nav-link active" aria-current="page" href="/chats" style={{ color: "white" }}>Chats</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/addFriends" style={{ color: "white" }}>Add Friends</a>
+                  <a class="nav-link active" aria-current="page" href="/addFriends" style={{ color: "white" }}>Friends</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/newGame" style={{ color: "white" }}>New Game</a>
@@ -50,7 +50,7 @@ export function Home() {
           </div>
         </nav>
 
-    
+
       </header>
 
     </div>

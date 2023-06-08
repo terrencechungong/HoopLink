@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ref, set, update, query, get, orderByChild, equalTo } from 'firebase/database';
-import { auth, database } from './firebase'
+import { auth, database } from './firebase';
 
 
 export class ChatRequest {
@@ -138,6 +138,7 @@ export class ChatRequest {
     let updateData = {
       first_name: document.getElementById("first_name").value.trim(),
       last_name:  document.getElementById("last_name").value.trim(),
+      phone_number: phoneNumber
     }
 //phone number??    
     axios.patch(`https://api.chatengine.io/users/${id}/`, updateData, {
