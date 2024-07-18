@@ -1,0 +1,46 @@
+$primary-color: rgb(122, 81, 156);
+$primary-color-invisible: rgb(122, 81, 156, 0);
+
+.chatsettings-overlay {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.315);
+    width: 100vw;
+    height: 100vh;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .chatsettings-modal {
+        background-color: white;
+        width: 600px;
+        height: 500px;
+        border-radius: 12px;
+        padding: 20px;
+
+        .modal-screen-selection-bar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 75%;
+
+            .modal-selection-item {
+                border-bottom: 2px solid $primary-color-invisible;
+                transition: border-bottom 0.3s ease-in;
+
+
+                &.selected {
+                    border-bottom: 2px solid $primary-color;
+
+                }
+            }
+        }
+
+        .chatsettings-modal-middle {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}

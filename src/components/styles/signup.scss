@@ -1,0 +1,93 @@
+$primary-color: rgb(122, 81, 156);
+$highlight-color: rgba(255, 255, 255, 0.5);
+$shadow-color: rgba(0, 0, 0, 0.4);
+
+body{
+    background: url('../../white-background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(14px);
+
+}
+
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.signup-card {
+    // z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    color: black;
+    background-color: rgb(255, 255, 255);
+    width: 400px;
+    height: 559px;
+    border-radius: 16px;
+    box-shadow: 0 7px 18px $shadow-color;
+    h3 {
+        align-self: flex-start;
+        padding-left: 33px;
+        font-size: 25px;
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+    p {
+        font-size: 15px;
+        align-self: flex-start;
+        padding-left: 33px;
+        color: rgb(161, 161, 161);
+    }
+    .bottom-text {
+        align-self: center;
+        color: black;
+    }
+    span {
+        color: $primary-color;
+    }
+}
+
+.login-card {
+    @extend .signup-card;
+    height: 400px;
+
+}
+
+.signup-input {
+    width: 80%;
+    padding: 12px;
+    margin: 12px;
+    border-radius: 7px;
+    transition: outline 0.3s ease;
+    border: 1px solid rgb(177, 177, 177);
+    color: rgb(155, 155, 155);
+    
+    &:focus {
+        outline: 2px solid #0e76ff;
+        outline-offset: -2px;
+    }
+
+    &::placeholder {
+        color: rgb(117, 117, 117);
+    }
+}
+
+
+.auth-continue-button {
+    width: 86%;
+    padding: 12px;
+    margin: 12px;
+    border: 0;
+    border-radius: 7px;
+    background-color: $primary-color;
+    color: aliceblue;
+
+}
+

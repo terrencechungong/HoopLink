@@ -1,0 +1,23 @@
+body {
+    background:white no-repeat center center fixed;
+}
+
+.sidebar-container {
+    background-color: blueviolet;
+    height: 100vh;
+    position: absolute;
+    width: 20%;
+    z-index: 1;
+    overflow-y: scroll;
+
+    .chat-row {
+        height: 60px;
+        background-color: rgb(139, 68, 68);
+        border-bottom: 1px solid black;
+        display: flex;
+        flex-direction: row;
+        div {
+            background-color:  white;
+        }
+    }
+}
