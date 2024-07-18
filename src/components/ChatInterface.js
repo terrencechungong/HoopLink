@@ -1,10 +1,21 @@
 import ChatSettings from './ChatSettings';
 import SideBar from './SideBar';
 import './styles/chatinterface.scss'
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import ReactDOM from 'react-dom/client'
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
+    const parentRef = useRef(null);
+
+    // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    const showSettingsModal = () => {
+        const modalDiv = document.createElement('div');
+        const modalRoot = ReactDOM.createRoot(modalDiv);
+        modalRoot.render(<ChatSettings/>);
+        parentRef.current.insertBefore(modalDiv, parentRef.current.firstChild);
+    }
 
     const toggleShow = () => {
         if (stylingRef.current.style.width == '100%') {
@@ -15,8 +26,7 @@ const ChatInterface = () => {
     }
 
     return (
-        <div className='outermost-parent'>
-                    <ChatSettings/>
+        <div className='outermost-parent' ref={parentRef}>
 
             <button className="sidebar-toggle" onClick={() => toggleShow()}>press me</button>
             <SideBar />
@@ -26,7 +36,7 @@ const ChatInterface = () => {
                     <div className='messages-container-middle'>
                         <div className='chat-title'>
                             New Chat!!!
-                            <button>chat detail</button>   
+                            <button onClick={() => showSettingsModal()}>chat detail</button>   
                             </div>
                         <div className="messages-container-inner">
                             <p className="me">yoooyy</p>

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const ChatSettings = () => {
     const overlay = useRef(null);
+    const [isUp, setIsUp] = useState(false);
     const [current, setCurrent] = useState('Members');
     const [about, setAbout] = useState(false);
     const [members, setMembers] = useState(true);
@@ -26,6 +27,19 @@ const ChatSettings = () => {
             }
         });
 
+      
+        document.addEventListener('click', function(event) {
+            if (isUp === false) {
+                setIsUp(true);
+                return;
+            }
+            const middleDiv = document.querySelector('.chatsettings-modal');
+            const outerContainer = document.querySelector('.chatsettings-overlay');
+        
+            if (!middleDiv.contains(event.target)) {
+              outerContainer.style.display = 'none';
+            }
+          });
         
     })
 
