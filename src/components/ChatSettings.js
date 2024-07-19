@@ -1,7 +1,7 @@
 import './styles/chat-settings.scss'
 import { useEffect, useRef, useState } from 'react';
 
-const ChatSettings = () => {
+const ChatSettings = ({closeModal}) => {
     const overlay = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const [current, setCurrent] = useState('Members');
@@ -27,19 +27,29 @@ const ChatSettings = () => {
             }
         });
 
-      
-        document.addEventListener('click', function(event) {
+        const func = function(event) {
+            const middleDiv = document.querySelector('.chatsettings-modal');
+            const button = document.getElementById('hidden-button');
+            if (!middleDiv) {
+                return;
+            }
             if (isUp === false) {
                 setIsUp(true);
                 return;
             }
-            const middleDiv = document.querySelector('.chatsettings-modal');
-            const outerContainer = document.querySelector('.chatsettings-overlay');
-        
+          
+            console.log(event.target)
             if (!middleDiv.contains(event.target)) {
-              outerContainer.style.display = 'none';
+                button.click();
+              setIsUp(false);
             }
-          });
+          };
+
+        document.addEventListener('click', func);
+      
+          return () => {
+            document.removeEventListener('click', func);
+        };
         
     })
 
@@ -54,7 +64,7 @@ const ChatSettings = () => {
 // ADD ONCLICK SO IF ANYTHING OTHER THAN THE MIDDLE DIV OR ITS CHILDREN IS CLICKED IT DISSAPEARS
 
     return (
-        <div className="chatsettings-overlay" ref={overlay}>
+        <div className="chatsettings-overlay" id="settings-modal" ref={overlay}>
             <div className='chatsettings-modal'>
                 <div className='chatsettings-modal-middle'>
                     <div className='modal-screen-selection-bar'>
@@ -64,7 +74,7 @@ const ChatSettings = () => {
                         <p className={'modal-selection-item ' + (pastRuns == true ? 'selected' : '')}>Past Runs</p>
                         <p className={'modal-selection-item ' + (settings == true ? 'selected' : '')}>Settings</p>
                     </div>
-                    <button>X</button>
+                    <button onClick={() => closeModal()}>X</button>
                 </div>
             </div>
         </div>
