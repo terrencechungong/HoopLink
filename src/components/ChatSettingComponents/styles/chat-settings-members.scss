@@ -92,3 +92,25 @@ $primary-color: rgb(122, 81, 156);
         }
     }
 }
+
+.chat-files-modal {
+    @extend .chat-members-modal;
+
+    .chat-file-row {
+        @extend .chat-member-row;
+        img {
+            border-radius: 10px;
+        }
+        div  
+        p {
+            padding: 0px;
+            margin: 0px;
+            padding-bottom: 4px;
+        }
+        i {
+            color: grey;
+            font-weight: bold;
+        }
+        border-bottom: 2px solid black;
+    }
+}
