@@ -1,21 +1,45 @@
 $primary-color: rgb(122, 81, 156);
 
+button {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.transparent-button {
+    background: none;
+    border-width: 0px;
+}
+
 .chat-members-modal {
     overflow-y: scroll;
     height: 450px;
+
+    #members-hidden-button {
+        display: none;
+    }
 
     .chat-member-row {
         display: flex;
         flex-direction: row;
         padding: 8px;
         gap: 1em;
-
         img {
             width: 50px; 
             height: auto;
             border-radius: 50%;
         }
-
+        button {
+            @extend .transparent-button;
+        }
+        &:hover {
+            background-color: rgb(238, 238, 238);
+        }
+        &.member-add {
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 }
 

@@ -4,12 +4,17 @@ import { AuthProvider } from './context/AuthContext';
 import LogIn from './components/LogIn';
 import ChatInterface from './components/ChatInterface';
 import ChatSettings from './components/ChatSettings';
+import { UIProvider } from './context/UIProvider';
 
 function App() {
   return (
-    <AuthProvider>
-    <ChatInterface/>
-    </AuthProvider>
+    <UIProvider>
+
+      <AuthProvider>
+        <ChatInterface />
+      </AuthProvider>
+    </UIProvider>
+
   );
 }
 

@@ -7,7 +7,7 @@ import ChatFiles from './ChatSettingComponents/ChatFiles';
 import ChatSettingsModalSection from './ChatSettingComponents/ChatSettingsModalSection';
 import ChatPastRuns from './ChatSettingComponents/ChatPastRuns';
 
-const ChatSettings = ({closeModal}) => {
+const ChatSettings = ({closeModal, settingsModalState}) => {
     const overlay = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const [current, setCurrent] = useState('Members');
@@ -27,6 +27,7 @@ const ChatSettings = ({closeModal}) => {
 
     useEffect(() => {
         const fooItems = document.querySelectorAll('.modal-selection-item');
+
         fooItems.forEach(item => {
             item.onclick = function () {
                 handleModalSelection(item.innerText);
@@ -35,7 +36,6 @@ const ChatSettings = ({closeModal}) => {
 
         const func = function(event) {
             const middleDiv = document.querySelector('.chatsettings-modal');
-            const button = document.getElementById('hidden-button');
             if (!middleDiv) {
                 return;
             }
@@ -43,10 +43,9 @@ const ChatSettings = ({closeModal}) => {
                 setIsUp(true);
                 return;
             }
-          
-            console.log(event.target)
+            
             if (!middleDiv.contains(event.target)) {
-                button.click();
+                closeModal();
               setIsUp(false);
             }
           };
@@ -82,7 +81,7 @@ const ChatSettings = ({closeModal}) => {
                     </div>
                     <button onClick={() => closeModal()}><FaTimes size={25}/></button>
                 </div>
-                {members && <ChatMembers/>}
+                {members && <ChatMembers settingsModalState={settingsModalState} />}
                 {about && <ChatAbout/>}
                 {files && <ChatFiles/>}
                 {pastRuns && <ChatPastRuns/>}
