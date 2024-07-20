@@ -1,5 +1,10 @@
 import './styles/chat-settings.scss'
 import { useEffect, useRef, useState } from 'react';
+import ChatMembers from './ChatSettingComponents/ChatMembers';
+import ChatAbout from './ChatSettingComponents/ChatAbout';
+import ChatFiles from './ChatSettingComponents/ChatFiles';
+import ChatSettingsModalSection from './ChatSettingComponents/ChatSettingsModalSection';
+import ChatPastRuns from './ChatSettingComponents/ChatPastRuns';
 
 const ChatSettings = ({closeModal}) => {
     const overlay = useRef(null);
@@ -76,6 +81,11 @@ const ChatSettings = ({closeModal}) => {
                     </div>
                     <button onClick={() => closeModal()}>X</button>
                 </div>
+                {members && <ChatMembers/>}
+                {about && <ChatAbout/>}
+                {files && <ChatFiles/>}
+                {pastRuns && <ChatPastRuns/>}
+                {settings && <ChatSettingsModalSection/>}
             </div>
         </div>
     )
