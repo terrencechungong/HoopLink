@@ -1,12 +1,14 @@
 import './styles/chat-settings-members.scss'
 import defaultpic from './defaultprofile.png'
+import { FaPencilAlt } from 'react-icons/fa';
+import { FaDoorOpen } from 'react-icons/fa';
 
 const ChatSettingsModalSection = () => {
     return (
         <div className="chat-settings-modal">
             <div className='chat-photo-settings-modal'>
                 <img src={defaultpic} alt="group chat photo" />
-                <button>C</button>
+                <button><FaPencilAlt/></button>
             </div>
             <div className="chat-settings-modal-section">
                 <p><strong>Name:   </strong>NAME HERE</p>
@@ -17,7 +19,7 @@ const ChatSettingsModalSection = () => {
                 <button>Edit</button>
             </div>
             <div className="leave-chat-button">
-                <button>Leave Chat</button>
+                <button>Leave Chat <FaDoorOpen/></button>
             </div>
         </div>
     )
