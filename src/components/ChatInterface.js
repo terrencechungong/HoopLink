@@ -2,13 +2,19 @@ import ChatSettings from './ChatSettings';
 import SideBar from './SideBar';
 import './styles/chatinterface.scss'
 import { useRef, useState } from 'react';
+import { MdOutlineInfo } from "react-icons/md";
 import ReactDOM from 'react-dom/client'
+import { GoSidebarCollapse } from "react-icons/go";
+import { GoSidebarExpand } from "react-icons/go";
+import { BsPaperclip } from "react-icons/bs";
+import { FiSend } from "react-icons/fi";
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
     const parentRef = useRef(null);
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
+    const [expanded, setExpanded] = useState(false)
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
     const invisibleClick = () => {
         console.log("sdsds")
@@ -18,123 +24,54 @@ const ChatInterface = () => {
     }
 
     const showSettingsModal = () => {
-            const modalDiv = document.createElement('div');
-            modalDiv.id = "modal-div-root"
-            modalRoot.current = ReactDOM.createRoot(modalDiv);
-            modalRoot.current.render(<ChatSettings closeModal={invisibleClick}/>);
-            parentRef.current.insertBefore(modalDiv, parentRef.current.firstChild);
-            modalLoaded.current = true;
+        const modalDiv = document.createElement('div');
+        modalDiv.id = "modal-div-root"
+        modalRoot.current = ReactDOM.createRoot(modalDiv);
+        modalRoot.current.render(<ChatSettings closeModal={invisibleClick} />);
+        parentRef.current.insertBefore(modalDiv, parentRef.current.firstChild);
+        modalLoaded.current = true;
     }
 
     const toggleShow = () => {
         if (stylingRef.current.style.width == '100%') {
+            setExpanded(false);
             stylingRef.current.style.width = '80%'
         } else {
+            setExpanded(true);
             stylingRef.current.style.width = '100%'
         }
+    }
+
+    let messages = []
+    for (let i = 0; i <= 80; i++) {
+        messages.push(<p className="me">yoooyy</p>)
+        messages.push(<p className="other">yoooyy</p>)
     }
 
     return (
         <div className='outermost-parent' ref={parentRef}>
 
-            <button className="sidebar-toggle" onClick={() => toggleShow()}>press me</button>
+            <button className="sidebar-toggle" onClick={() => toggleShow()}>
+                {expanded && <GoSidebarCollapse size={32} />}
+                {!expanded && <GoSidebarExpand size={32} />}
+            </button>
             <SideBar />
 
             <div className="chat-interface-container" ref={stylingRef}>
                 <div className="messages-container-outer">
-                    <button id="hidden-button" onClick={() => invisibleClick()} style={{display:'none'}}></button>
+                    <button id="hidden-button" onClick={() => invisibleClick()} style={{ display: 'none' }}></button>
                     <div className='messages-container-middle'>
                         <div className='chat-title'>
                             New Chat!!!
-                            <button onClick={() => showSettingsModal()}>chat detail</button>
+                            <button onClick={() => showSettingsModal()}><MdOutlineInfo size={28} /></button>
                         </div>
                         <div className="messages-container-inner">
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
-                            <p className="me">yoooyy</p>
-                            <p className="other">toooooo</p>
+                            {messages.map(message => message)}
                         </div>
                         <div className="chat-input" >
-                            <button>Add File</button>
+                            <button id="add-files"><BsPaperclip size={18} /></button>
                             <textarea ></textarea>
-                            <button>Send</button>
+                            <button id="send-message"><FiSend size={18} /></button>
                         </div>
                     </div>
                 </div>

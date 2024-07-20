@@ -14,7 +14,7 @@ const ChatFiles = () => {
                     <img src={pic} />
                     <div>
                         <p>{name}</p>
-                        <i>Shared by {name} on yesterday</i>
+                        <i className='italicized'>Shared by {name} on yesterday</i>
                     </div>
                 </div>
             )}
