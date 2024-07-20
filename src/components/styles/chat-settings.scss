@@ -41,6 +41,7 @@ $primary-color-invisible: rgb(122, 81, 156, 0);
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            justify-self: flex-start;
         }
     }
 }

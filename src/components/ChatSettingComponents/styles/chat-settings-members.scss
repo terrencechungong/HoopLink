@@ -1,0 +1,16 @@
+.chat-members-modal {
+    overflow-y: scroll;
+    height: 450px;
+    .chat-member-row {
+        display: flex;
+        flex-direction: row;
+        padding: 8px;
+        gap: 1em;
+        img {
+            width: 50px; // Set the width of the image
+            height: auto;
+            border-radius: 50%;
+        }
+
+    }
+}
