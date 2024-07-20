@@ -6,8 +6,9 @@ import ChatAbout from './ChatSettingComponents/ChatAbout';
 import ChatFiles from './ChatSettingComponents/ChatFiles';
 import ChatSettingsModalSection from './ChatSettingComponents/ChatSettingsModalSection';
 import ChatPastRuns from './ChatSettingComponents/ChatPastRuns';
+import { globalVariables } from '..';
 
-const ChatSettings = ({closeModal, settingsModalState}) => {
+const ChatSettings = ({ closeModal }) => {
     const overlay = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const [current, setCurrent] = useState('Members');
@@ -34,28 +35,30 @@ const ChatSettings = ({closeModal, settingsModalState}) => {
             }
         });
 
-        const func = function(event) {
-            const middleDiv = document.querySelector('.chatsettings-modal');
-            if (!middleDiv) {
-                return;
-            }
-            if (isUp === false) {
-                setIsUp(true);
-                return;
-            }
-            
-            if (!middleDiv.contains(event.target)) {
-                closeModal();
-              setIsUp(false);
-            }
-          };
+        const func = function (event) {
+            if (globalVariables.settingsModalEffect) {
+                const middleDiv = document.querySelector('.chatsettings-modal');
+                if (!middleDiv) {
+                    return;
+                }
+                if (isUp === false) {
+                    setIsUp(true);
+                    return;
+                }
+                console.log("settings")
+                if (!middleDiv.contains(event.target)) {
+                    closeModal();
+                    setIsUp(false);
+                }
+            };
+        }
 
         document.addEventListener('click', func);
-      
-          return () => {
+
+        return () => {
             document.removeEventListener('click', func);
         };
-        
+
     })
 
     const handleModalSelection = (selection) => {
@@ -66,7 +69,7 @@ const ChatSettings = ({closeModal, settingsModalState}) => {
         }
     }
 
-// ADD ONCLICK SO IF ANYTHING OTHER THAN THE MIDDLE DIV OR ITS CHILDREN IS CLICKED IT DISSAPEARS
+    // ADD ONCLICK SO IF ANYTHING OTHER THAN THE MIDDLE DIV OR ITS CHILDREN IS CLICKED IT DISSAPEARS
 
     return (
         <div className="chatsettings-overlay" id="settings-modal" ref={overlay}>
@@ -79,13 +82,13 @@ const ChatSettings = ({closeModal, settingsModalState}) => {
                         <p className={'modal-selection-item ' + (pastRuns == true ? 'selected' : '')}>Past Runs</p>
                         <p className={'modal-selection-item ' + (settings == true ? 'selected' : '')}>Settings</p>
                     </div>
-                    <button onClick={() => closeModal()}><FaTimes size={25}/></button>
+                    <button onClick={() => closeModal()}><FaTimes size={25} /></button>
                 </div>
-                {members && <ChatMembers settingsModalState={settingsModalState} />}
-                {about && <ChatAbout/>}
-                {files && <ChatFiles/>}
-                {pastRuns && <ChatPastRuns/>}
-                {settings && <ChatSettingsModalSection/>}
+                {members && <ChatMembers />}
+                {about && <ChatAbout />}
+                {files && <ChatFiles />}
+                {pastRuns && <ChatPastRuns />}
+                {settings && <ChatSettingsModalSection />}
             </div>
         </div>
     )

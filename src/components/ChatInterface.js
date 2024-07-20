@@ -1,7 +1,7 @@
 import ChatSettings from './ChatSettings';
 import SideBar from './SideBar';
 import './styles/chatinterface.scss'
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdOutlineInfo } from "react-icons/md";
 import ReactDOM from 'react-dom/client'
 import { GoSidebarCollapse } from "react-icons/go";
@@ -9,34 +9,36 @@ import { GoSidebarExpand } from "react-icons/go";
 import { BsPaperclip } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 
+import { setGlobalVariable, globalVariables } from '..';
+import { getGlobalVariable } from '..';
+
 const ChatInterface = () => {
     const stylingRef = useRef(null);
     const parentRef = useRef(null);
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
-    const [settingsModalEffect, setSettingsModalEffect] = useState(false);
-    const settingsModal = [settingsModalEffect, setSettingsModalEffect];
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
     const invisibleClick = () => {
-        if (settingsModalEffect) {
+        console.log()
+        if (globalVariables.settingsModalEffect) {
             modalRoot.current.unmount();  // Unmount the React component
             parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
             modalLoaded.current = false;
-            setSettingsModalEffect(false);
+            globalVariables.settingsModalEffect = false;
         }
     }
 
     const showSettingsModal = () => {
+        globalVariables.settingsModalEffect = true;
         const modalDiv = document.createElement('div');
         modalDiv.id = "modal-div-root"
         modalRoot.current = ReactDOM.createRoot(modalDiv);
         modalRoot.current.render(
-            <ChatSettings closeModal={invisibleClick}
-                settingsModalState={settingsModal}/>);
+            <ChatSettings closeModal={invisibleClick} />);
         parentRef.current.insertBefore(modalDiv, parentRef.current.firstChild);
         modalLoaded.current = true;
-        setSettingsModalEffect(true);
+
     }
 
     const toggleShow = () => {

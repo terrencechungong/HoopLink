@@ -1,3 +1,5 @@
+$primary-color: rgb(122, 81, 156);
+
 .addmembers-modal {
     position: absolute;
     width: 100vw;
@@ -7,11 +9,32 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    background-color: rgba(0, 0, 0, 0.315);
 
     .addmembers-modal-container {
-        height: 100px;
-        width: 100px;
-        background-color: aqua;
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+        box-shadow: -5px 5px 20px rgb(78, 78, 78);
+        width: 450px;
+        border-radius: 20px;
+        background-color: rgb(255, 255, 255);
+        align-items: center;
+        h2 {
+            margin: 10px
+        }
+        .addmembers-search-bar {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            width: 80%;
+            border-width: 1px;
+
+            &:focus {
+                outline-width: 0px;
+                border-width: 1px;
+                box-shadow: 0px 0px 4px  $primary-color;
+            }
+        }
     }
 }

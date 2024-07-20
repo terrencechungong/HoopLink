@@ -5,48 +5,43 @@ import defaultpic from './defaultprofile.png'
 import { FaPlus } from 'react-icons/fa';
 import AddMemberModal from './AddMemberModal';
 import ReactDOM from 'react-dom/client'
+import { setGlobalVariable, getGlobalVariable, globalVariables } from '../../index';
 
-const ChatMembers = ({ settingsModalState }) => {
+const ChatMembers = () => {
     const parentRef = useRef(null);
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
-    const [settingsModalEffect, setSettingsModalEffect] = settingsModalState;
-    const [addMembersModalEffect, setAddMembersModalEffect] = useState(false);
-    const membersModalState = [addMembersModalEffect, setAddMembersModalEffect]
     const names = ["Liam", "Emma", "Noah", "Olivia", "William", "Ava", "James", "Isabella", "Oliver", "Sophia"];
     const outerMostParent = document.getElementById('outermost-parent');
 
-
-    useEffect(() => {
-        if (addMembersModalEffect) {
-            const modalDiv = document.createElement('div');
-            modalDiv.id = "modal-div-root-members"
-            modalRoot.current = ReactDOM.createRoot(modalDiv);
-            modalRoot.current.render(<AddMemberModal closeModal={closeModal}/>);
-            outerMostParent.insertBefore(modalDiv, outerMostParent.firstChild);
-            modalLoaded.current = true;
-        }
-    }, [addMembersModalEffect])
-
     const closeModal = () => {
-        if (addMembersModalEffect) {
-            setAddMembersModalEffect(false);
+        if (globalVariables.addMembersModalEffect) {
+            globalVariables.addMembersModalEffect = false;
             modalRoot.current.unmount();  // Unmount the React component
             outerMostParent.removeChild(outerMostParent.firstChild);  // Remove the DOM element
             modalLoaded.current = false;
-            setSettingsModalEffect(true);
+            globalVariables.settingsModalEffect = true;
         }
     }
 
     const addMemberClick = () => {
-        setSettingsModalEffect(false);
-        setAddMembersModalEffect(true);
+        globalVariables.addMembersModalEffect = true;
+        globalVariables.settingsModalEffect = false
+
+        console.log("sdsd");
+        console.log(globalVariables.settingsModalEffect)
+        console.log(globalVariables.addMembersModalEffect)
+        const modalDiv = document.createElement('div');
+        modalDiv.id = "modal-div-root-members"
+        modalRoot.current = ReactDOM.createRoot(modalDiv);
+
+        modalRoot.current.render(<AddMemberModal closeModal={closeModal} />);
+        outerMostParent.insertBefore(modalDiv, outerMostParent.firstChild);
+        modalLoaded.current = true;
+
     }
 
 
-    useEffect(() => {
-        // console.log(addMembersModalEffect);
-    })
 
     return (
         <div className="chat-members-modal" ref={parentRef}>
