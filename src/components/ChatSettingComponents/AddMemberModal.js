@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './styles/addmembers-modal.scss'
 
-const AddMemberModal = ({closeModal, settingsModalState, membersModalState}) => {
+const AddMemberModal = ({closeModal}) => {
     const [isUp, setIsUp] = useState(false);
 
 

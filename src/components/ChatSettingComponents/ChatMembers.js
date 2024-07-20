@@ -16,13 +16,13 @@ const ChatMembers = ({ settingsModalState }) => {
     const names = ["Liam", "Emma", "Noah", "Olivia", "William", "Ava", "James", "Isabella", "Oliver", "Sophia"];
     const outerMostParent = document.getElementById('outermost-parent');
 
+
     useEffect(() => {
         if (addMembersModalEffect) {
             const modalDiv = document.createElement('div');
             modalDiv.id = "modal-div-root-members"
             modalRoot.current = ReactDOM.createRoot(modalDiv);
-            modalRoot.current.render(<AddMemberModal closeModal={closeModal} settingsModalState={settingsModalState}
-                membersModalState={membersModalState} />);
+            modalRoot.current.render(<AddMemberModal closeModal={closeModal}/>);
             outerMostParent.insertBefore(modalDiv, outerMostParent.firstChild);
             modalLoaded.current = true;
         }

@@ -8,7 +8,6 @@ import { GoSidebarCollapse } from "react-icons/go";
 import { GoSidebarExpand } from "react-icons/go";
 import { BsPaperclip } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
-import { useUiContext } from '../context/UIProvider';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
