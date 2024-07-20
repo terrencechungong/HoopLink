@@ -2,7 +2,9 @@
 
 const ChatAbout = () => {
     return (
-        <p>Chat about</p>
+        <>
+            <p>This chat was created by <strong>Terrence Chungong</strong> on  July 20th, 2024</p>
+        </>
     )
 }
 
