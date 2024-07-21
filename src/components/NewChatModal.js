@@ -36,7 +36,19 @@ const NewChatModal = ({closeModal}) => {
     return (
         <div className="new-chat-modal-overlay">
             <div className="new-chat-modal-container">
-
+                <div>
+                    <h2>Chat Name: </h2>
+                    <input type="text" />
+                </div>
+                <div>
+                    <h2>Description: </h2>
+                    <textarea></textarea>
+                </div>
+                <div>
+                    <h2>Add members to your new chat: </h2>
+                    <input type="text" />
+                </div>
+                <button>Create</button>
             </div>
         </div>
     );

@@ -25,8 +25,8 @@ const ChatInterface = () => {
 
     useEffect(() => {
         if (globalVariables.user == null) {
-            console.log("no user");
-            navigate('/login');
+            // console.log("no user");
+            // navigate('/login');
         }
         console.log(globalVariables.user);
     })

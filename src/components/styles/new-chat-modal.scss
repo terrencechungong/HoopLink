@@ -13,8 +13,19 @@ $primary-color: rgb(122, 81, 156);
     padding: 0px;
     margin: 0px;
     .new-chat-modal-container {
-        height: 100px;
-        width: 100px;
-        background-color: black;
+        display: flex;
+        flex-direction: column;
+        height: 500px;
+        width: 500px;
+        background-color: rgb(255, 255, 255);
+        color: color;
+        border-radius: 16px;
+        padding: 10px;
+        box-shadow: -5px 5px 10px rgb(128, 128, 128);
+
+        button{
+            align-self: center;
+            margin-top: 20px;
+        }
     }
 }

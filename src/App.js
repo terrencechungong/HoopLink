@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import LogIn from './components/LogIn';
 import ChatInterface from './components/ChatInterface';
 import ChatSettings from './components/ChatSettings';
+import FeedPost from './components/FeedPost'
 import ViewProfile from './components/ViewProfile';
 import {
   BrowserRouter as Router,
@@ -17,6 +18,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          <Route path="/post" element={<FeedPost/>} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/chats" element={<ChatInterface />} />
