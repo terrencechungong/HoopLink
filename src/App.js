@@ -6,6 +6,7 @@ import ChatInterface from './components/ChatInterface';
 import ChatSettings from './components/ChatSettings';
 import FeedPost from './components/FeedPost'
 import ViewProfile from './components/ViewProfile';
+import Feed from './components/Feed';
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,6 +22,8 @@ function App() {
           <Route path="/post" element={<FeedPost/>} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/viewprofile" element={<ViewProfile/>} />
+          <Route path="/feed" element={<Feed/>} />
           <Route path="/chats" element={<ChatInterface />} />
           <Route path="/profile" element={<ViewProfile/>} />
         </Routes>

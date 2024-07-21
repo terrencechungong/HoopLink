@@ -25,7 +25,6 @@ const FeedPost = () => {
 
 
     return (
-        <div className='just-2-build'>
             <div className="feed-post-container">
                 <div className='feed-post-info'>
                     <img src={pic} alt='lt=profile photo' />
@@ -49,7 +48,6 @@ const FeedPost = () => {
                     <button ><LuSend size={22} /></button>
                 </div>
             </div>
-        </div>
     )
 }
 
@@ -64,7 +62,6 @@ const DisplayText = ({ text }) => {
     } else {
         displayText = <p>{text}</p>
     }
-
     return (
         <>
             {seeMore && <p>{text}</p>}
