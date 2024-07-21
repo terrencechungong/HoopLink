@@ -8,10 +8,11 @@ import { GoSidebarCollapse } from "react-icons/go";
 import { GoSidebarExpand } from "react-icons/go";
 import { BsPaperclip } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
-
+import NewChatModal from './NewChatModal';
 import { setGlobalVariable, globalVariables } from '..';
 import { getGlobalVariable } from '..';
 import { useNavigate } from 'react-router-dom';
+import { RiChatNewLine } from "react-icons/ri";
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -32,24 +33,41 @@ const ChatInterface = () => {
 
     const invisibleClick = () => {
         console.log()
+
         if (globalVariables.settingsModalEffect) {
             modalRoot.current.unmount();  // Unmount the React component
             parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
             modalLoaded.current = false;
             globalVariables.settingsModalEffect = false;
         }
+        if (globalVariables.newChatModalEffect) {
+            modalRoot.current.unmount();  // Unmount the React component
+            parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
+            modalLoaded.current = false;
+            globalVariables.newChatModalEffect = false;
+        }
+
+
     }
 
-    const showSettingsModal = () => {
-        globalVariables.settingsModalEffect = true;
+    const showModal = (modalType) => {
+        let modal;
+        if (modalType == 'SETTINGS') {
+            modal = <ChatSettings closeModal={invisibleClick} />
+            globalVariables.settingsModalEffect = true;
+
+        } else {
+            modal = <NewChatModal closeModal={invisibleClick} />;
+            globalVariables.newChatModalEffect = true;
+
+        }
+
         const modalDiv = document.createElement('div');
         modalDiv.id = "modal-div-root"
         modalRoot.current = ReactDOM.createRoot(modalDiv);
-        modalRoot.current.render(
-            <ChatSettings closeModal={invisibleClick} />);
+        modalRoot.current.render(modal);
         parentRef.current.insertBefore(modalDiv, parentRef.current.firstChild);
         modalLoaded.current = true;
-
     }
 
     const toggleShow = () => {
@@ -75,6 +93,7 @@ const ChatInterface = () => {
                 {expanded && <GoSidebarCollapse size={32} />}
                 {!expanded && <GoSidebarExpand size={32} />}
             </button>
+            <button id="new-chat-creator-button" onClick={() => showModal('NEW_CHAT')}><RiChatNewLine size={30} /></button>
             <SideBar />
 
             <div className="chat-interface-container" ref={stylingRef}>
@@ -82,7 +101,7 @@ const ChatInterface = () => {
                     <div className='messages-container-middle'>
                         <div className='chat-title'>
                             New Chat!!!
-                            <button onClick={() => showSettingsModal()}><MdOutlineInfo size={28} /></button>
+                            <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
                         </div>
                         <div className="messages-container-inner">
                             {messages.map(message => message)}

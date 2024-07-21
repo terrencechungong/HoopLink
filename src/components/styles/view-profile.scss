@@ -1,0 +1,57 @@
+$primary-color: rgb(122, 81, 156);
+
+.view-profile-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    .view-profile-div {
+        width: 400px;
+        height: 500px;
+        background-color: rgb(161, 161, 161);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        #view-profile-profile-pic {
+            align-self: center;
+            position: relative;
+            margin-bottom: 13px;
+            img {
+                width: 90px;
+                height: 90px;
+                padding-top: 12px;
+                border-radius: 40%;
+            }
+            button {
+                position: absolute;
+                bottom: 0px;
+                right: 0px;
+                border-radius: 50%;
+                border: 3px solid white;
+                padding: 7px 6px 4px 8px;
+                background-color: $primary-color;
+                color: white;
+                transition: all 0.3s ease;
+                &:hover {
+                    background-color: rgb(108, 62, 146);
+                    color: white;
+                }
+                &:active {
+                    background-color: rgb(84, 44, 117);
+                    transform: scale(0.9);
+                }
+            }
+        }
+        .profile-userData-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 80%;
+            align-items: center;
+        }
+    }
+}

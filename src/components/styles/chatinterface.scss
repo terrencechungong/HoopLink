@@ -30,6 +30,13 @@ body {
         z-index: 10;
 
     }
+
+    #new-chat-creator-button {
+        @extend .sidebar-toggle;
+        left: 150px;
+        padding-top: 3px;
+        z-index: 2;
+    }
 }
 
 .chat-interface-container {

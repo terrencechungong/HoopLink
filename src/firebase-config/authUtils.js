@@ -17,16 +17,17 @@ export const signUp = async (email, password, firstName, lastName) => {
         });
 }
 
-export const signin = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
+export const signin = async (email, password) => {
+    return await signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            
+            return user;
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage)
+            console.log(errorMessage);
+            return false;
         });
 }
