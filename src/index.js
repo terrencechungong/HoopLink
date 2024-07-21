@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 export const globalVariables = {
   addMembersModalEffect: false,
   settingsModalEffect: false,
+  user: null
 };
 
 export const getGlobalVariable = (key) => globalVariables[key];

@@ -1,29 +1,32 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from './fbconfig'
+import { auth } from './firebase-conf'
 
-const signUp = (email, password, firstName, lastName) => {
-    createUserWithEmailAndPassword(auth, email, password)
+export const signUp = async (email, password, firstName, lastName) => {
+    return await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed up 
             const user = userCredential.user;
+            return user;
             // ...
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            return false;
             // ..
         });
 }
 
-const signin = (email, password) => {
+export const signin = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
-            // ...
+            
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(errorMessage)
         });
 }

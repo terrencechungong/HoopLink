@@ -4,12 +4,24 @@ import { AuthProvider } from './context/AuthContext';
 import LogIn from './components/LogIn';
 import ChatInterface from './components/ChatInterface';
 import ChatSettings from './components/ChatSettings';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from 'react-router-dom';
 
 function App() {
   return (
-      <AuthProvider>
-        <ChatInterface />
-      </AuthProvider>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/chats" element={<ChatInterface />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

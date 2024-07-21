@@ -11,6 +11,7 @@ import { FiSend } from "react-icons/fi";
 
 import { setGlobalVariable, globalVariables } from '..';
 import { getGlobalVariable } from '..';
+import { useNavigate } from 'react-router-dom';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -18,7 +19,17 @@ const ChatInterface = () => {
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
+    const navigate = useNavigate();
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    useEffect(() => {
+        if (globalVariables.user == null) {
+            console.log("no user");
+            navigate('/login');
+        }
+        console.log(globalVariables.user);
+    })
+
     const invisibleClick = () => {
         console.log()
         if (globalVariables.settingsModalEffect) {
