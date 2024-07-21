@@ -8,26 +8,31 @@
 
 .feed-post-container {
     width: 600px;
-    height:230px; // really 600px
     // height depends on whats in it but has a max
     background-color: black;
     color: white;
+
     .feed-post-info {
         display: flex;
         flex-direction: row;
         padding: 7px;
+
         img {
             width: 60px;
             height: 60px;
             border-radius: 50%;
         }
+
         gap: 0.5em;
         border-bottom:1px solid white;
     }
 
     .feed-post-content {
         padding: 10px;
-        border-bottom:1px solid white;
+        border-bottom: 1px solid white;
+        #read-more-post {
+                cursor: pointer;   
+        }
     }
 
     .feed-post-likes-and-comments {
@@ -35,5 +40,16 @@
         padding: 8px;
         display: flex;
         justify-content: space-around;
+
+        button {
+            background: none;
+            border-width: 0px;
+            color: white;
+            &.liked {
+                color: red;
+            }
+        }
     }
+
+
 }
