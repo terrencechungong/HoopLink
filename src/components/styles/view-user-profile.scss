@@ -1,0 +1,30 @@
+.view-profile-screen {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    .profile-view-container-outer {
+        width: 450px;
+        height: 500px;
+        background-color: black;
+        color: white;
+        .profile-view-header {
+            height: 100px;
+            background-color: blue;
+            width: 100%;
+            color: black;
+            position: relative;
+            .profile-view-header-selecion {
+                height: 40px;
+                background-color: white;
+                width: 100%;
+                color: black;
+                position: absolute;
+                bottom: 0;
+            }
+        }
+    }
+}

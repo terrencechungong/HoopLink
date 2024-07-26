@@ -30,7 +30,7 @@ const FeedPost = () => {
                     <img src={pic} alt='lt=profile photo' />
                     <p><strong>Terrence</strong></p>
                     <p>@bigterrencebuilding</p>
-                    <p><strog>&bull;</strog></p>
+                    <p><strong>&bull;</strong></p>
                     <p>Jul 10, 2029</p>
                 </div>
                 <div className="feed-post-content">
