@@ -42,9 +42,29 @@ $primary-color: rgb(122, 81, 156);
         transform: translateX(425px);
     }
     to {
-        transform: translateX(-1);
+        transform: translateX(0);
     }
 }
+
+
+@keyframes locationOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(429px);
+    }
+}
+
+@keyframes postsIn {
+    from {
+        transform: translateX(-429px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
 
 .isIn {
     display: block;
@@ -54,15 +74,25 @@ $primary-color: rgb(122, 81, 156);
     display: none;
 }
 
+.LOCATION_OUT_ANIM {
+    animation: locationOut 1s;
+
+}
+
+.POSTS_IN_TRANSITION {
+    animation: postsIn 0.3s;
+
+}
+
+
+
 .testAnimIn {
     display: block;
-    animation: slideIn 1.4s ease-in;
-    animation-iteration-count: infinite;
+    animation: slideIn 0.3s;
 }
 
 .testAnim {
-    animation: slideOut 1.4s ease-in;
-    animation-iteration-count: infinite;
+    animation: slideOut 0.3s;
 }
 
 #create-a-post-modal-container {

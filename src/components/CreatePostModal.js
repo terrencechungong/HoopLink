@@ -26,20 +26,29 @@ const CreatePostModal = ({ closeModalFunction }) => {
         'video/webm',
         'video/ogg'
     ];
-
+// maybe just change height
     const handleToggle = () => {
+        let bringingIn = false;
+        if (globalVariables.postsShowingPostsModal) {
+            bringingIn = true;
+            const textArea = document.getElementById('text-area');
+            textArea.style.display = ''
+
+
+        }
         setIsAnimating(true);
+
         setTimeout(() => {
             globalVariables.postsShowingPostsModal = !globalVariables.postsShowingPostsModal;
             const textArea = document.getElementById('text-area');
-            if (!globalVariables.postsShowingPostsModal) {
+            if (!globalVariables.postsShowingPostsModal & !bringingIn) {
                 textArea.style.display = 'none'
             } else {
                 textArea.style.display = ''
             }
             // console.log(postsIn);
             setIsAnimating(false);
-        }, 1400); // Match the duration of the CSS animation
+        }, 300); // Match the duration of the CSS animation
     };
 
     useEffect(() => {
@@ -166,8 +175,11 @@ const CreatePostModal = ({ closeModalFunction }) => {
         }
     };
 
-    const locationClassName = `${isAnimating ? 'testAnimIn' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`;
-    const textAreaClassName = `${isAnimating ? 'testAnim' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`;
+    const locationClassName = `${(isAnimating && globalVariables.postsShowingPostsModal) ? 'testAnimIn' :
+         (isAnimating && !globalVariables.postsShowingPostsModal) ? 'LOCATION_OUT_ANIM' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`;
+
+    const textAreaClassName = `${(isAnimating && globalVariables.postsShowingPostsModal) ? 
+        'testAnim' : (isAnimating && !globalVariables.postsShowingPostsModal) ? 'POSTS_IN_TRANSITION' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`;
 
     return (
         <div id="create-a-post-modal-container">
@@ -181,7 +193,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                     <div id="text-area" className={textAreaClassName} ref={addFile} >
                         <textarea id="expandingTextarea"></textarea>
                     </div>
-                    <div id="location-area" >
+                    <div id="location-area" className={locationClassName}>
                         fdkflkdf
                     </div>
                 </div>
