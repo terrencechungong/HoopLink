@@ -9,6 +9,7 @@ export const globalVariables = {
   newChatModalEffect: false,
   postModalHasBeenShown: false,
   postModalEffect: false,
+  postsShowingPostsModal: true,
   user: null
 };
 

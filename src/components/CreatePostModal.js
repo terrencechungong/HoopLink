@@ -14,7 +14,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
     const STORE_FILE_HEADER = 'store-file-header';
-    let files = {}  // { divId: { fileName, fileContent } }
+    const [files, setFiles] = useState({})  // { divId: { fileName, fileContent } }   FUCKEDDD
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [postsIn, setPostsIn] = useState(true);
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -25,12 +27,23 @@ const CreatePostModal = ({ closeModalFunction }) => {
         'video/ogg'
     ];
 
-    const setFiles = (obj) => {
-        console.log(obj);
-        files = obj;
-    }
+    const handleToggle = () => {
+        setIsAnimating(true);
+        setTimeout(() => {
+            globalVariables.postsShowingPostsModal = !globalVariables.postsShowingPostsModal;
+            const textArea = document.getElementById('text-area');
+            if (!globalVariables.postsShowingPostsModal) {
+                textArea.style.display = 'none'
+            } else {
+                textArea.style.display = ''
+            }
+            // console.log(postsIn);
+            setIsAnimating(false);
+        }, 1400); // Match the duration of the CSS animation
+    };
 
     useEffect(() => {
+        console.log(globalVariables.postsShowingPostsModal)
         const textarea = document.getElementById('expandingTextarea');
 
         textarea.addEventListener('input', function () {
@@ -90,12 +103,12 @@ const CreatePostModal = ({ closeModalFunction }) => {
         modalRoot.render(modal);
         header.appendChild(modalDiv);
         parent.appendChild(header);
-        const obj = { 
+        const obj = {
             fileName: file.name,
             fileType: file.type,
-            fileContent: fileContent 
+            fileContent: fileContent
         };
-        setFiles({...files, [timeString]: obj});
+        setFiles({ ...files, [timeString]: obj });
         console.log(Object.keys(files).length);
     }
 
@@ -160,10 +173,13 @@ const CreatePostModal = ({ closeModalFunction }) => {
                     <h2><strong>Create A Post</strong></h2>
                     <button onClick={closeModalFunction}><IoCloseOutline size={32} /></button>
                 </div>
-                <div id="text-area" ref={addFile}>
-                    <textarea id="expandingTextarea"></textarea>
+                <div id="location-slide-in" className={`${isAnimating ? 'testAnimIn' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`}></div>
 
+                <div id="text-area" className={`${isAnimating ? 'testAnim' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`} ref={addFile} >
+                    <textarea id="expandingTextarea"></textarea>
                 </div>
+
+
                 <div id="bottom-section">
                     <div id="add-to-post-section">
                         <div>
@@ -173,7 +189,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                             <button className='transparent-button' onClick={addPostSection}>
                                 <MdOutlineAddToPhotos size={28} />
                             </button>
-                            <button className='transparent-button' onClick={addLocation}>
+                            <button className='transparent-button' onClick={handleToggle}>
                                 <IoLocationOutline size={28} />
                             </button>
                             <input style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={handleFileChange} />

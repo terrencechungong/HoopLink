@@ -1,5 +1,41 @@
 $primary-color: rgb(122, 81, 156);
 
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-429px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(425px);
+    }
+    to {
+        transform: translateX(-1);
+    }
+}
+
+.isIn {
+    display: block;
+}
+
+.isOut {
+    display: none;
+}
+
+.testAnimIn {
+    display: block;
+    animation: slideIn 1.4s ease-in;
+    animation-iteration-count: infinite;
+}
+
+.testAnim {
+    animation: slideOut 1.4s ease-in;
+    animation-iteration-count: infinite;
+}
 
 #create-a-post-modal-container {
     position: absolute;
@@ -29,6 +65,7 @@ $primary-color: rgb(122, 81, 156);
         position: relative;
         max-height: 430px;
         overflow-y: scroll;
+        overflow-x: hidden;
         ////////////////////////////////// SCROLLBAR      /////////////////////////////////////////
    
         &::-webkit-scrollbar {
@@ -98,6 +135,7 @@ $primary-color: rgb(122, 81, 156);
             align-items: center;
             justify-content: center;
             z-index: 0;
+            // @extend .testAnim; 
 
             textarea {
                 width: 90%;
@@ -119,6 +157,15 @@ $primary-color: rgb(122, 81, 156);
                 }
                 
             }
+        }
+
+        #location-slide-in {
+            background-color: red;
+            position: absolute;
+            top: 0;
+            height: 20px;
+            width: 100%;
+            z-index: 20;
         }
 
         #bottom-section {

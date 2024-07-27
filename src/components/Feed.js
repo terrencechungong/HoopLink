@@ -19,6 +19,12 @@ const Feed = () => {
     }
 
     const closeModal = () => {
+        globalVariables.postsShowingPostsModal = true;
+        const textArea = document.getElementById('text-area');
+        const locationSlide = document.getElementById("location-slide-in");
+        locationSlide.className = " isOut"
+        textArea.style.display = ''
+
         parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
         modalLoaded.current = false;
         globalVariables.settingsModalEffect = false;
@@ -48,7 +54,7 @@ const Feed = () => {
     })
 
     const showModal = () => {
-        let modal = <CreatePostModal closeModalFunction={closeModal}/>;
+        let modal = <CreatePostModal closeModalFunction={closeModal} />;
         if (globalVariables.postModalHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "modal-div-root";
