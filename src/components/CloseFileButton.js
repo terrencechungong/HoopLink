@@ -1,9 +1,9 @@
 import './styles/close-file.scss'
 import { IoLocationOutline, IoCloseCircleSharp  } from "react-icons/io5";
 
-const CloseFileButton = () => {
+const CloseFileButton = ({divId, removeFunction}) => {
     return (
-        <button style={{backgroundColor:'rgba(0,0,0,0)', borderWidth:'0px'}} className='close-file-button'>
+        <button className='close-file-button' onClick={async () => await removeFunction(divId)}>
             <IoCloseCircleSharp size={32} />
         </button>
     )

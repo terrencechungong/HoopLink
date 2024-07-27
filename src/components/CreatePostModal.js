@@ -2,10 +2,11 @@ import './styles/create-a-post.scss'
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 import { MdOutlineAddToPhotos } from "react-icons/md";
-import { IoLocationOutline, IoCloseCircleSharp  } from "react-icons/io5";
+import { IoLocationOutline, IoCloseCircleSharp } from "react-icons/io5";
 import { useRef } from 'react';
 import ReactDOM from 'react-dom/client'
 import CloseFileButton from './CloseFileButton';
+import { globalVariables } from '..';
 
 const CreatePostModal = ({ closeModalFunction }) => {
     const reachedMax = useRef(false);
@@ -13,6 +14,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
     const STORE_FILE_HEADER = 'store-file-header';
+    const files = {}   // { divId: { fileName, fileContent } }
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -44,10 +46,33 @@ const CreatePostModal = ({ closeModalFunction }) => {
         console.log("Add location");
     }
 
+    function waitForTwoSeconds() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, 2000);
+        });
+    }
+
+    const removeFile = async (divId) => {
+        globalVariables.postModalEffect = false;
+        if (window.confirm("Are you sure you want to remove this file from the post?")) {
+            const childDiv = document.getElementById(divId);
+            if (addFile.current && childDiv) {
+                addFile.current.removeChild(childDiv);
+            }
+        }
+        await waitForTwoSeconds();
+        globalVariables.postModalEffect = true;
+    }
+
     const createHeader = (parent) => {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+        parent.id = timeString;
         const header = document.createElement('div');
         header.className = STORE_FILE_HEADER;
-        let modal = <CloseFileButton/>;
+        let modal = <CloseFileButton divId={timeString} removeFunction={removeFile} />;
         const modalDiv = document.createElement('div');
         let modalRoot = ReactDOM.createRoot(modalDiv);
         modalRoot.render(modal);
