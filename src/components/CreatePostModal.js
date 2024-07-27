@@ -14,7 +14,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
     const STORE_FILE_HEADER = 'store-file-header';
-    const files = {}   // { divId: { fileName, fileContent } }
+    let files = {}  // { divId: { fileName, fileContent } }
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -24,6 +24,11 @@ const CreatePostModal = ({ closeModalFunction }) => {
         'video/webm',
         'video/ogg'
     ];
+
+    const setFiles = (obj) => {
+        console.log(obj);
+        files = obj;
+    }
 
     useEffect(() => {
         const textarea = document.getElementById('expandingTextarea');
@@ -61,12 +66,19 @@ const CreatePostModal = ({ closeModalFunction }) => {
             if (addFile.current && childDiv) {
                 addFile.current.removeChild(childDiv);
             }
+            console.log(Object.keys(files));
+            if (Object.keys(files).includes(divId)) {
+                const { [divId]: _, ...newObj } = files;
+                console.log(Object.keys(files).length);
+
+                console.log(Object.keys(newObj).length);
+            }
         }
         await waitForTwoSeconds();
         globalVariables.postModalEffect = true;
     }
 
-    const createHeader = (parent) => {
+    const createHeader = (parent, file, fileContent) => {
         const now = new Date();
         const timeString = now.toLocaleTimeString('en-US', { hour12: false });
         parent.id = timeString;
@@ -78,6 +90,13 @@ const CreatePostModal = ({ closeModalFunction }) => {
         modalRoot.render(modal);
         header.appendChild(modalDiv);
         parent.appendChild(header);
+        const obj = { 
+            fileName: file.name,
+            fileType: file.type,
+            fileContent: fileContent 
+        };
+        setFiles({...files, [timeString]: obj});
+        console.log(Object.keys(files).length);
     }
 
     const handleFileChange = (event) => {
@@ -95,7 +114,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         video.style.width = '100%';
                         const videoContainer = document.createElement('div');
                         videoContainer.className = STORE_FILE;
-                        createHeader(videoContainer);
+                        createHeader(videoContainer, file, e.target.result);
                         videoContainer.appendChild(video);
                         addFile.current.appendChild(videoContainer);
                     } else if (file.type === 'application/pdf') {
@@ -106,7 +125,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
 
                         const pdfContainer = document.createElement('div');
                         pdfContainer.className = STORE_FILE;
-                        createHeader(pdfContainer);
+                        createHeader(pdfContainer, file, e.target.result);
                         pdfContainer.appendChild(pdf);
 
                         if (addFile.current) {
@@ -119,7 +138,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         img.style.maxWidth = '100%'; // Adjust as needed
                         const imgContainer = document.createElement('div');
                         imgContainer.className = STORE_FILE;
-                        createHeader(imgContainer);
+                        createHeader(imgContainer, file, e.target.result);
                         imgContainer.appendChild(img);
 
                         if (addFile.current) {
