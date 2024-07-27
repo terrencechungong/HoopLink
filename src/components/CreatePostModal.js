@@ -166,6 +166,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
         }
     };
 
+    const locationClassName = `${isAnimating ? 'testAnimIn' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`;
+    const textAreaClassName = `${isAnimating ? 'testAnim' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`;
+
     return (
         <div id="create-a-post-modal-container">
             <div id="create-a-post-modal">
@@ -173,10 +176,14 @@ const CreatePostModal = ({ closeModalFunction }) => {
                     <h2><strong>Create A Post</strong></h2>
                     <button onClick={closeModalFunction}><IoCloseOutline size={32} /></button>
                 </div>
-                <div id="location-slide-in" className={`${isAnimating ? 'testAnimIn' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`}></div>
-
-                <div id="text-area" className={`${isAnimating ? 'testAnim' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`} ref={addFile} >
-                    <textarea id="expandingTextarea"></textarea>
+                {/* <div id="location-slide-in" className={locationClassName}></div> */}
+                <div id="text-area-wrapper">
+                    <div id="text-area" className={textAreaClassName} ref={addFile} >
+                        <textarea id="expandingTextarea"></textarea>
+                    </div>
+                    <div id="location-area" >
+                        fdkflkdf
+                    </div>
                 </div>
 
 

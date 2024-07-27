@@ -1,5 +1,33 @@
 $primary-color: rgb(122, 81, 156);
 
+.scrollbar {
+    &::-webkit-scrollbar {
+        width: 12px; /* Width of the scrollbar */
+      }
+    
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        background: #888; /* Background of the scrollbar thumb */
+        border-radius: 6px; /* Rounded corners for the scrollbar thumb */
+      }
+    
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Background of the scrollbar thumb when hovered */
+      }
+    
+      // Firefox styles
+      scrollbar-width: thin; /* Makes the scrollbar thinner */
+      scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb color and track color */
+    
+      &:hover {
+        scrollbar-color: #555 #f1f1f1; /* Scrollbar thumb color when hovered */
+      }
+    /* Ensure padding and border are included in the width */
+}
+
 @keyframes slideOut {
     from {
         transform: translateX(0);
@@ -55,6 +83,7 @@ $primary-color: rgb(122, 81, 156);
         min-height: 100px;
         max-height: 500px;
         width: 425px;
+        max-width: 425px;;
         background-color: white;
         border-radius: 14px;
         display: flex;
@@ -67,32 +96,8 @@ $primary-color: rgb(122, 81, 156);
         overflow-y: scroll;
         overflow-x: hidden;
         ////////////////////////////////// SCROLLBAR      /////////////////////////////////////////
-   
-        &::-webkit-scrollbar {
-            width: 12px; /* Width of the scrollbar */
-          }
+        @extend .scrollbar;
         
-          &::-webkit-scrollbar-track {
-            background: #f1f1f1; /* Background of the scrollbar track */
-          }
-        
-          &::-webkit-scrollbar-thumb {
-            background: #888; /* Background of the scrollbar thumb */
-            border-radius: 6px; /* Rounded corners for the scrollbar thumb */
-          }
-        
-          &::-webkit-scrollbar-thumb:hover {
-            background: #555; /* Background of the scrollbar thumb when hovered */
-          }
-        
-          // Firefox styles
-          scrollbar-width: thin; /* Makes the scrollbar thinner */
-          scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb color and track color */
-        
-          &:hover {
-            scrollbar-color: #555 #f1f1f1; /* Scrollbar thumb color when hovered */
-          }
-        /* Ensure padding and border are included in the width */
 
         #create-a-post-header {
             display: flex;
@@ -129,12 +134,28 @@ $primary-color: rgb(122, 81, 156);
             }
         }
 
-        #text-area {
+        #text-area-wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 0;
+            flex-direction: row;
+            overflow-x: hidden;
+            width: 850px;
+            overflow-y: scroll;
+            height: 100%;
+            position: relative;
+            // top: 0px;
+            // align-items: center;
+            
+        #text-area {
+            padding: 10px;
+            // display: flex;
+            // flex-direction: column;
+            // align-items: center;
+            // justify-content: center;
+            // z-index: 0;
+            width: 420px;
+            overflow-y: scroll;
+            // position: absolute;
+            // top:0px;
             // @extend .testAnim; 
 
             textarea {
@@ -158,6 +179,12 @@ $primary-color: rgb(122, 81, 156);
                 
             }
         }
+
+        #location-area {
+            height: 100%;
+            background-color: red;
+        }
+    }
 
         #location-slide-in {
             background-color: red;
