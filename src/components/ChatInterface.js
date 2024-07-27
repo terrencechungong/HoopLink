@@ -59,7 +59,6 @@ const ChatInterface = () => {
         } else {
             modal = <NewChatModal closeModal={invisibleClick} />;
             globalVariables.newChatModalEffect = true;
-
         }
 
         const modalDiv = document.createElement('div');

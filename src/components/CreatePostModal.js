@@ -2,14 +2,26 @@ import './styles/create-a-post.scss'
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 import { MdOutlineAddToPhotos } from "react-icons/md";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoLocationOutline, IoCloseCircleSharp  } from "react-icons/io5";
 import { useRef } from 'react';
+import ReactDOM from 'react-dom/client'
+import CloseFileButton from './CloseFileButton';
 
 const CreatePostModal = ({ closeModalFunction }) => {
     const reachedMax = useRef(false);
     const fileInputRef = useRef(null);
     const addFile = useRef(null);
-    const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf'];
+    const STORE_FILE = 'store-file';
+    const STORE_FILE_HEADER = 'store-file-header';
+
+    const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
+        'video/webm',
+        'video/ogg'];
+    const supportedVideoTypes = [
+        'video/mp4',
+        'video/webm',
+        'video/ogg'
+    ];
 
     useEffect(() => {
         const textarea = document.getElementById('expandingTextarea');
@@ -32,6 +44,17 @@ const CreatePostModal = ({ closeModalFunction }) => {
         console.log("Add location");
     }
 
+    const createHeader = (parent) => {
+        const header = document.createElement('div');
+        header.className = STORE_FILE_HEADER;
+        let modal = <CloseFileButton/>;
+        const modalDiv = document.createElement('div');
+        let modalRoot = ReactDOM.createRoot(modalDiv);
+        modalRoot.render(modal);
+        header.appendChild(modalDiv);
+        parent.appendChild(header);
+    }
+
     const handleFileChange = (event) => {
         const file = fileInputRef.current.files[0];
         if (file) {
@@ -40,13 +63,25 @@ const CreatePostModal = ({ closeModalFunction }) => {
             if (file && supportedTypes.includes(file.type)) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    if (file.type === 'application/pdf') {
+                    if (supportedVideoTypes.includes(file.type)) {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        video.style.width = '100%';
+                        const videoContainer = document.createElement('div');
+                        videoContainer.className = STORE_FILE;
+                        createHeader(videoContainer);
+                        videoContainer.appendChild(video);
+                        addFile.current.appendChild(videoContainer);
+                    } else if (file.type === 'application/pdf') {
                         const pdf = document.createElement('iframe');
                         pdf.src = e.target.result;
                         pdf.style.width = '100%';
                         pdf.style.height = '600px';
 
                         const pdfContainer = document.createElement('div');
+                        pdfContainer.className = STORE_FILE;
+                        createHeader(pdfContainer);
                         pdfContainer.appendChild(pdf);
 
                         if (addFile.current) {
@@ -57,8 +92,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         img.src = e.target.result;
                         img.alt = file.name;
                         img.style.maxWidth = '100%'; // Adjust as needed
-
                         const imgContainer = document.createElement('div');
+                        imgContainer.className = STORE_FILE;
+                        createHeader(imgContainer);
                         imgContainer.appendChild(img);
 
                         if (addFile.current) {
