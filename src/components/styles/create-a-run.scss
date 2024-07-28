@@ -75,7 +75,37 @@
                 flex-direction: row;
                 justify-content: space-between;
                 gap: 9px;
-              
+
+                #create-post-checkbox {
+                    margin-right: 150px;
+                   
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    width: 22px;
+                    height: 22px;
+                    border: 2px solid #ccc;
+                    border-radius: 15px;
+                    outline: none;
+                    transition: background-color 0.2s, border-color 0.2s;
+                    position: relative;
+
+                    &:checked {
+                        background-color: #03cc38;
+
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            left: 5px;
+                            top: 2px;
+                            width: 6px;
+                            height: 10px;
+                            border: solid white;
+                            border-width: 0 2px 2px 0;
+                            transform: rotate(45deg);
+                        }
+                    }
+                }
             }
         }
     }

@@ -28,7 +28,7 @@ const CreateRunsModal = ({ closeModalFunction }) => {
                     </div>
                     <div className='create-run-content-section'>
                         <label>Create Post</label>
-                        <input type="text" placeholder='YES OR NO BUTTON' />
+                        <input type="checkbox" id="create-post-checkbox" placeholder='YES OR NO BUTTON' />
                     </div>
                     <br></br>
                     <div className='create-run-content-section'>
