@@ -1,0 +1,56 @@
+#single-profile-view-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    #single-profile-view-container {
+        background-color: grey;
+        height: 500px;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+
+        #single-profile-header {
+            height: 100px;
+            width: 100%;
+            background-color: red;
+            display: flex;
+            flex-direction: row;
+
+            img {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                margin: 18px;
+            }
+
+            #single-profile-header-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 40px;
+                background-color: aqua;
+                button {
+                    height: 25px;
+                    align-self: center;
+                }
+                #username-friend {
+                    display: flex;
+                    flex-direction: row;
+                    height: 40px;
+                    gap: 20px;
+                }
+                #profile-stats {
+                    display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 9px;
+                color: white;
+                }
+            }
+        }
+    }
+}

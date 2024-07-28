@@ -8,6 +8,7 @@ import FeedPost from './components/FeedPost'
 import ViewProfile from './components/ViewProfile';
 import EditProfile from './components/EditProfile';
 import Feed from './components/Feed';
+import SingleProfileView from './components/SingleProfileView';
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,6 +28,7 @@ function App() {
           <Route path="/feed" element={<Feed/>} />
           <Route path="/chats" element={<ChatInterface />} />
           <Route path="/profile" element={<ViewProfile />} />
+          <Route path="/single-profile-view" element={< SingleProfileView />} />
         </Routes>
       </Router>
     </AuthProvider>
