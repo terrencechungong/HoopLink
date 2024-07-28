@@ -7,16 +7,17 @@ import { useRef } from 'react';
 import ReactDOM from 'react-dom/client'
 import CloseFileButton from './CloseFileButton';
 import { globalVariables } from '..';
+import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
 
 const CreatePostModal = ({ closeModalFunction }) => {
-    const reachedMax = useRef(false);
     const fileInputRef = useRef(null);
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
     const STORE_FILE_HEADER = 'store-file-header';
     const [files, setFiles] = useState({})  // { divId: { fileName, fileContent } }   FUCKEDDD
     const [isAnimating, setIsAnimating] = useState(false);
-    const [postsIn, setPostsIn] = useState(true);
+    const [suggLocas, setSuggLocas] = useState([]);
+    const [postLoca, setPostLoca] = useState("");
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -26,7 +27,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
         'video/webm',
         'video/ogg'
     ];
-// maybe just change height
+    // maybe just change height
     const handleToggle = () => {
         let bringingIn = false;
         if (globalVariables.postsShowingPostsModal) {
@@ -62,9 +63,45 @@ const CreatePostModal = ({ closeModalFunction }) => {
             this.style.height = (this.scrollHeight) + 'px';
             console.log(this.style.height);
         });
+
+        const autocomplete = new GeocoderAutocomplete(
+            document.getElementById("autocomplete"),
+            '120d28881d9141068d5c67d968ae112f' ,
+            { /* Geocoder options */ });
+
+        autocomplete.on('select', (location) => {
+            // check selected location here 
+        });
+
+        autocomplete.on('suggestions', (suggestions) => {
+            setSuggLocas(suggestions.map(s => s.properties.address_line1 + ', ' + s.properties.address_line2))
+        });
     });
 
+    const handleInputChange = (e, manual = null) => {
+        let value;
+        if (manual !== null) {
+            let inputField = document.getElementById('location-text-input');
+             value = manual;
+             if (inputField) {
+                inputField.value = value;
+            }
+        } else {
+             value = e.target.value;
+        }
+
+        const input = document.getElementsByClassName('geoapify-autocomplete-input')[0];
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+        nativeInputValueSetter.call(input, value);
+        const event = new Event('input', { bubbles: true });
+        input.dispatchEvent(event);
+        setPostLoca(value);
+    }
+
     const addPostSection = () => {
+        if (!globalVariables.postsShowingPostsModal) {
+            handleToggle();
+        }
         console.log("add post");
         fileInputRef.current.click();
     }
@@ -121,6 +158,8 @@ const CreatePostModal = ({ closeModalFunction }) => {
         console.log(Object.keys(files).length);
     }
 
+    // do display none for location
+
     const handleFileChange = (event) => {
         const file = fileInputRef.current.files[0];
         if (file) {
@@ -144,7 +183,6 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         pdf.src = e.target.result;
                         pdf.style.width = '100%';
                         pdf.style.height = '600px';
-
                         const pdfContainer = document.createElement('div');
                         pdfContainer.className = STORE_FILE;
                         createHeader(pdfContainer, file, e.target.result);
@@ -176,9 +214,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
     };
 
     const locationClassName = `${(isAnimating && globalVariables.postsShowingPostsModal) ? 'testAnimIn' :
-         (isAnimating && !globalVariables.postsShowingPostsModal) ? 'LOCATION_OUT_ANIM' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`;
+        (isAnimating && !globalVariables.postsShowingPostsModal) ? 'LOCATION_OUT_ANIM' : ''} ${globalVariables.postsShowingPostsModal ? 'isOut' : 'isIn'}`;
 
-    const textAreaClassName = `${(isAnimating && globalVariables.postsShowingPostsModal) ? 
+    const textAreaClassName = `${(isAnimating && globalVariables.postsShowingPostsModal) ?
         'testAnim' : (isAnimating && !globalVariables.postsShowingPostsModal) ? 'POSTS_IN_TRANSITION' : ''} ${globalVariables.postsShowingPostsModal ? 'isIn' : 'isOut'}`;
 
     return (
@@ -188,13 +226,21 @@ const CreatePostModal = ({ closeModalFunction }) => {
                     <h2><strong>Create A Post</strong></h2>
                     <button onClick={closeModalFunction}><IoCloseOutline size={32} /></button>
                 </div>
-                {/* <div id="location-slide-in" className={locationClassName}></div> */}
                 <div id="text-area-wrapper">
                     <div id="text-area" className={textAreaClassName} ref={addFile} >
                         <textarea id="expandingTextarea"></textarea>
                     </div>
                     <div id="location-area" className={locationClassName}>
-                        fdkflkdf
+                        <p>What is your location?</p>
+
+                        <div id="autocomplete" style={{ display: 'none' }}>
+                        </div>
+                        <input type='text' onChange={handleInputChange} id="location-text-input" />
+                        <div>
+                            {suggLocas.map((location) => { 
+                                return <p className='suggested-loc'  onClick={() => handleInputChange("", location)}>{location}</p> 
+                            })}
+                        </div>
                     </div>
                 </div>
 

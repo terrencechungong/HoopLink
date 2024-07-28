@@ -21,7 +21,7 @@ const Feed = () => {
     const closeModal = () => {
         globalVariables.postsShowingPostsModal = true;
         const textArea = document.getElementById('text-area');
-        const locationSlide = document.getElementById("location-slide-in");
+        const locationSlide = document.getElementById("location-area");
         locationSlide.className = " isOut"
         textArea.style.display = ''
 

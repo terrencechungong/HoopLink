@@ -2,29 +2,38 @@ $primary-color: rgb(122, 81, 156);
 
 .scrollbar {
     &::-webkit-scrollbar {
-        width: 12px; /* Width of the scrollbar */
-      }
-    
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1; /* Background of the scrollbar track */
-      }
-    
-      &::-webkit-scrollbar-thumb {
-        background: #888; /* Background of the scrollbar thumb */
-        border-radius: 6px; /* Rounded corners for the scrollbar thumb */
-      }
-    
-      &::-webkit-scrollbar-thumb:hover {
-        background: #555; /* Background of the scrollbar thumb when hovered */
-      }
-    
-      // Firefox styles
-      scrollbar-width: thin; /* Makes the scrollbar thinner */
-      scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb color and track color */
-    
-      &:hover {
-        scrollbar-color: #555 #f1f1f1; /* Scrollbar thumb color when hovered */
-      }
+        width: 12px;
+        /* Width of the scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        /* Background of the scrollbar track */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        /* Background of the scrollbar thumb */
+        border-radius: 6px;
+        /* Rounded corners for the scrollbar thumb */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+        /* Background of the scrollbar thumb when hovered */
+    }
+
+    // Firefox styles
+    scrollbar-width: thin;
+    /* Makes the scrollbar thinner */
+    scrollbar-color: #888 #f1f1f1;
+    /* Scrollbar thumb color and track color */
+
+    &:hover {
+        scrollbar-color: #555 #f1f1f1;
+        /* Scrollbar thumb color when hovered */
+    }
+
     /* Ensure padding and border are included in the width */
 }
 
@@ -32,6 +41,7 @@ $primary-color: rgb(122, 81, 156);
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(-429px);
     }
@@ -41,6 +51,7 @@ $primary-color: rgb(122, 81, 156);
     from {
         transform: translateX(425px);
     }
+
     to {
         transform: translateX(0);
     }
@@ -51,6 +62,7 @@ $primary-color: rgb(122, 81, 156);
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(429px);
     }
@@ -60,6 +72,7 @@ $primary-color: rgb(122, 81, 156);
     from {
         transform: translateX(-429px);
     }
+
     to {
         transform: translateX(0);
     }
@@ -75,7 +88,7 @@ $primary-color: rgb(122, 81, 156);
 }
 
 .LOCATION_OUT_ANIM {
-    animation: locationOut 1s;
+    animation: locationOut 0.3s;
 
 }
 
@@ -113,7 +126,8 @@ $primary-color: rgb(122, 81, 156);
         min-height: 100px;
         max-height: 500px;
         width: 425px;
-        max-width: 425px;;
+        max-width: 425px;
+        ;
         background-color: white;
         border-radius: 14px;
         display: flex;
@@ -127,7 +141,7 @@ $primary-color: rgb(122, 81, 156);
         overflow-x: hidden;
         ////////////////////////////////// SCROLLBAR      /////////////////////////////////////////
         @extend .scrollbar;
-        
+
 
         #create-a-post-header {
             display: flex;
@@ -172,65 +186,86 @@ $primary-color: rgb(122, 81, 156);
             overflow-y: scroll;
             height: 100%;
             position: relative;
-            // top: 0px;
-            // align-items: center;
-            
-        #text-area {
-            padding: 10px;
-            // display: flex;
-            // flex-direction: column;
-            // align-items: center;
-            // justify-content: center;
-            // z-index: 0;
-            width: 420px;
-            overflow-y: scroll;
-            // position: absolute;
-            // top:0px;
-            // @extend .testAnim; 
 
-            textarea {
-                width: 90%;
-                overflow-y: hidden;
-                resize: none;
-                outline: none;
-                border-width: 0px;
-            }
 
-            .store-file{
-                position: relative;
-                .store-file-header {
-                    display: block;
-                    position: absolute;
-                    top: 0;
-                    height: 40px;
-                    width: 100%;
-                    background-color: rgba(255, 0, 0, 0.461);
+            #text-area {
+                padding: 10px;
+                width: 420px;
+                overflow-y: scroll;
+
+                textarea {
+                    width: 90%;
+                    overflow-y: hidden;
+                    resize: none;
+                    outline: none;
+                    border-width: 0px;
                 }
-                
+
+                .store-file {
+                    position: relative;
+
+                    .store-file-header {
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        height: 40px;
+                        width: 100%;
+                        background-color: rgba(255, 0, 0, 0.461);
+                    }
+
+                }
+            }
+
+            #location-area {
+                height: 400px;
+                width: 360px;
+                margin-left: 32px;
+                background-color: red;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                #autocomplete {
+                    position: relative;
+                }
+
+                #location-text-input {
+                    width: 300px;
+                    border-width: 0px;
+                    height: 20px;
+                    border-radius: 10px;
+                    border: 1px solid gray;
+                    padding: 10px;
+                    background-color: #dadada;
+                }
+
+                .suggested-loc {
+                    background-color: white;
+                    width: 300px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    margin: 4px;
+                    transition: background-color 0.3s ease;
+                    &:hover {
+                        background-color: rgb(201, 201, 201);
+                        cursor: pointer;
+                    }
+                    &:active {
+                        background-color: green;
+                    }
+                }
+
             }
         }
 
-        #location-area {
-            height: 100%;
-            background-color: red;
-        }
-    }
-
-        #location-slide-in {
-            background-color: red;
-            position: absolute;
-            top: 0;
-            height: 20px;
-            width: 100%;
-            z-index: 20;
-        }
 
         #bottom-section {
             display: flex;
-                flex-direction: column;
-                position: sticky;
-                bottom: 0; 
-                background-color: white;
+            flex-direction: column;
+            position: sticky;
+            bottom: 0;
+            background-color: white;
+
             #add-to-post-section {
                 align-self: center;
                 height: 50px;
