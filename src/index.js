@@ -10,6 +10,8 @@ export const globalVariables = {
   postModalHasBeenShown: false,
   postModalEffect: false,
   postsShowingPostsModal: true,
+  createRunsModalEffect: false,
+  createRunModalHasBeenShown: false,
   user: null
 };
 

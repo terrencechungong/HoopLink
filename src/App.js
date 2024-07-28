@@ -6,6 +6,7 @@ import ChatInterface from './components/ChatInterface';
 import ChatSettings from './components/ChatSettings';
 import FeedPost from './components/FeedPost'
 import ViewProfile from './components/ViewProfile';
+import RunsFeed from './components/RunsFeed';
 import EditProfile from './components/EditProfile';
 import Feed from './components/Feed';
 import SingleProfileView from './components/SingleProfileView';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/chats" element={<ChatInterface />} />
           <Route path="/profile" element={<ViewProfile />} />
           <Route path="/single-profile-view" element={< SingleProfileView />} />
+          <Route path="/runs-feed" element={<RunsFeed/>} />
         </Routes>
       </Router>
     </AuthProvider>

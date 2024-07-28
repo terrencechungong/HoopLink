@@ -1,3 +1,9 @@
+.selectedContent {
+    border-bottom: 2px solid rgb(6, 85, 150);
+    background-color: rgba(154, 206, 255, 0.568);
+    cursor: pointer;
+}
+
 #single-profile-view-screen {
     display: flex;
     flex-direction: column;
@@ -33,24 +39,50 @@
                 align-items: center;
                 height: 40px;
                 background-color: aqua;
+
                 button {
                     height: 25px;
                     align-self: center;
                 }
+
                 #username-friend {
                     display: flex;
                     flex-direction: row;
                     height: 40px;
                     gap: 20px;
                 }
+
                 #profile-stats {
                     display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 9px;
-                color: white;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 9px;
+                    color: white;
                 }
             }
+    
+        }
+        #single-view-profile-content-selection {
+            display: flex;
+            flex-direction: row;
+            height: 19px;
+            width: 100%;
+            background-color: white;
+            align-items: center;
+            justify-content: space-around;
+            p {
+                &:hover {
+                    border-bottom: 2px solid purple;
+                    background-color: rgba(148, 56, 148, 0.212);
+                    cursor: pointer;
+                }
+            }
+            
+        }
+        #single-profile-view-posts-container {
+            background-color: blue;
+            flex-grow: 1;
+            width: 100%;
         }
     }
 }
