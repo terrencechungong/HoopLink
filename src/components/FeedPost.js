@@ -25,29 +25,29 @@ const FeedPost = () => {
 
 
     return (
-            <div className="feed-post-container">
-                <div className='feed-post-info'>
-                    <img src={pic} alt='lt=profile photo' />
-                    <p><strong>Terrence</strong></p>
-                    <p>@bigterrencebuilding</p>
-                    <p><strong>&bull;</strong></p>
-                    <p>Jul 10, 2029</p>
-                </div>
-                <div className="feed-post-content">
-                    {/* make what shows up conditional */}
-                    <DisplayText text={text} />
-                    {/* Add Files */}
-
-                </div>
-                <div className='feed-post-likes-and-comments'>
-                    <button className={liked && 'liked'} onClick={() => setLiked(!liked)}>
-                        {!liked && <FaRegHeart size={22} />}
-                        {liked && <FaHeart size={22} />}
-                    </button>
-                    <button><FaRegComment size={25} /></button>
-                    <button ><LuSend size={22} /></button>
-                </div>
+        <div className="feed-post-container">
+            <div className='feed-post-info'>
+                <img src={pic} alt='lt=profile photo' />
+                <p><strong>Terrence</strong></p>
+                <p>@bigterrencebuilding</p>
+                <p><strong>&bull;</strong></p>
+                <p>Jul 10, 2029</p>
             </div>
+            <div className="feed-post-content">
+                {/* make what shows up conditional */}
+                <DisplayText text={text} />
+                {/* Add Files */}
+
+            </div>
+            <div className='feed-post-likes-and-comments'>
+                <button className={liked && 'liked'} onClick={() => setLiked(!liked)}>
+                    {!liked && <FaRegHeart size={22} />}
+                    {liked && <FaHeart size={22} />}
+                </button>
+                <button><FaRegComment size={25} /></button>
+                <button ><LuSend size={22} /></button>
+            </div>
+        </div>
     )
 }
 
@@ -58,7 +58,7 @@ const DisplayText = ({ text }) => {
     if (text.length > 475) {
         displayText = <p>
             {text.substring(0, 474)}...<strong id="read-more-post" onClick={() => setSeeMore(true)}>Read More</strong>
-            </p>
+        </p>
     } else {
         displayText = <p>{text}</p>
     }

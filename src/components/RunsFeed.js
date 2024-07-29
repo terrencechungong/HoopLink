@@ -4,12 +4,18 @@ import { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import CreateRunsModal from './CreateRunsModal';
 import { globalVariables } from '..';
+import FeedRun from './FeedRun';
 
 const RunsFeed = () => {
     const parentRef = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
+
+    let feedRuns = [];
+    for (let i = 0; i <= 40; i++) {
+        feedRuns.push(<FeedRun />);
+    }
 
     const closeModal = () => {
         parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
@@ -18,6 +24,7 @@ const RunsFeed = () => {
     }
 
     useEffect(() => {
+        globalVariables.createRunModalHasBeenShown = false;
         const func = function (event) {
             if (globalVariables.createRunsModalEffect === true) {
                 const middleDiv = document.getElementById('create-a-run-modal');
@@ -48,8 +55,12 @@ const RunsFeed = () => {
             modalRoot.current.render(modal);
             globalVariables.createRunModalHasBeenShown = true;
         }
-        parentRef.current.insertBefore(modalDiv.current, parentRef.current.firstChild);
-        globalVariables.createRunsModalEffect = true;
+        if (parentRef.current !== null) {
+            console.log(parentRef.current)
+            parentRef.current.insertBefore(modalDiv.current, parentRef.current.firstChild);
+            globalVariables.createRunsModalEffect = true;
+        }
+       
     }
 
 
@@ -57,6 +68,7 @@ const RunsFeed = () => {
         <div id="runs-feed-container" ref={parentRef}>
             <div id="runs-feed">
                 <CreateARun clickFunction={() => showModal()} />
+                {feedRuns}
             </div>
         </div>
     )
@@ -67,7 +79,7 @@ const CreateARun = ({ clickFunction }) => {
         <div className='create-a-run'>
             <div className='top-half'>
                 <img src={pic} />
-                <input 
+                <input
                     type="text"
                     placeholder="Create a new Run"
                     onClick={clickFunction} />

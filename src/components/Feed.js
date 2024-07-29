@@ -32,6 +32,7 @@ const Feed = () => {
     }
 
     useEffect(() => {
+        globalVariables.postModalHasBeenShown = false;
         const func = function (event) {
             if (globalVariables.postModalEffect === true) {
                 const middleDiv = document.getElementById('create-a-post-modal');

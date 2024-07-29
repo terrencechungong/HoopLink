@@ -1,0 +1,32 @@
+#feed-run-container {
+    width: 600px;
+    background-color: rgb(140, 173, 223);
+    // GRID
+    display: grid;
+    gap: 6px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border-radius: 13px;
+    position: relative;
+    #dots {
+        position: absolute;
+        right: 9px;
+        top: 3px;
+        background-color: gray;
+        border-radius: 14px;
+        cursor: pointer;
+        padding-left: 2px;
+        padding-top: 2px;
+        padding-right: 2px;
+        &:hover {
+            color: white;
+        }
+    }
+    .feed-run-section {
+        padding: 5px;
+        p {
+            margin: 0;
+            padding: 0px;
+        }
+    }
+}
