@@ -14,6 +14,7 @@ import ReactDOM from 'react-dom/client';
 
 const SinglePostView = () => {
     const [liked, setLiked] = useState(false);
+    const [commentValue, setCommentValue] = useState("");
     const hrStyle = { width: '90%', backgroundColor: 'black' };
     const parentRef = useRef(null);
     const modalLoaded = useRef(false);
@@ -23,6 +24,10 @@ const SinglePostView = () => {
     let comments = [];
     for (let i = 0; i <= 10; i++) {
         comments.push(<PostComment />);
+    }
+
+    const commentValueChange = (e) => {
+        setCommentValue(e.target.value);
     }
 
     const closeModal = () => {
@@ -54,7 +59,7 @@ const SinglePostView = () => {
     })
 
     const showModal = () => {
-        let modal = <SinglePostCarousel closeModalFunction={closeModal} allPhotos={[pic,pic2]}/>;
+        let modal = <SinglePostCarousel closeModalFunction={closeModal} allPhotos={[pic, pic2]} />;
         if (globalVariables.carouselHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "single-post-carousel-modal-container";
@@ -86,7 +91,7 @@ const SinglePostView = () => {
                         sndfnasdifnskdfdsdfsdfsdfsdfsdfsdfsdfsfsksbfsdjkfksdnf
                         sdnfksndfkjsnkfdnkjsfksdfsdfsdfsdfsdfs
                     </p>
-                    <FilesSinglePostSection filesThumbnails={[pic, pic, pic, pic, pic, pic, pic]} showModal={showModal}/>
+                    <FilesSinglePostSection filesThumbnails={[pic, pic, pic, pic, pic, pic, pic]} showModal={showModal} />
                     <hr style={hrStyle}></hr>
                     <div className='single-post-likes-comments'>
                         <button className={liked && 'liked'} onClick={() => setLiked(!liked)}>
@@ -96,6 +101,11 @@ const SinglePostView = () => {
                         <button ><LuSend size={33} /></button>
                     </div>
                     <hr style={hrStyle}></hr>
+                    <div id="add-comment-div">
+                        <img src={pic} />
+                        <input type="text" placeholder='Leave a comment!' onChange={commentValueChange} />
+                        {commentValue !== "" && <button>Post</button>}
+                    </div>
                     <div className='single-post-comment-section'>
                         {comments.length == 0 && "Be the first to leave a comment!"}
                         {comments}
