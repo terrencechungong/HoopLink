@@ -6,6 +6,7 @@ import { FaRegComment } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 import { LuSend } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
+import FilesSinglePostSection from './FilesSinglePostSection';
 
 const SinglePostView = () => {
     const [liked, setLiked] = useState(false);
@@ -47,6 +48,7 @@ const SinglePostView = () => {
                         <div className='bottom-fourth '>
                             <div className='over-four-cover'></div>
                         </div>  CREATE FILE SECTION HEERE*/}
+                        <FilesSinglePostSection filesThumbnails={[pic]} />
                     </div>
                     <hr style={hrStyle}></hr>
                     <div className='single-post-likes-comments'>
