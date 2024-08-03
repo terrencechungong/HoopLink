@@ -1,0 +1,41 @@
+#single-post-carousel-modal-container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 22;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.315);
+    padding: 0px;
+    margin: 0px;
+
+    #single-post-carousel-modal {
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        background-color: #ffffff;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        height: 375px;
+        width: 600px;
+        button {
+            background: none;
+            border-width: 0px;
+        }
+        #single-post-carousel {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            #carousel-photo {
+                width: 90%;
+                height: 90%;
+            }
+        }
+    }
+}

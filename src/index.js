@@ -12,6 +12,8 @@ export const globalVariables = {
   postsShowingPostsModal: true,
   createRunsModalEffect: false,
   createRunModalHasBeenShown: false,
+  postCarouselModalEffect: false,
+  carouselHasBeenShown: false,
   user: null
 };
 
