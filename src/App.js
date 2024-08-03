@@ -11,6 +11,7 @@ import EditProfile from './components/EditProfile';
 import Feed from './components/Feed';
 import SingleProfileView from './components/SingleProfileView';
 import SingleRunView from './components/SingleRunView';
+import SinglePostView from './components/SinglePostView';
 import {
   BrowserRouter as Router,
   Routes,
@@ -33,6 +34,7 @@ function App() {
           <Route path="/single-profile-view" element={< SingleProfileView />} />
           <Route path="/runs-feed" element={<RunsFeed/>} />
           <Route path="/single-run-view" element={<SingleRunView />} />
+          <Route path="/single-post-view" element={<SinglePostView/>} />
         </Routes>
       </Router>
     </AuthProvider>
