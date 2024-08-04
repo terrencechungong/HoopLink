@@ -14,6 +14,8 @@ export const globalVariables = {
   createRunModalHasBeenShown: false,
   postCarouselModalEffect: false,
   carouselHasBeenShown: false,
+  makeMvpVoteModalEffect: false,
+  makeMvpVoteModalHasBeenShown: false,
   user: null
 };
 

@@ -1,5 +1,27 @@
 $primary-color: rgb(122, 81, 156);
 
+@keyframes colors {
+    0% {
+        background-color: rgb(0, 102, 255);
+    }
+
+    25% {
+        background-color: rgb(0, 162, 255);
+    }
+
+    50% {
+        background-color: rgb(0, 217, 255);
+    }
+
+    75% {
+        background-color: rgb(255, 255, 255);
+    }
+
+    100% {
+        background-color: rgb(0, 102, 255);
+    }
+}
+
 .scrollbar {
     &::-webkit-scrollbar {
         width: 12px;
@@ -242,10 +264,12 @@ $primary-color: rgb(122, 81, 156);
                     border-radius: 8px;
                     margin: 4px;
                     transition: background-color 0.3s ease;
+
                     &:hover {
                         background-color: rgb(201, 201, 201);
                         cursor: pointer;
                     }
+
                     &:active {
                         background-color: green;
                     }
@@ -310,6 +334,7 @@ $primary-color: rgb(122, 81, 156);
                     height: 34px;
 
                     &:hover {
+                        animation: colors 0.3s 1;
                         background-color: rgb(6, 56, 130);
                     }
                 }

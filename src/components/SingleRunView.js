@@ -1,19 +1,71 @@
-import './styles/single-run-view.scss'
-import { useEffect } from 'react'
+import './styles/single-run-view.scss';
+import { useEffect, useRef, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { IoIosArrowRoundBack } from "react-icons/io";
+import ReactDOM from 'react-dom/client';
+import { globalVariables } from '..';
 import { MdOutlineLocationOn } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import MakeMvpVoteModal from './MakeMvpVoteModal';
 
 const SingleRunView = () => {
+    const parentRef = useRef(null);
+    const modalLoaded = useRef(false);
+    const modalRoot = useRef(null);
+    const modalDiv = useRef(false);
+    const [isUp, setIsUp] = useState(false);
+
     const navigate = useNavigate();
 
     const goBack = () => {
         navigate(-1);
     }
 
+    const closeModal = () => {
+        parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
+        modalLoaded.current = false;
+        globalVariables.makeMvpVoteModalEffect = false;
+        setIsUp(false);
+    }
+
+    useEffect(() => {
+        globalVariables.makeMvpVoteModalHasBeenShown = false;
+        const func = function (event) {
+            if (globalVariables.makeMvpVoteModalEffect === true) {
+                const middleDiv = document.getElementById('make-a-vote-modal');
+                if (middleDiv) {
+                    if (isUp === false) {
+                        setIsUp(true);
+                        return;
+                    }
+                    if (!middleDiv.contains(event.target)) {
+                        closeModal();
+                    }
+                }
+            }
+        }
+        document.addEventListener('click', func);
+        return () => {
+            document.removeEventListener('click', func);
+        };
+    })
+
+    const showModal = () => {
+        let modal = <MakeMvpVoteModal closeModalFunction={closeModal} />;
+        if (globalVariables.makeMvpVoteModalHasBeenShown == false) {
+            modalDiv.current = document.createElement('div');
+            modalDiv.current.id = "make-a-vote-modal-container";
+            modalRoot.current = ReactDOM.createRoot(modalDiv.current);
+            modalRoot.current.render(modal);
+            globalVariables.makeMvpVoteModalHasBeenShown = true;
+        }
+        parentRef.current.insertBefore(modalDiv.current, parentRef.current.firstChild);
+        modalLoaded.current = true;
+        globalVariables.makeMvpVoteModalEffect = true;
+    }
+
     return (
-        <div id="single-run-view-screen">
+        <div id="single-run-view-screen" ref={parentRef}>
             <div id="single-run-view-container">
                 <div id="single-run-view-header">
                     <p>RUN NAME</p>
@@ -40,7 +92,7 @@ const SingleRunView = () => {
                     </div>
                     <div className='single-run-section'>
                         <p><strong>MVP WINNER</strong></p>
-                        <MvpVoteStatus votingStatus={'NOT_STARTED'} />
+                        <MvpVoteStatus votingStatus={'IN_PROGRESS'} showModal={showModal} />
                     </div>
                 </div>
                 <div className='single-run-location-section'>
@@ -88,7 +140,7 @@ const RunStatus = ({ runStatus }) => {
 }
 
 
-const MvpVoteStatus = ({ votingStatus }) => {
+const MvpVoteStatus = ({ votingStatus, showModal }) => {
     if (votingStatus == 'NOT_STARTED') {
         return (<div className='not-started'>
             <div className="light"></div>
@@ -97,7 +149,7 @@ const MvpVoteStatus = ({ votingStatus }) => {
     } else if (votingStatus == 'IN_PROGRESS') {
         return <div className='in-progress'>
             <div className="light"></div>
-            <div className='extra-text'>
+            <div className='extra-text' onClick={() => showModal()}>
                 <p>Voting Underway!</p>
                 <p>Click here to vote</p>
             </div>
