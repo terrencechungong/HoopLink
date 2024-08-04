@@ -3,9 +3,22 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { signUp } from '../firebase-config/authUtils'
 import { globalVariables } from '..'
+import { useMutation, gql } from '@apollo/client'
+
 const SignUp = () => {
 
+    const CREATE_USER_MUTATION = gql`
+        mutation CreateUser($input: CreateUserInput!) {
+            createUser(user: $input) {
+                firstName
+            }
+        }
+    `
+
+    const [createUser, data] = useMutation(CREATE_USER_MUTATION)
+
     const navigate = useNavigate();
+
 
     const handleClick = async () => {
         const firstName = document.getElementById('firstName').value;
@@ -21,8 +34,23 @@ const SignUp = () => {
         console.log(`Location: ${location}`);
         const user = await signUp(email, password, firstName, lastName);
         if (user !== false) {
+            try {
+                createUser({
+                    variables: {
+                        input: {
+                            firstName,
+                            lastName,
+                            email,
+                            phoneNumber,
+                            location
+                        }
+                    }
+                })
+            } catch (error) {
+                console.log(error.message)
+            }
             globalVariables.user = user;
-            console.log('signed up in');
+            console.log('signed up ');
             navigate('/chats');
         }
     }

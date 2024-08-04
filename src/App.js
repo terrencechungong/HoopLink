@@ -18,10 +18,17 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 function App() {
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    uri: "http://localhost:8080/graphql"
+  })
+
   return (
     <AuthProvider>
+          <ApolloProvider client={client}>
       <Router>
         <Routes>
           <Route path="/post" element={<FeedPost/>} />
@@ -37,6 +44,8 @@ function App() {
           <Route path="/single-post-view" element={<SinglePostView/>} />
         </Routes>
       </Router>
+      </ApolloProvider>
+
     </AuthProvider>
   );
 }
