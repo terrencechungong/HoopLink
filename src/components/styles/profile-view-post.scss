@@ -1,4 +1,4 @@
-.single-profile-run-view {
+.single-post-run-view {
     width: 98%;
     height: 90px;
     display: flex;
@@ -6,12 +6,16 @@
     justify-content: space-around;
     align-items: center;
     border: 1px solid rgb(109, 109, 109);
-    background-color: rgb(255, 241, 243);
+    background-color: rgb(107, 107, 107);
     border-radius: 9px;
+  
+        color: white;
+    
 
-    .single-profile-run-view-wrap{
+    .single-post-run-view-wrap{
         padding: 10px;
         box-sizing: border-box;
+        color: white;
         // background-color: aliceblue;
       
         display: flex;
@@ -20,10 +24,14 @@
         gap: 6px;
         // color: black;
     }
-    .single-profile-run-view-loca {
+    .single-post-run-view-loca {
+        color: white;
+
         font-size: smaller;
     }
-    .single-profile-run-view-time {
+    .single-post-run-view-time {
+        color: white;
+
         font-size: smaller;
         color: rgb(110, 110, 110);
 
