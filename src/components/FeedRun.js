@@ -1,12 +1,14 @@
 import './styles/feed-run.scss'
 import { useNavigate } from 'react-router-dom';
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import GlobalSideBar from './GlobalSideBar';
 
 const FeedRun = () => {
     const navigate = useNavigate();
 
     return (
         <div id="feed-run-container">
+
             <div id="dots"  onClick={() => navigate('/single-run-view')}>
                 <HiOutlineDotsHorizontal />
             </div>

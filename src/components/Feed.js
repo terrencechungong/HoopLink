@@ -5,6 +5,7 @@ import { globalVariables } from '..';
 import ReactDOM from 'react-dom/client';
 import CreatePostModal from './CreatePostModal';
 import pic from './ChatSettingComponents/piccy.png'
+import GlobalSideBar from './GlobalSideBar';
 
 const Feed = () => {
     const parentRef = useRef(null);
@@ -71,6 +72,7 @@ const Feed = () => {
 
     return (
         <div className="feed-container" ref={parentRef}>
+            <GlobalSideBar />
             <div className="feed">
                 <CreateAPost clickFunction={() => showModal()} />
                 {feedPosts}
@@ -86,7 +88,7 @@ const CreateAPost = ({ clickFunction }) => {
                 <img src={pic} />
                 <input type="text" placeholder="Create a new" onClick={clickFunction} />
             </div>
-          
+
         </div>
     )
 }

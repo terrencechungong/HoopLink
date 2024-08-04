@@ -1,6 +1,7 @@
 import './styles/single-profile-view.scss'
 import pic from '../components/ChatSettingComponents/piccy.png'
 import { useState } from 'react';
+import GlobalSideBar from './GlobalSideBar';
 
 const SingleProfileView = () => {
     const [current, setCurrent] = useState('Posts');
@@ -26,6 +27,7 @@ const SingleProfileView = () => {
 
     return (
         <div id="single-profile-view-screen">
+            <GlobalSideBar/>
             <div id="single-profile-view-container">
                 <div id="single-profile-header">
                     <img src={pic} />

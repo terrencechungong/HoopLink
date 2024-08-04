@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import CreateRunsModal from './CreateRunsModal';
 import { globalVariables } from '..';
 import FeedRun from './FeedRun';
+import GlobalSideBar from './GlobalSideBar';
 
 const RunsFeed = () => {
     const parentRef = useRef(null);
@@ -66,6 +67,7 @@ const RunsFeed = () => {
 
     return (
         <div id="runs-feed-container" ref={parentRef}>
+            <GlobalSideBar/>
             <div id="runs-feed">
                 <CreateARun clickFunction={() => showModal()} />
                 {feedRuns}
