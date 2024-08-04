@@ -1,3 +1,5 @@
+$lightgrey: rgb(172, 172, 172);
+
 .selectedContent {
     border-bottom: 2px solid rgb(6, 85, 150);
     background-color: rgba(154, 206, 255, 0.568);
@@ -7,22 +9,34 @@
 #single-profile-view-screen {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background-color: rgb(233, 233, 233);
     width: 100vw;
     height: 100vh;
+    p {
+        color: black;
+
+    }
+    #single-profile-wrapper {
+        height: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
     #single-profile-view-container {
-        background-color: grey;
         height: 500px;
+        background-color: white;
         width: 500px;
         display: flex;
         flex-direction: column;
+        border: 2px solid $lightgrey;
+        border-radius: 12px;
+
 
         #single-profile-header {
             height: 100px;
             width: 100%;
-            background-color: red;
             display: flex;
             flex-direction: row;
 
@@ -38,7 +52,6 @@
                 flex-direction: column;
                 align-items: center;
                 height: 40px;
-                background-color: aqua;
 
                 button {
                     height: 25px;
@@ -48,15 +61,30 @@
                 #username-friend {
                     display: flex;
                     flex-direction: row;
+                    align-items: center;
                     height: 40px;
                     gap: 20px;
+                    button {
+                        background: none;
+                        border-radius: 7px;
+                        border-width:0;
+                        background-color: rgb(0, 89, 255);
+                        color: white;
+                        &:hover {
+                            background-color: rgb(6, 73, 197);
+
+                        }
+                        &.remove-friend {
+                            background-color: rgb(212, 5, 5);
+                        }
+                    }
                 }
 
                 #profile-stats {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
-                    gap: 9px;
+                    gap: 22px;
                     color: white;
                 }
             }
@@ -70,6 +98,9 @@
             background-color: white;
             align-items: center;
             justify-content: space-around;
+            border-top: 2px solid $lightgrey;
+            border-bottom: 2px solid $lightgrey;
+
             p {
                 &:hover {
                     border-bottom: 2px solid purple;
@@ -80,9 +111,22 @@
             
         }
         #single-profile-view-posts-container {
-            background-color: blue;
+            &::-webkit-scrollbar {
+                display: none;
+                /* Width of the scrollbar */
+            }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0 10px 0;
+            background-color: white;
             flex-grow: 1;
             width: 100%;
+            overflow-y: scroll;
+            border-radius: 0 0 11px 11px;
+            gap: 10px;
+
         }
     }
+}
 }

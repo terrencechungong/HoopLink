@@ -1,13 +1,12 @@
 @keyframes openModal {
+    // use %
     from {
         opacity: .6;
-        height: 390px;
-        width: 390px;
+        padding: 10px;
     }
 
     to {
-        height: 400px;
-        width: 400px;
+        padding: 10px;
         opacity: 1;
     }
 }
@@ -52,7 +51,7 @@
 
 
 .open-modal {
-    animation: openModal 0.2s ease-in-out 0s 1 normal none;
+    animation: openModal 0.3s ease-in-out 0s 1 normal none;
 }
 
 .slideIn {
@@ -121,6 +120,10 @@
             overflow-x: hidden;
             position: relative;
             justify-content: flex-start;
+            &.processing-vote {
+                justify-content: center;
+                align-items: center;
+            }
             #onsie {
                 height: 100%;
                 width: 90%;
@@ -132,7 +135,6 @@
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                  
                 }
             }
             #twosie {

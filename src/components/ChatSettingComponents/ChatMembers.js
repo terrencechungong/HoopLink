@@ -3,8 +3,8 @@ import pic from './piccy.png'
 import { useEffect, useRef, useState } from 'react';
 import defaultpic from './defaultprofile.png'
 import { FaPlus } from 'react-icons/fa';
-import AddMemberModal from './AddMemberModal';
 import ReactDOM from 'react-dom/client'
+import AddMemberModal from './AddMemberModal';
 import { setGlobalVariable, getGlobalVariable, globalVariables } from '../../index';
 
 const ChatMembers = () => {

@@ -20,6 +20,7 @@ const SingleRunView = () => {
     const goBack = () => {
         navigate(-1);
     }
+    const reload = () => { navigate(0); }
 
     const closeModal = () => {
         parentRef.current.removeChild(parentRef.current.firstChild);  // Remove the DOM element
@@ -51,7 +52,7 @@ const SingleRunView = () => {
     })
 
     const showModal = () => {
-        let modal = <MakeMvpVoteModal closeModalFunction={closeModal} />;
+        let modal = <MakeMvpVoteModal closeModalFunction={closeModal} reload={reload} />;
         if (globalVariables.makeMvpVoteModalHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "make-a-vote-modal-container";
