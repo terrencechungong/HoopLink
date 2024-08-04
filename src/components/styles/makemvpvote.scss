@@ -12,8 +12,63 @@
     }
 }
 
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-270px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideBack {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-270px);
+    }
+}
+
+@keyframes slideFor {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(270px);
+    }
+}
+
+@keyframes slideBackIn {
+    from {
+        transform: translateX(270px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+
+
 .open-modal {
-    animation: openModal 0.4s ease-in-out 0s 1 normal none;
+    animation: openModal 0.2s ease-in-out 0s 1 normal none;
+}
+
+.slideIn {
+    animation: slideIn 0.2s ease-in-out 0s 1 normal none;
+}
+
+.slideBack {
+    animation: slideBack 0.2s ease-in-out 0s 1 normal none;
+}
+
+.slideFor {
+    animation: slideFor 0.2s ease-in-out 0s 1 normal none;
+}
+
+.slideBackIn {
+    animation: slideBackIn 0.2s ease-in-out 0s 1 normal none;
 }
 
 #make-a-vote-modal-container { 
@@ -30,17 +85,89 @@
     margin: 0px;
     #make-a-vote-modal {
         height: 400px;
-        width:450px;
+        width:340px;
         border-radius: 14px;
         background-color: white;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        align-items: center;
+        #nav-buttons {
+            width: 90%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            button {
+                padding: 8px;
+                border-radius: 4px;
+                border-width: 0px;
+                font-weight: bold;
+                &.back-button {
+                    background-color: white;
+                    border: 2px solid black
+                }
+                &.forward-button {
+                    background-color: black;
+                    border: 2px solid black;
+                    color: white
+                }
+            }
+        }
         #step-of-vote {
             width:320px;
+            flex-grow: 1;
             display: flex;
             flex-direction: row;
             overflow-x: hidden;
             position: relative;
+            justify-content: flex-start;
+            #onsie {
+                height: 100%;
+                width: 90%;
+                display: flex;
+                flex-direction: row;
+                #vote-step-one {
+                    align-self: flex-start;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                  
+                }
+            }
+            #twosie {
+                height: 100%;
+                width: 90%;
+                display: flex;
+                flex-direction: row;
+                #vote-step-two {
+                    align-self: flex-start;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+               
+                }
+            }
+          
+            #threesie {
+                height: 100%;
+                width: 90%;
+                display: flex;
+                flex-direction: row;
+                #vote-step-three {
+                    align-self: flex-start;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    p{
+                        overflow-wrap: break-word;
+                    }
+                   
+                }
+            }
+          
           
         }
 
