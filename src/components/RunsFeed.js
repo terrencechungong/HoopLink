@@ -6,7 +6,7 @@ import CreateRunsModal from './CreateRunsModal';
 import { globalVariables } from '..';
 import FeedRun from './FeedRun';
 import GlobalSideBar from './GlobalSideBar';
-import { Constants } from './constants';
+import { Navbar } from './constants';
 
 const RunsFeed = () => {
     const parentRef = useRef(null);
@@ -68,7 +68,7 @@ const RunsFeed = () => {
 
     return (
         <div id="runs-feed-container" ref={parentRef}>
-            <GlobalSideBar selected={Constants.RUNS_FEED}/>
+            <GlobalSideBar selected={Navbar.RUNS_FEED}/>
             <div id="runs-feed">
                 <CreateARun clickFunction={() => showModal()} />
                 {feedRuns}

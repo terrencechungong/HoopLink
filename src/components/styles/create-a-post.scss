@@ -216,7 +216,7 @@ $primary-color: rgb(122, 81, 156);
                 height: 400px;
                 width: 360px;
                 margin-left: 32px;
-                background-color: red;
+                background-color: rgb(231, 247, 253);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -230,9 +230,9 @@ $primary-color: rgb(122, 81, 156);
                     border-width: 0px;
                     height: 20px;
                     border-radius: 10px;
-                    border: 1px solid gray;
+                    border: 1px solid rgb(214, 214, 214);
                     padding: 10px;
-                    background-color: #dadada;
+                    background-color: #f1f1f1;
                 }
 
                 .suggested-loc {

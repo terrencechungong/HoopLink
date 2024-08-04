@@ -1,0 +1,54 @@
+#notification-screen {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    box-sizing: border-box;
+
+
+    #notifications-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // gap: 15px;
+        overflow-y: scroll;
+        height: 100%;
+        box-sizing: border-box;
+        padding-bottom: 100px;
+
+        .single-notification {
+            display: flex;
+            flex-direction: row;
+            margin: 15px;
+            box-sizing: border-box;
+            background-color: aqua;
+            width: 400px;
+            border-radius: 14px;
+            padding: 8px;
+            gap: 14px;
+            align-items: center;
+
+            .link {
+                background-color: rgb(255, 0, 0);
+                padding: 9px;
+                border-radius: 14px;
+            }
+            .notication-type-icon {
+                background: none;
+                border-width: 0px;
+                position: relative;
+                .notification-bubble {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 8px;
+                    height: 8px;
+                    background-color: red;
+                    border-radius: 14px;
+                }
+            }
+        }
+    }
+}
