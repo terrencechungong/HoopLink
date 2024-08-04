@@ -5,17 +5,34 @@ import { IoChatbubbleOutline } from "react-icons/io5";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { FaRegBell } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { Constants } from './constants';
 
 const GlobalSideBar = ({selected}) => {
     // feed, runsfeed, chats, profile, notifications MAKE RED CIRCLE
     const navigate = useNavigate();
+
     return (
         <div id="navbar-container">
-            <button onClick={() => navigate('/feed')}><FaRegNewspaper size={28}/></button>
-            <button onClick={() => navigate('/runs-feed')}><MdOutlineSportsBasketball size={28}/></button>
-            <button onClick={() => navigate('/chats')}><IoChatbubbleOutline size={28}/></button>
-            <button onClick={() => navigate('/single-profile-view')}><IoPersonCircleOutline size={28}/></button>
-            <button onClick={() => navigate('/notifications')}><FaRegBell size={28}/></button>   
+            <button 
+                onClick={() => navigate('/feed')}
+                className={`${selected == Constants.FEED ? 'selected' : ''}`}
+            ><FaRegNewspaper size={28}/></button>
+            <button 
+                onClick={() => navigate('/runs-feed')}
+                className={`${selected == Constants.RUNS_FEED ? 'selected' : ''}`}
+                ><MdOutlineSportsBasketball size={28}/></button>
+            <button
+                onClick={() => navigate('/chats')}
+                className={`${selected == Constants.CHATS ? 'selected' : ''}`}
+                ><IoChatbubbleOutline size={28}/></button>
+            <button
+                onClick={() => navigate('/single-profile-view')}
+                className={`${selected == Constants.PROFILE ? 'selected' : ''}`}
+                ><IoPersonCircleOutline size={28}/></button>
+            <button
+            onClick={() => navigate('/notifications')}
+            className={`${selected == Constants.NOTIFICATIONS ? 'selected' : ''}`}
+            ><FaRegBell size={28}/></button>   
         </div>
     )
 }

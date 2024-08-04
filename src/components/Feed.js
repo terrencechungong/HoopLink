@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import CreatePostModal from './CreatePostModal';
 import pic from './ChatSettingComponents/piccy.png'
 import GlobalSideBar from './GlobalSideBar';
+import { Constants } from './constants';
 
 const Feed = () => {
     const parentRef = useRef(null);
@@ -72,7 +73,7 @@ const Feed = () => {
 
     return (
         <div className="feed-container" ref={parentRef}>
-            <GlobalSideBar />
+            <GlobalSideBar selected={Constants.FEED}/>
             <div className="feed">
                 <CreateAPost clickFunction={() => showModal()} />
                 {feedPosts}

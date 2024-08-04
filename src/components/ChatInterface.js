@@ -14,6 +14,7 @@ import { getGlobalVariable } from '..';
 import { useNavigate } from 'react-router-dom';
 import { RiChatNewLine } from "react-icons/ri";
 import GlobalSideBar from './GlobalSideBar';
+import { Constants } from './constants';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -88,7 +89,7 @@ const ChatInterface = () => {
 
     return (
         <div id='outermost-parent' className='outermost-parent' ref={parentRef}>
-            <GlobalSideBar/>
+            <GlobalSideBar selected={Constants.CHATS}/>
             <button className="sidebar-toggle" onClick={() => toggleShow()}>
                 {expanded && <GoSidebarCollapse size={32} />}
                 {!expanded && <GoSidebarExpand size={32} />}

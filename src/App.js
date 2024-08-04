@@ -19,6 +19,7 @@ import {
   Link
 } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Notifications from './components/Notifications';
 
 function App() {
   const client = new ApolloClient({
@@ -42,6 +43,7 @@ function App() {
           <Route path="/runs-feed" element={<RunsFeed/>} />
           <Route path="/single-run-view" element={<SingleRunView />} />
           <Route path="/single-post-view" element={<SinglePostView/>} />
+          <Route path="/notifications" element={<Notifications/>} />
         </Routes>
       </Router>
       </ApolloProvider>
