@@ -25,6 +25,7 @@ const MakeMvpVoteModal = ({ closeModalFunction, reload }) => {
             }, 200);
         });
     }
+    
     function waitForThreeSeconds() {
         return new Promise((resolve) => {
             setTimeout(() => {

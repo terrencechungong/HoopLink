@@ -1,9 +1,29 @@
 #notification-modal-container {
     width: 360px;
-    height: 360px;
+    max-height: 370px;
     background-color: white;
     border-radius: 14px;
     padding: 12px;
+    position: relative;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    p{
+        overflow-wrap: anywhere;
+    }
+    #close-notification-modal-button {
+        position: absolute;
+        right: 12px;
+        cursor: pointer;
+    }
+    #notification-modal-see-profile-button {
+        background-color: rgb(220, 235, 255);
+        color: rgb(0, 60, 189);
+        padding: 6px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
     .button {
         display: flex;
         flex-direction: row;
@@ -11,6 +31,11 @@
         gap: 2px;
         padding: 6px;
         border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        &:hover {
+            transform: scale(1.08);
+        }
     }
     #reject-button {
         background-color: rgb(255, 220, 220);

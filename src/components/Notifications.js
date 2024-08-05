@@ -71,7 +71,7 @@ const Notification = ({ text, isSeen, links, type, showModal }) => {
             <p>{text}</p>
             <p className='link'
                 style={{ cursor: 'pointer' }}
-                onClick={() => showModal({type:NotificationType.CHAT_INVITATION})}
+                onClick={() => showModal({type:NotificationType.FRIEND_REQUEST})}
             >See Invitation</p>
         </div>
     )

@@ -10,4 +10,5 @@ export const NotificationType = {
     CHAT_INVITATION: 'CHAT_INVITATION',
     MVP_VOTING: 'MVP_VOTING',
     RUN_NEARBY: 'RUN_NEARBY',
+    FRIEND_REQUEST: 'FRIEND_REQUEST'
 }
