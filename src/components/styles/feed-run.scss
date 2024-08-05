@@ -1,18 +1,19 @@
 #feed-run-container {
     width: 600px;
-    background-color: rgb(140, 173, 223);
+    background-color: rgb(255, 255, 255);
     // GRID
     display: grid;
     gap: 6px;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     border-radius: 13px;
+    border: 1px solid black;
     position: relative;
     #dots {
         position: absolute;
         right: 9px;
         top: 3px;
-        background-color: gray;
+        background-color: rgb(196, 196, 196);
         border-radius: 14px;
         cursor: pointer;
         padding-left: 2px;

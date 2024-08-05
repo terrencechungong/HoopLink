@@ -1,0 +1,23 @@
+#notification-modal-container {
+    width: 360px;
+    height: 360px;
+    background-color: white;
+    border-radius: 14px;
+    padding: 12px;
+    .button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 2px;
+        padding: 6px;
+        border-radius: 6px;
+    }
+    #reject-button {
+        background-color: rgb(255, 220, 220);
+        color: rgb(189, 0, 0);
+    }
+    #accept-button {
+        background-color: rgb(231, 255, 220);
+        color: rgb(0, 189, 9);
+    }
+}

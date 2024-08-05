@@ -17,21 +17,23 @@
         height: 100%;
         box-sizing: border-box;
         padding-bottom: 100px;
+        background-color: rgb(233, 233, 233);
 
         .single-notification {
             display: flex;
             flex-direction: row;
             margin: 15px;
             box-sizing: border-box;
-            background-color: aqua;
+            background-color: rgb(255, 255, 255);
             width: 400px;
             border-radius: 14px;
             padding: 8px;
             gap: 14px;
             align-items: center;
+            border: 1px solid black;
 
             .link {
-                background-color: rgb(255, 0, 0);
+                background-color: rgb(255, 216, 216);
                 padding: 9px;
                 border-radius: 14px;
             }

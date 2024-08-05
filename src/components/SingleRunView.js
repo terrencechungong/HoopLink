@@ -7,6 +7,9 @@ import { globalVariables } from '..';
 import { MdOutlineLocationOn } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import MakeMvpVoteModal from './MakeMvpVoteModal';
+import { motion, AnimatePresence } from 'framer-motion'
+import MvpVoteProgressModal from './MvpVoteProgressModal';
+
 
 const SingleRunView = () => {
     const parentRef = useRef(null);
@@ -14,6 +17,7 @@ const SingleRunView = () => {
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
+    const [showProgress, setShowProgress] = useState(false);
 
     const navigate = useNavigate();
 
@@ -51,6 +55,14 @@ const SingleRunView = () => {
         };
     })
 
+    const showProgModal = () => {
+        setShowProgress(true);
+    }
+
+    const hideVotingProgress = () => {
+       setShowProgress(false)
+    }
+
     const showModal = () => {
         let modal = <MakeMvpVoteModal closeModalFunction={closeModal} reload={reload} />;
         if (globalVariables.makeMvpVoteModalHasBeenShown == false) {
@@ -64,9 +76,16 @@ const SingleRunView = () => {
         modalLoaded.current = true;
         globalVariables.makeMvpVoteModalEffect = true;
     }
+    
 
     return (
         <div id="single-run-view-screen" ref={parentRef}>
+            <AnimatePresence
+            initial={false}
+            mode="wait"
+            >
+            {showProgress && < MvpVoteProgressModal handleClose={hideVotingProgress}/>}
+            </AnimatePresence>
             <div id="single-run-view-container">
                 <div id="single-run-view-header">
                     <p>RUN NAME</p>
@@ -93,7 +112,7 @@ const SingleRunView = () => {
                     </div>
                     <div className='single-run-section'>
                         <p><strong>MVP WINNER</strong></p>
-                        <MvpVoteStatus votingStatus={'IN_PROGRESS'} showModal={showModal} />
+                        <MvpVoteStatus votingStatus={'IN_PROGRESS'} showModal={showModal} showVoteProgress={showProgModal}/>
                     </div>
                 </div>
                 <div className='single-run-location-section'>
@@ -141,20 +160,33 @@ const RunStatus = ({ runStatus }) => {
 }
 
 
-const MvpVoteStatus = ({ votingStatus, showModal }) => {
+const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress }) => {
+    // const voted = true;
+    const voted = true;
+
     if (votingStatus == 'NOT_STARTED') {
         return (<div className='not-started'>
             <div className="light"></div>
             <p>Not Started Yet</p>
         </div>)
     } else if (votingStatus == 'IN_PROGRESS') {
-        return <div className='in-progress'>
+        if (voted) {
+            return <div className='alr-voted'>
+            <div className="light"></div>
+            <div className='extra-text' onClick={() => showVoteProgress()}>
+                <p>View voting progress</p>
+            </div>
+        </div>
+        } else {
+            return <div className='in-progress'>
             <div className="light"></div>
             <div className='extra-text' onClick={() => showModal()}>
                 <p>Voting Underway!</p>
                 <p>Click here to vote</p>
             </div>
         </div>
+        }
+       
     } else {
         return (<div className='complete'>
             <div className="light"></div>

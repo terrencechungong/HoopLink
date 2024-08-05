@@ -13,11 +13,13 @@
     align-items: center;
     height: 100%;
     overflow-y: scroll;
+    background-color: rgb(233, 233, 233);
 
     .create-a-post {
-        background-color: black;
+        background-color: rgb(255, 255, 255);
         color: white;
         width: 600px;
+        border: 1px solid black;
         height: 130px;
         margin-top: 10px;
         border-radius: 10px;
@@ -33,7 +35,7 @@
                 width: 80%;
                 border-radius: 15px;
                 height: 26px;
-                background-color: rgb(197, 197, 197);
+                background-color: rgb(230, 230, 230);
                 cursor: pointer;
                 outline: none;
                 border: none;
@@ -54,10 +56,11 @@
     .feed-post-container {
         width: 600px;
         // height depends on whats in it but has a max
-        background-color: black;
-        color: white;
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
         margin: 10px;
         border-radius: 10px;
+        border: 1px solid black;
 
         .feed-post-info {
             display: flex;
@@ -71,12 +74,12 @@
             }
 
             gap: 0.5em;
-            border-bottom:1px solid white;
+            border-bottom:1px solid rgb(0, 0, 0);
         }
 
         .feed-post-content {
             padding: 10px;
-            border-bottom: 1px solid white;
+            border-bottom: 1px solid rgb(0, 0, 0);
 
             #read-more-post {
                 cursor: pointer;
@@ -92,7 +95,7 @@
             button {
                 background: none;
                 border-width: 0px;
-                color: white;
+                color: rgb(0, 0, 0);
 
                 &.liked {
                     color: red;
