@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import './styles/new-chat-modal.scss'
 import { globalVariables } from '..';
+import { SlClose } from "react-icons/sl";
 
 const NewChatModal = ({closeModal}) => {
     const [isUp, setIsUp] = useState(false)
@@ -36,16 +37,18 @@ const NewChatModal = ({closeModal}) => {
     return (
         <div className="new-chat-modal-overlay">
             <div className="new-chat-modal-container">
+                <h1><strong>Create a new Chat!</strong></h1>
+                <button id="close-create-new-chat-modal" onClick={closeModal}><SlClose size={25}/></button>
                 <div>
-                    <h2>Chat Name: </h2>
-                    <input type="text" />
+                    <h2><strong>Chat Name: </strong></h2>
+                    <input type="text" placeholder='e.g. New chat name'/>
                 </div>
                 <div>
-                    <h2>Description: </h2>
-                    <textarea></textarea>
+                    <h2><strong>Description: </strong></h2>
+                    <textarea placeholder='Ex: Chat for the greatest hoopers in the city'></textarea>
                 </div>
                 <div>
-                    <h2>Add members to your new chat: </h2>
+                    <h2><strong>Add members to your new chat: </strong></h2>
                     <input type="text" />
                 </div>
                 <button>Create</button>

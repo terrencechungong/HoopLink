@@ -21,6 +21,7 @@ import {
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import {NextUIProvider} from "@nextui-org/react";
 import Notifications from './components/Notifications';
+import SearchResults from './components/SearchResults';
 
 function App() {
   const client = new ApolloClient({
@@ -47,6 +48,7 @@ function App() {
               <Route path="/single-run-view" element={<SingleRunView />} />
               <Route path="/single-post-view" element={<SinglePostView />} />
               <Route path="/notifications" element={<Notifications />} />
+              <Route path="/searchresults/:param" element={<SearchResults/>} />
             </Routes>
           </Router>
         </ApolloProvider>

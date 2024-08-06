@@ -161,8 +161,8 @@ const RunStatus = ({ runStatus }) => {
 
 
 const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress }) => {
-    // const voted = true;
-    const voted = false;
+    const voted = true;
+    // const voted = false;
 
     if (votingStatus == 'NOT_STARTED') {
         return (<div className='not-started'>

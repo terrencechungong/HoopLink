@@ -35,7 +35,7 @@ const CreateRunsModal = ({ closeModalFunction }) => {
             >
                 <img src={pic} />
                 <p>
-                   {`${i} yoyo`}
+                   {`${i}`}
                 </p>
             </div>)
     }

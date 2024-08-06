@@ -10,6 +10,25 @@ $primary-color: rgba(122, 81, 156, 0.212);
     border-bottom: 1px solid black;
     width: 100%;
     // padding-bottom: 4px;
+    position: relative;
+    #hooplink-logo{ 
+        position: absolute;
+        left: 8px;
+        display: flex;
+        flex-direction: row;
+        p {
+            font-size: 18px;
+        }
+    }
+    #search-hoop-link {
+        position: absolute;
+        right: 22px;
+        display: flex;
+        flex-direction: row;
+        // p {
+        //     // font-size: 18px;
+        // }
+    }
     button {
         background: none;
         border-width: 0px;
