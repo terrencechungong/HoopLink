@@ -87,7 +87,7 @@ export default NotificationModal;
 
 
 // Notification data:
-// const type = chat_INVITATION;
+// const type = chat_INVITATION; UI IS DONE
 // {
 //     sender: userdata,
 //     chat: chatinfo,
@@ -112,7 +112,7 @@ export default NotificationModal;
 // click to see more
 // }
 
-// mvp win
+// mvp win   UI IS DONE
 
 // like and comment
 

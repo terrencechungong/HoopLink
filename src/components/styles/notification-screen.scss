@@ -20,6 +20,9 @@
         background-color: rgb(233, 233, 233);
 
         .single-notification {
+            p{
+                overflow-wrap: anywhere;
+            }
             display: flex;
             flex-direction: row;
             margin: 15px;
@@ -28,14 +31,14 @@
             width: 400px;
             border-radius: 14px;
             padding: 8px;
-            gap: 14px;
+            gap: 16px;
             align-items: center;
             border: 1px solid black;
 
             .link {
                 background-color: rgb(255, 216, 216);
-                padding: 9px;
-                border-radius: 14px;
+                padding: 5px;
+                border-radius: 9px;
             }
             .notication-type-icon {
                 background: none;
@@ -49,6 +52,20 @@
                     height: 8px;
                     background-color: red;
                     border-radius: 14px;
+                }
+            }
+
+            // notification content indie styles
+            .chat-invitation-content {
+                p {
+                    font-size: 12px;
+                }
+            }
+            .post-comment-content {
+                display: flex;
+                flex-direction: column;
+                P{
+                    margin: 0;
                 }
             }
         }
