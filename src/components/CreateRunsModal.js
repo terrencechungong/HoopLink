@@ -1,17 +1,17 @@
 import './styles/create-a-run.scss'
 import { IoCloseOutline } from "react-icons/io5";
 import { useRef, useState } from 'react';
-import { Calendar } from "@nextui-org/calendar";
-import { parseDate } from '@internationalized/date';
-import { today, getLocalTimeZone } from "@internationalized/date";
-import { AnimatePresence, motion } from 'framer-motion';
-import Backdrop from './Backdrop';
-import { duration } from '@mui/material';
+import { TimeComponent, StartDateCalendar } from './RunStartDateAndTime';
+import { AnimatePresence } from 'framer-motion';
 
 const CreateRunsModal = ({ closeModalFunction }) => {
     const startDateInputRef = useRef(null);
     const [showCalendar, setShowCalendar] = useState(false);
-    const startDateValSet = useRef(null)
+    const [showStartTime, setShowStartTime] = useState(false);
+
+    const startDateValSet = useRef(null);
+    const startTimeValSet = useRef(null)
+
     const startDateStyle = {
         backgroundColor:'rgb(201, 223, 255)',
         padding: '4px',
@@ -27,8 +27,10 @@ const CreateRunsModal = ({ closeModalFunction }) => {
                 initial={false}
                 mode="wait"
             >
+                {showStartTime && <TimeComponent inputRef={startTimeValSet} handleClose={() => setShowStartTime(false)} />}
                 {showCalendar && <StartDateCalendar inputRef={startDateValSet} handleClose={() => setShowCalendar(false)} />}
             </AnimatePresence>
+
             <div id="create-a-run-modal">
                 <div id="create-a-run-header">
                     <h2><strong>Create A Run</strong></h2>
@@ -52,7 +54,10 @@ const CreateRunsModal = ({ closeModalFunction }) => {
                     </div>
                     <div className='create-run-content-section'>
                         <label>Start Time</label>
-                        <input type="text" placeholder='Start Time' />
+                        <div 
+                            ref={startTimeValSet}
+                            onClick={() => setShowStartTime(true)}
+                            style={startDateStyle} >Start time</div>
                     </div>
                     <div className='create-run-content-section'>
                         <label>Location</label>
@@ -74,48 +79,6 @@ const CreateRunsModal = ({ closeModalFunction }) => {
     )
 }
 
-const StartDateCalendar = ({ handleClose, inputRef }) => {
-    const dropIn = {
-        hidden: {
-            y: "+10px"
-        },
-        visible: {
-            y: "0",
-            transition: {
-                duration: 0.2,
-            }
-        },
-        exit: {
-            y: "+10px"
-        }
-    }
-
-    const formatBeforeParse = (date) => {
-        const dateObj = new Date(`${date.year}-${date.month}-${date.day}`);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return dateObj.toLocaleDateString('en-US', options);
-    }
-
-    return (
-        <Backdrop closeModal={(e) => {
-            e.stopPropagation();
-            handleClose();
-        }}>
-            <motion.div
-                variants={dropIn}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                onClick={(e) => e.stopPropagation()}>
-                <Calendar
-                    onFocusChange={(date) => { inputRef.current.innerText = (formatBeforeParse(date)) }}
-                    defaultValue={today(getLocalTimeZone())}
-                    minValue={today(getLocalTimeZone())}
-                />
-            </motion.div>
-        </Backdrop>
-    )
-}
 
 export default CreateRunsModal;
 
