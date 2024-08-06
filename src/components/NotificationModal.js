@@ -84,36 +84,3 @@ const NotificationModal = ({ handleClose, notiData }) => {
 }
 
 export default NotificationModal;
-
-
-// Notification data:
-// const type = chat_INVITATION; UI IS DONE
-// {
-//     sender: userdata,
-//     chat: chatinfo,
-//     invitationExpiration: Date,
-//     member count,
-//     sent Date,
-// }
-
-// const type = RUN_INVITATION;
-// {
-//     sender: userdata,
-//     chat: chatinfo,
-//     invitationExpiration: Date,
-//     member count,
-//     sent Date,
-// click to see more
-// }
-
-// FriendRequest
-// {
-//     sender: userdata,
-// click to see more
-// }
-
-// mvp win   UI IS DONE
-
-// like and comment
-
-// run near you

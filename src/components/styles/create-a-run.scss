@@ -38,13 +38,15 @@
             top: 0;
             background-color: white;
             border-bottom: 1px solid black;
-            padding-bottom: 5px;
+            padding-bottom: 7px;
             z-index: 10;
-
+            h2{
+                font-size: 25px;
+            }
             button {
                 position: absolute;
                 right: 20px;
-                top: 6px;
+                top: 2px;
                 background-color: rgb(230, 230, 230);
                 border-width: 0px;
                 border-radius: 50%;
@@ -67,14 +69,25 @@
             display: flex;
             flex-direction: column;
             padding: 12px;
-            width: 80%;
+            width: 92%;
             gap: 15px;
+
 
             .create-run-content-section {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 gap: 9px;
+                label {
+                    font-weight: 550;
+                }
+                input {
+                    border-width: 0;
+                    outline-width: 0;
+                    background-color: #e4e4e4;
+                    border-radius: 5px;
+                    padding: 5px;
+                }
 
                 #create-post-checkbox {
                     margin-right: 150px;

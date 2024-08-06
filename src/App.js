@@ -19,6 +19,7 @@ import {
   Link
 } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {NextUIProvider} from "@nextui-org/react";
 import Notifications from './components/Notifications';
 
 function App() {
@@ -28,27 +29,30 @@ function App() {
   })
 
   return (
-    <AuthProvider>
-          <ApolloProvider client={client}>
-      <Router>
-        <Routes>
-          <Route path="/post" element={<FeedPost/>} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/editprofile" element={<EditProfile/>} />
-          <Route path="/feed" element={<Feed/>} />
-          <Route path="/chats" element={<ChatInterface />} />
-          <Route path="/profile" element={<ViewProfile />} />
-          <Route path="/single-profile-view" element={< SingleProfileView />} />
-          <Route path="/runs-feed" element={<RunsFeed/>} />
-          <Route path="/single-run-view" element={<SingleRunView />} />
-          <Route path="/single-post-view" element={<SinglePostView/>} />
-          <Route path="/notifications" element={<Notifications/>} />
-        </Routes>
-      </Router>
-      </ApolloProvider>
+    <NextUIProvider>
 
-    </AuthProvider>
+      <AuthProvider>
+        <ApolloProvider client={client}>
+          <Router>
+            <Routes>
+              <Route path="/post" element={<FeedPost />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/editprofile" element={<EditProfile />} />
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/chats" element={<ChatInterface />} />
+              <Route path="/profile" element={<ViewProfile />} />
+              <Route path="/single-profile-view" element={< SingleProfileView />} />
+              <Route path="/runs-feed" element={<RunsFeed />} />
+              <Route path="/single-run-view" element={<SingleRunView />} />
+              <Route path="/single-post-view" element={<SinglePostView />} />
+              <Route path="/notifications" element={<Notifications />} />
+            </Routes>
+          </Router>
+        </ApolloProvider>
+
+      </AuthProvider>
+    </NextUIProvider>
   );
 }
 
