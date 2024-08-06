@@ -1,4 +1,5 @@
 $primary-color: rgb(122, 81, 156);
+
 // cover messages under the input box
 button {
     &:hover {
@@ -25,23 +26,31 @@ body {
     height: 100vh;
     overflow-y: hidden;
 
-    .sidebar-toggle {
-        @extend .transparent-button;
-        padding: 2px 10px 10px 10px;
-        position: absolute;
-        z-index: 10;
+    #sidebar-buttons-wrapper {
+        position: sticky;
+        top: 0;
+        background-color: white;
 
-    }
+        .sidebar-toggle {
+            @extend .transparent-button;
+            padding: 2px 10px 10px 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: white;
+            height: 34px;
+        }
 
-    #new-chat-creator-button {
-        @extend .sidebar-toggle;
-        left: 150px;
-        padding-top: 3px;
-        z-index: 2;
+        #new-chat-creator-button {
+            @extend .sidebar-toggle;
+            left: 150px;
+            padding-top: 3px;
+            z-index: 2;
+        }
     }
 }
 
-.chat-interface-container {
+#chat-interface-container {
     display: flex;
     height: 100vh;
     width: 80%;
@@ -61,6 +70,7 @@ body {
         align-items: center;
         padding: 0px;
         margin: 0px;
+
         .messages-container-middle {
             position: relative;
             display: flex;
@@ -112,7 +122,7 @@ body {
                 bottom: 2px;
                 background: none;
                 height: 50px;
-                width: inherit; 
+                width: inherit;
 
                 textarea {
                     display: flex;

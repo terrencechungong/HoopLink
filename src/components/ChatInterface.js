@@ -71,15 +71,6 @@ const ChatInterface = () => {
         modalLoaded.current = true;
     }
 
-    const toggleShow = () => {
-        if (stylingRef.current.style.width == '100%') {
-            setExpanded(false);
-            stylingRef.current.style.width = '80%'
-        } else {
-            setExpanded(true);
-            stylingRef.current.style.width = '100%'
-        }
-    }
 
     let messages = []
     for (let i = 0; i <= 80; i++) {
@@ -90,14 +81,9 @@ const ChatInterface = () => {
     return (
         <div id='outermost-parent' className='outermost-parent' ref={parentRef}>
             <GlobalSideBar selected={Navbar.CHATS}/>
-            <button className="sidebar-toggle" onClick={() => toggleShow()}>
-                {expanded && <GoSidebarCollapse size={32} />}
-                {!expanded && <GoSidebarExpand size={32} />}
-            </button>
-            <button id="new-chat-creator-button" onClick={() => showModal('NEW_CHAT')}><RiChatNewLine size={30} /></button>
-            <SideBar />
+            <SideBar stylingRef={stylingRef} showModal={showModal}/>
 
-            <div className="chat-interface-container" ref={stylingRef}>
+            <div id="chat-interface-container" ref={stylingRef}>
                 <div className="messages-container-outer">
                     <div className='messages-container-middle'>
                         <div className='chat-title'>
