@@ -10,7 +10,7 @@ const SearchResults = () => {
     const [selected, setSelected] = useState(PEOPLE);
     const { param } = useParams();
 
-    let peopleRes = [<ProfileSearchResultCard/>];
+    let peopleRes = [<ProfileSearchResultCard />];
     let locaRes = [];
 
     // dO ANIMATIONS LATER
@@ -30,9 +30,10 @@ const SearchResults = () => {
                     >Run Locations</p>
                 </div>
                 <div id="person-search-results-container">
-                {peopleRes}
+                    {(selected == PEOPLE) && peopleRes}
+                    {(selected == LOCATIONS) && locaRes}
                 </div>
-                
+
             </div>
         </div>
     )

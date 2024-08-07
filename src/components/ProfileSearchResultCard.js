@@ -9,9 +9,7 @@ const ProfileSearchResultCard = () => {
                 {/* show ... if name is too long */}
                 <p>Jojhhns John</p>
             </div>
-            <div>
-
-            </div>
+            <button className='person-search-result-add-friend-button'>Add friend</button>
         </div>
     )
 }

@@ -12,7 +12,7 @@ const Backdrop = ({ children, closeModal }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex:100
+        zIndex:1000
     }
 
     return (
@@ -29,3 +29,6 @@ const Backdrop = ({ children, closeModal }) => {
 }
 
 export default Backdrop;
+
+
+// it doesnt show p infornt of cht. fix sthis
