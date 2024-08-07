@@ -81,6 +81,8 @@ const MakeMvpVoteModal = ({ closeModalFunction, reload }) => {
         }
     }
 
+    // refactor tansitions
+
     const backwards = async () => {
         if (step == 1) {
             return

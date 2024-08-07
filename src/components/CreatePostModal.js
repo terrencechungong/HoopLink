@@ -22,6 +22,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
     const [postsIsNone, setPostsIsNone] = useState(false);
     const [locationIsNone, setLocationIsNone] = useState(true);
     const [prevStep, setPrevStep] = useState(0);
+    const [filesArray, setFilesArray] = useState([]);
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -34,30 +35,32 @@ const CreatePostModal = ({ closeModalFunction }) => {
     // maybe just change height
 
     useEffect(() => {
-        // console.log(globalVariables.postsShowingPostsModal)
-        // const textarea = document.getElementById('expandingTextarea');
+        if (!locationIsNone) {
+            console.log(globalVariables.postsShowingPostsModal)
+            const textarea = document.getElementById('expandingTextarea');
 
-        // textarea.addEventListener('input', function () {
-        //     // Reset height to allow shrinking
-        //     this.style.height = 'auto';
-        //     // Set the height to the scroll height of the element
-        //     this.style.height = (this.scrollHeight) + 'px';
-        //     console.log(this.style.height);
-        // });
+            textarea.addEventListener('input', function () {
+                // Reset height to allow shrinking
+                this.style.height = 'auto';
+                // Set the height to the scroll height of the element
+                this.style.height = (this.scrollHeight) + 'px';
+                console.log(this.style.height);
+            });
 
-        // const autocomplete = new GeocoderAutocomplete(
-        //     document.getElementById("autocomplete"),
-        //     '120d28881d9141068d5c67d968ae112f',
-        //     { /* Geocoder options */ });
+            const autocomplete = new GeocoderAutocomplete(
+                document.getElementById("autocomplete"),
+                '120d28881d9141068d5c67d968ae112f',
+                { /* Geocoder options */ });
 
-        // autocomplete.on('select', (location) => {
-        //     // check selected location here 
-        // });
+            autocomplete.on('select', (location) => {
+                // check selected location here 
+            });
 
-        // autocomplete.on('suggestions', (suggestions) => {
-        //     setSuggLocas(suggestions.map(s => s.properties.address_line1 + ', ' + s.properties.address_line2))
-        // });
-    });
+            autocomplete.on('suggestions', (suggestions) => {
+                setSuggLocas(suggestions.map(s => s.properties.address_line1 + ', ' + s.properties.address_line2))
+            });
+        }
+    }, [locationIsNone]);
 
     const handleInputChange = (e, manual = null) => {
         let value;
@@ -130,18 +133,24 @@ const CreatePostModal = ({ closeModalFunction }) => {
         globalVariables.postModalEffect = true;
     }
 
-    const createHeader = (parent, file, fileContent) => {
+    const createHeader = (file, fileContent, className) => {
         const now = new Date();
         const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-        parent.id = timeString;
-        const header = document.createElement('div');
-        header.className = STORE_FILE_HEADER;
-        let modal = <CloseFileButton divId={timeString} removeFunction={removeFile} />;
-        const modalDiv = document.createElement('div');
-        let modalRoot = ReactDOM.createRoot(modalDiv);
-        modalRoot.render(modal);
-        header.appendChild(modalDiv);
-        parent.appendChild(header);
+       
+        // header.className = STORE_FILE_HEADER;
+        // let modal = <CloseFileButton divId={timeString} removeFunction={removeFile} />;
+        const modalDiv = <div>
+             <CloseFileButton divId={timeString} removeFunction={removeFile} />
+        </div>
+        // let modalRoot = ReactDOM.createRoot(modalDiv);
+        // modalRoot.render(modal);
+        const header = 
+        <div className={STORE_FILE_HEADER}>
+            {modalDiv}
+        </div>
+        // header.appendChild(modalDiv);
+        // parent.appendChild(header);
+      
         const obj = {
             fileName: file.name,
             fileType: file.type,
@@ -149,6 +158,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
         };
         setFiles({ ...files, [timeString]: obj });
         console.log(Object.keys(files).length);
+        return [header, timeString];
     }
 
     // do display none for location
@@ -162,15 +172,23 @@ const CreatePostModal = ({ closeModalFunction }) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     if (supportedVideoTypes.includes(file.type)) {
-                        const video = document.createElement('video');
-                        video.src = e.target.result;
-                        video.controls = true;
-                        video.style.width = '100%';
-                        const videoContainer = document.createElement('div');
-                        videoContainer.className = STORE_FILE;
-                        createHeader(videoContainer, file, e.target.result);
-                        videoContainer.appendChild(video);
-                        addFile.current.appendChild(videoContainer);
+                     
+                        // const video = document.createElement('video');
+                        // video.src = e.target.result;
+                        // video.controls = true;
+                        // video.style.width = '100%';
+                        // const videoContainer = document.createElement('div');
+                        // videoContainer.className = STORE_FILE;
+                        let childId = createHeader(file, e.target.results);
+                        let vid =
+                            (<div className={STORE_FILE}   id={childId[1]}>
+                                {childId[0]}
+                                <video src={e.target.result} controls width="100%">
+                                </video>
+                            </div>)
+                        // videoContainer.appendChild(video);
+                        setFilesArray([...filesArray, vid]);
+                        console.log(filesArray);
                     } else if (file.type === 'application/pdf') {
                         const pdf = document.createElement('iframe');
                         pdf.src = e.target.result;
@@ -181,9 +199,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         createHeader(pdfContainer, file, e.target.result);
                         pdfContainer.appendChild(pdf);
 
-                        if (addFile.current) {
-                            addFile.current.appendChild(pdfContainer);
-                        }
+                        setFilesArray([...filesArray, pdfContainer]);
+                        console.log(filesArray);
+
                     } else {
                         const img = document.createElement('img');
                         img.src = e.target.result;
@@ -194,9 +212,9 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         createHeader(imgContainer, file, e.target.result);
                         imgContainer.appendChild(img);
 
-                        if (addFile.current) {
-                            addFile.current.appendChild(imgContainer);
-                        }
+                        setFilesArray([...filesArray, imgContainer]);
+                        console.log(filesArray);
+
                     }
                 };
                 reader.readAsDataURL(file);
@@ -210,7 +228,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
     // style={{display: (locationIsNone ? 'none' : 'flex')}}
     const postsSlideIn = {
         hidden: {
-            x: (prevStep == 2 ? '-400px' : '')
+            x: ('-400px')
         },
         visible: {
             x: '0',
@@ -226,7 +244,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
 
     const locationSlideIn = {
         hidden: {
-            x: (prevStep == 1 ? '+400px' : '')
+            x: ('+400px')
         },
         visible: {
             x: '0',
@@ -258,6 +276,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                             animate="visible"
                             exit="exit" id="text-area" ref={addFile} >
                             <textarea id="expandingTextarea"></textarea>
+                            {filesArray.map((file) => file)}
                         </motion.div>}
                     </AnimatePresence>
                     <AnimatePresence
