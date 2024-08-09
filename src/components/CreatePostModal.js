@@ -35,7 +35,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
     // maybe just change height
 
     useEffect(() => {
-        if (!locationIsNone) {
+        if (!postsIsNone) {
             console.log(globalVariables.postsShowingPostsModal)
             const textarea = document.getElementById('expandingTextarea');
 
@@ -46,7 +46,8 @@ const CreatePostModal = ({ closeModalFunction }) => {
                 this.style.height = (this.scrollHeight) + 'px';
                 console.log(this.style.height);
             });
-
+        }
+        if (!locationIsNone) {
             const autocomplete = new GeocoderAutocomplete(
                 document.getElementById("autocomplete"),
                 '120d28881d9141068d5c67d968ae112f',
@@ -60,7 +61,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                 setSuggLocas(suggestions.map(s => s.properties.address_line1 + ', ' + s.properties.address_line2))
             });
         }
-    }, [locationIsNone]);
+    }, [locationIsNone, postsIsNone]);
 
     const handleInputChange = (e, manual = null) => {
         let value;
@@ -95,15 +96,11 @@ const CreatePostModal = ({ closeModalFunction }) => {
     }
 
     const addPostSection = () => {
-        if (!globalVariables.postsShowingPostsModal) {
-            // handleToggle();
+        if (postsIsNone) {
+            toggleScreen();
         }
         console.log("add post");
         fileInputRef.current.click();
-    }
-
-    const addLocation = () => {
-        console.log("Add location");
     }
 
     function waitForTwoSeconds() {
@@ -133,35 +130,27 @@ const CreatePostModal = ({ closeModalFunction }) => {
         globalVariables.postModalEffect = true;
     }
 
-    const createHeader = (file, fileContent, className) => {
+    const createHeader = (file, fileContent) => {
         const now = new Date();
-        const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-       
-        // header.className = STORE_FILE_HEADER;
-        // let modal = <CloseFileButton divId={timeString} removeFunction={removeFile} />;
-        const modalDiv = <div>
-             <CloseFileButton divId={timeString} removeFunction={removeFile} />
-        </div>
-        // let modalRoot = ReactDOM.createRoot(modalDiv);
-        // modalRoot.render(modal);
-        const header = 
-        <div className={STORE_FILE_HEADER}>
-            {modalDiv}
-        </div>
-        // header.appendChild(modalDiv);
-        // parent.appendChild(header);
-      
+        const id = now.toLocaleTimeString('en-US', { hour12: false });
+        const header =
+            <div className={STORE_FILE_HEADER}>
+                <div>
+                    <CloseFileButton divId={id} removeFunction={removeFile} />
+                </div>
+            </div>
         const obj = {
             fileName: file.name,
             fileType: file.type,
             fileContent: fileContent
         };
-        setFiles({ ...files, [timeString]: obj });
-        console.log(Object.keys(files).length);
-        return [header, timeString];
+        setFiles({ ...files, [id]: obj });
+        return {
+            header,
+            id
+        };
     }
 
-    // do display none for location
 
     const handleFileChange = (event) => {
         const file = fileInputRef.current.files[0];
@@ -171,61 +160,29 @@ const CreatePostModal = ({ closeModalFunction }) => {
             if (file && supportedTypes.includes(file.type)) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
+                    let fileContentSection;
+                    let componentValues = createHeader(file, e.target.results);
                     if (supportedVideoTypes.includes(file.type)) {
-                     
-                        // const video = document.createElement('video');
-                        // video.src = e.target.result;
-                        // video.controls = true;
-                        // video.style.width = '100%';
-                        // const videoContainer = document.createElement('div');
-                        // videoContainer.className = STORE_FILE;
-                        let childId = createHeader(file, e.target.results);
-                        let vid =
-                            (<div className={STORE_FILE}   id={childId[1]}>
-                                {childId[0]}
-                                <video src={e.target.result} controls width="100%">
-                                </video>
-                            </div>)
-                        // videoContainer.appendChild(video);
-                        setFilesArray([...filesArray, vid]);
-                        console.log(filesArray);
+                        fileContentSection = <video src={e.target.result} controls width="100%"></video>
                     } else if (file.type === 'application/pdf') {
-                        const pdf = document.createElement('iframe');
-                        pdf.src = e.target.result;
-                        pdf.style.width = '100%';
-                        pdf.style.height = '600px';
-                        const pdfContainer = document.createElement('div');
-                        pdfContainer.className = STORE_FILE;
-                        createHeader(pdfContainer, file, e.target.result);
-                        pdfContainer.appendChild(pdf);
-
-                        setFilesArray([...filesArray, pdfContainer]);
-                        console.log(filesArray);
-
+                        fileContentSection = <iframe style={{ width: '100%', height: '200px' }} src={e.target.result}></iframe>
                     } else {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = file.name;
-                        img.style.maxWidth = '100%'; // Adjust as needed
-                        const imgContainer = document.createElement('div');
-                        imgContainer.className = STORE_FILE;
-                        createHeader(imgContainer, file, e.target.result);
-                        imgContainer.appendChild(img);
-
-                        setFilesArray([...filesArray, imgContainer]);
-                        console.log(filesArray);
-
+                        fileContentSection = <img src={e.target.result} alt={file.name} style={{ maxWidth: '100%' }} />
                     }
+                    let fileSection = (
+                        <div className={STORE_FILE} id={componentValues.id}>
+                            {componentValues.header}
+                            {fileContentSection}
+                        </div>)
+                    setFilesArray([...filesArray, fileSection]);
                 };
                 reader.readAsDataURL(file);
             } else {
-                console.error('Please select a PNG file.');
+                console.error('Please select a valid file file.');
             }
         }
     };
 
-    // style={{display: (postsIsNone ? 'none' : 'flex')}}
-    // style={{display: (locationIsNone ? 'none' : 'flex')}}
     const postsSlideIn = {
         hidden: {
             x: ('-400px')
