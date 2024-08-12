@@ -87,7 +87,7 @@ const CreateAPost = ({ clickFunction }) => {
         <div className='create-a-post'>
             <div className='top-half'>
                 <img src={pic} />
-                <input type="text" placeholder="Create a new" onClick={clickFunction} />
+                <input type="text" placeholder="Create a new post" onClick={clickFunction} />
             </div>
 
         </div>

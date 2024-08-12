@@ -20,40 +20,51 @@
         background-color: rgb(233, 233, 233);
 
         .single-notification {
-            p{
+            p {
                 overflow-wrap: anywhere;
             }
+
             display: flex;
             flex-direction: row;
             margin: 15px;
             box-sizing: border-box;
             background-color: rgb(255, 255, 255);
-            width: 400px;
+            width: 600px;
             border-radius: 14px;
             padding: 8px;
             gap: 16px;
             align-items: center;
-            border: 1px solid black;
+            box-shadow: 0px 2px 1px rgba(187, 187, 187, 0.548);
+
+            .icon-content-wrapper {
+                display: flex;
+                flex-direction: row;
+                gap: 16px;
+                max-width: 85%;
+                flex-grow: 1;
+                .notication-type-icon {
+                    background: none;
+                    border-width: 0px;
+                    position: relative;
+
+                    .notification-bubble {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 8px;
+                        height: 8px;
+                        background-color: red;
+                        border-radius: 14px;
+                    }
+                }
+            }
 
             .link {
                 background-color: rgb(255, 216, 216);
                 padding: 5px;
                 border-radius: 9px;
             }
-            .notication-type-icon {
-                background: none;
-                border-width: 0px;
-                position: relative;
-                .notification-bubble {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    width: 8px;
-                    height: 8px;
-                    background-color: red;
-                    border-radius: 14px;
-                }
-            }
+
 
             // notification content indie styles
             .chat-invitation-content {
@@ -61,10 +72,12 @@
                     font-size: 12px;
                 }
             }
+
             .post-comment-content {
                 display: flex;
                 flex-direction: column;
-                P{
+
+                P {
                     margin: 0;
                 }
             }

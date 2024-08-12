@@ -19,7 +19,7 @@ const ChatSettingsModalSection = () => {
                 <button>Edit</button>
             </div>
             <div className="leave-chat-button">
-                <button>Leave Chat <FaDoorOpen/></button>
+                <button style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>Leave Chat <FaDoorOpen/></button>
             </div>
         </div>
     )

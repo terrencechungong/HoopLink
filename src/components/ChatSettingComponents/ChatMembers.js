@@ -2,7 +2,7 @@ import './styles/chat-settings-members.scss'
 import pic from './piccy.png'
 import { useEffect, useRef, useState } from 'react';
 import defaultpic from './defaultprofile.png'
-import { FaPlus } from 'react-icons/fa';
+import { CiSquarePlus } from "react-icons/ci";
 import ReactDOM from 'react-dom/client'
 import AddMemberModal from './AddMemberModal';
 import { setGlobalVariable, getGlobalVariable, globalVariables } from '../../index';
@@ -48,7 +48,7 @@ const ChatMembers = () => {
 
             <div className="chat-member-row member-add" onClick={() => addMemberClick()}>
                 <img src={defaultpic} />
-                <button><FaPlus /> Add a member</button>
+                <button style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}><CiSquarePlus size={22}/> Add a member</button>
             </div>
             {names.map(name =>
                 <div className="chat-member-row">

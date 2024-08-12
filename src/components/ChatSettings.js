@@ -1,12 +1,12 @@
 import './styles/chat-settings.scss'
 import { useEffect, useRef, useState } from 'react';
-import { FaTimes } from 'react-icons/fa';
 import ChatMembers from './ChatSettingComponents/ChatMembers';
 import ChatAbout from './ChatSettingComponents/ChatAbout';
 import ChatFiles from './ChatSettingComponents/ChatFiles';
 import ChatSettingsModalSection from './ChatSettingComponents/ChatSettingsModalSection';
 import ChatPastRuns from './ChatSettingComponents/ChatPastRuns';
 import { globalVariables } from '..';
+import { SlClose } from 'react-icons/sl';
 
 const ChatSettings = ({ closeModal }) => {
     const overlay = useRef(null);
@@ -82,7 +82,7 @@ const ChatSettings = ({ closeModal }) => {
                         <p className={'modal-selection-item ' + (pastRuns == true ? 'selected' : '')}>Past Runs</p>
                         <p className={'modal-selection-item ' + (settings == true ? 'selected' : '')}>Settings</p>
                     </div>
-                    <button onClick={() => closeModal()}><FaTimes size={25} /></button>
+                    <button onClick={() => closeModal()}><SlClose size={25} /></button>
                 </div>
                 {members && <ChatMembers />}
                 {about && <ChatAbout />}
