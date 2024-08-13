@@ -1,6 +1,6 @@
 import './styles/signup.scss'
 import { useAuth } from '../context/AuthContext'
-import {signin} from '../firebase-config/authUtils'
+import {signin} from '../supabase-conf/authUtils'
 import { useNavigate } from "react-router-dom";
 import { globalVariables } from '..';
 

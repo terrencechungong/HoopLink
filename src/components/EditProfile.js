@@ -2,6 +2,7 @@ import './styles/view-profile.scss'
 import pic from './ChatSettingComponents/defaultprofile.png'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useEffect } from 'react'
+import { logOut } from '../supabase-conf/authUtils'
 
 const EditProfile = () => {
 
@@ -59,6 +60,9 @@ const EditProfile = () => {
                         <input id="location" type='text' placeholder='LOCATION' disabled/>
                         <button id="location-button"><FaPencilAlt/></button>
                     </div>
+                </div>
+                <div>
+                    <button style={{backgroundColor:'white'}} onClick={() => {logOut()}}>Logout</button>
                 </div>
             </div>
         </div>

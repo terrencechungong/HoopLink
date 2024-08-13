@@ -1,29 +1,36 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from "../firebase-config/firebase-conf";
+import { supabase } from "../supabase-conf/supabase-conf";
 
 const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null); 
-
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                setUser(user);
-                // navigate("/home");
-                // ...
-            } else {
-                // User is signed out
-                // ...
+        // Check active session and set user
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                setUser(session.user);
             }
         });
-    }, [user])
+
+        // Listen for authentication state changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            if (!session) {
+                setUser(null);
+            } else {
+                setUser(session.user);
+                console.log("Authentication state changed:", event);
+            }
+        });
+
+        // Cleanup subscription on component unmount
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
 
     const value = { user };
     return (

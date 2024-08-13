@@ -5,7 +5,7 @@ import pic from './ChatSettingComponents/piccy.png'
 import { RiChatNewLine } from "react-icons/ri";
 import { LuCrown } from "react-icons/lu";
 import { FaLocationDot } from "react-icons/fa6";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MvpVoteProgressModal from './MvpVoteProgressModal';
 import { AnimatePresence } from 'framer-motion';
 import NotificationModal from './NotificationModal';
@@ -13,10 +13,24 @@ import { FaRegCommentDots } from "react-icons/fa6";
 import { FaRegThumbsUp } from "react-icons/fa6";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { PiCourtBasketballDuotone } from "react-icons/pi";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Notifications = () => {
     const [showNotification, setShowNotification] = useState(false);
     const [notificationData, setNotificationData] = useState({});
+    const user = useAuth().user;
+    const navigate = useNavigate()
+    // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    useEffect(() => {
+        console.log(user)
+        if (!user) {
+            console.log("no user");
+            navigate('/login');
+        }
+    })
+
     let notis = [];
     const displayNotifModal = (data) => {
         setNotificationData(data)

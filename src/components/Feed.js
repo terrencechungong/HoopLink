@@ -7,6 +7,8 @@ import CreatePostModal from './CreatePostModal';
 import pic from './ChatSettingComponents/piccy.png'
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Feed = () => {
     const parentRef = useRef(null);
@@ -14,6 +16,19 @@ const Feed = () => {
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
+    const user = useAuth().user;
+    const navigate = useNavigate()
+    // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    useEffect(() => {
+        console.log(user)
+        if (!user) {
+            console.log("no user");
+            navigate('/login');
+        }
+    })
+
+
 
     let feedPosts = [];
     for (let i = 0; i <= 40; i++) {

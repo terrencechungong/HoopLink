@@ -1,7 +1,7 @@
 import './styles/signup.scss'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { signUp } from '../firebase-config/authUtils'
+import { signUp } from '../supabase-conf/authUtils'
 import { globalVariables } from '..'
 import { useMutation, gql } from '@apollo/client'
 

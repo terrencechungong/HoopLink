@@ -19,6 +19,9 @@ export const globalVariables = {
   user: null
 };
 
+
+// refactor this everywhere at some point
+
 export const getGlobalVariable = (key) => globalVariables[key];
 
 export const setGlobalVariable = (key, value) => {

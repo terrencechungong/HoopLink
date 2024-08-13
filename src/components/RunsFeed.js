@@ -7,12 +7,26 @@ import { globalVariables } from '..';
 import FeedRun from './FeedRun';
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const RunsFeed = () => {
     const parentRef = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
+    const user = useAuth().user;
+    const navigate = useNavigate()
+    // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    useEffect(() => {
+        console.log(user)
+        if (!user) {
+            console.log("no user");
+            navigate('/login');
+        }
+    })
+
 
     let feedRuns = [];
     for (let i = 0; i <= 40; i++) {

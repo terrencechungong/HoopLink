@@ -9,12 +9,12 @@ import { GoSidebarExpand } from "react-icons/go";
 import { BsPaperclip } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 import NewChatModal from './NewChatModal';
-import { setGlobalVariable, globalVariables } from '..';
-import { getGlobalVariable } from '..';
+import { globalVariables } from '..';
 import { useNavigate } from 'react-router-dom';
 import { RiChatNewLine } from "react-icons/ri";
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
+import { useAuth } from '../context/AuthContext';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -23,14 +23,15 @@ const ChatInterface = () => {
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
+    const user = useAuth().user;
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        if (globalVariables.user == null) {
-            // console.log("no user");
-            // navigate('/login');
+        console.log(user)
+        if (!user) {
+            console.log("no user");
+            navigate('/login');
         }
-        console.log(globalVariables.user);
     })
 
     const invisibleClick = () => {
@@ -80,8 +81,8 @@ const ChatInterface = () => {
 
     return (
         <div id='outermost-parent' className='outermost-parent' ref={parentRef}>
-            <GlobalSideBar selected={Navbar.CHATS}/>
-            <SideBar stylingRef={stylingRef} showModal={showModal}/>
+            <GlobalSideBar selected={Navbar.CHATS} />
+            <SideBar stylingRef={stylingRef} showModal={showModal} />
 
             <div id="chat-interface-container" ref={stylingRef}>
                 <div className="messages-container-outer">
