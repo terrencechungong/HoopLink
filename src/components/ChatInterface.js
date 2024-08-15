@@ -23,15 +23,22 @@ const ChatInterface = () => {
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
-    const user = useAuth().user;
+    const user = useRef(null);
+    const getUser = useAuth().getUser;
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        console.log(user)
-        if (!user) {
-            console.log("no user");
-            navigate('/login');
+        const setUser = async () => {
+            user.current = await getUser();
+
+            console.log(user.current)
+            if (!user.current) {
+                console.log(user)
+                console.log("no user");
+                navigate('/login');
+            }
         }
+        setUser()
     })
 
     const invisibleClick = () => {

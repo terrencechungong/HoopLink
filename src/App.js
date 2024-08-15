@@ -43,7 +43,7 @@ function App() {
               <Route path="/feed" element={<Feed />} />
               <Route path="/chats" element={<ChatInterface />} />
               <Route path="/profile" element={<ViewProfile />} />
-              <Route path="/single-profile-view" element={< SingleProfileView />} />
+              <Route path="/myprofile/:authId" element={< SingleProfileView />} />
               <Route path="/runs-feed" element={<RunsFeed />} />
               <Route path="/single-run-view" element={<SingleRunView />} />
               <Route path="/single-post-view" element={<SinglePostView />} />

@@ -15,18 +15,24 @@ const RunsFeed = () => {
     const [isUp, setIsUp] = useState(false);
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
-    const user = useAuth().user;
     const navigate = useNavigate()
+    const user = useRef(null);
+    const getUser = useAuth().getUser;
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        console.log(user)
-        if (!user) {
-            console.log("no user");
-            navigate('/login');
-        }
-    })
+        const setUser = async () => {
+            user.current = await getUser();
 
+            console.log(user.current)
+            if (!user.current) {
+                console.log(user)
+                console.log("no user");
+                navigate('/login');
+            }
+        }
+        setUser()
+    })
 
     let feedRuns = [];
     for (let i = 0; i <= 40; i++) {

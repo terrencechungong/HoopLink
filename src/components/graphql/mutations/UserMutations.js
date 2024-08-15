@@ -20,8 +20,8 @@ export const ADD_FRIEND_MUTATION = gql`
 `
 
 export const ADD_POST_TO_USER_OBJECT = gql`
-    mutation AddPostToUserObject($userId: ID!, $postId: ID!) {
-        addPost(userId: $userId, postId: $postId)
+    mutation AddPostToUserObject($authId: String!, $postId: ID!) {
+        addPost(authId: $authId, postId: $postId)
     }
 `
 
@@ -45,12 +45,12 @@ export const DELETE_RUN_FROM_USER_OBJECT = gql`
 
 export const ADD_NOTIFICATION_TO_USER_OBJECT = gql`
     mutation AddNotificationToUserOnject($userId: ID!, $notifId: ID!) {
-        addNotification(userId: ID!, notifId: ID!)
+        addNotification(userId: $userId, notifId: $notifId)
     }
 `
 
 export const REMOVE_NOTIFICATION_FROM_USER_OBJECT = gql`
     mutation RemoveNotificationFromUserOnject($userId: ID!, $notifId: ID!) {
-        removeNotification(userId: ID!, notifId: ID!)
+        removeNotification(userId: $userId, notifId: $notifId)
     }
 `

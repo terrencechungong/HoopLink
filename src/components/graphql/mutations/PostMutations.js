@@ -2,7 +2,9 @@ import { gql } from '@apollo/client'
 
 export const CREATE_POST_OBJECT = gql`
     mutation CreatePostObject($post: CreatePostInput!) {
-        createPost(post: $post)
+        createPost(post: $post) {
+            _id
+        }
     }
 `
 
@@ -30,3 +32,9 @@ export const REMOVE_COMMENT_FROM_POST = gql`
     }
 `
 
+export const ADD_FILES_TO_POST = gql`
+    mutation AddFilesToPost($postId: ID!, $fileIds: [String!]!) {
+        addFilesToPost(postId: $postId, fileIds: $fileIds)
+    }
+
+`

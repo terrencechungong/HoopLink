@@ -9,8 +9,9 @@ import CloseFileButton from './CloseFileButton';
 import { globalVariables } from '..';
 import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ThreeDots } from 'react-loader-spinner';
 
-const CreatePostModal = ({ closeModalFunction }) => {
+const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAreaHeightState, uploadPost, fileData, captionRef }) => {
     const fileInputRef = useRef(null);
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
@@ -22,7 +23,12 @@ const CreatePostModal = ({ closeModalFunction }) => {
     const [postsIsNone, setPostsIsNone] = useState(false);
     const [locationIsNone, setLocationIsNone] = useState(true);
     const [prevStep, setPrevStep] = useState(0);
-    const [filesArray, setFilesArray] = useState([]);
+    const [filesArray, setFilesArray] = filesState;
+    const [localFilesArray, setLocalFilesArray] = useState(filesArray)
+    const [caption, setCaption] = captionState;
+    const [textAreaHeight, setTextAreaHeight] = textAreaHeightState;
+    const textAreaRef = useRef(null);  // Creates a ref object
+    const [posting, setPosting] = useState(false)
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -35,6 +41,10 @@ const CreatePostModal = ({ closeModalFunction }) => {
     // maybe just change height
 
     useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.value = captionRef.current;
+            textAreaRef.current.style.height = textAreaHeight;
+        }
         if (!postsIsNone) {
             console.log(globalVariables.postsShowingPostsModal)
             const textarea = document.getElementById('expandingTextarea');
@@ -44,6 +54,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                 this.style.height = 'auto';
                 // Set the height to the scroll height of the element
                 this.style.height = (this.scrollHeight) + 'px';
+                setTextAreaHeight(this.style.height);
                 console.log(this.style.height);
             });
         }
@@ -93,6 +104,12 @@ const CreatePostModal = ({ closeModalFunction }) => {
             setPostsIsNone(true);
             setLocationIsNone(false);
         }
+    }
+
+    const handleUploadPost = async () => {
+        setPosting(true);
+        const postCompleted = await uploadPost();
+        // show something for erro and success
     }
 
     const addPostSection = () => {
@@ -175,6 +192,8 @@ const CreatePostModal = ({ closeModalFunction }) => {
                             {fileContentSection}
                         </div>)
                     setFilesArray([...filesArray, fileSection]);
+                    setLocalFilesArray([...localFilesArray, fileSection]);
+                    fileData.current.push(file);
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -218,9 +237,10 @@ const CreatePostModal = ({ closeModalFunction }) => {
     return (
         <div id="create-a-post-modal-container">
             <div id="create-a-post-modal">
+                {/* <div className='test'>fdfdfdf</div> */}
                 <div id="create-a-post-header">
                     <h2><strong>Create A Post</strong></h2>
-                    <button onClick={closeModalFunction}><IoCloseOutline size={32} /></button>
+                    <button onClick={closeModalFunction}><IoCloseOutline size={30} /></button>
                 </div>
                 <div id="text-area-wrapper">
                     <AnimatePresence
@@ -232,8 +252,15 @@ const CreatePostModal = ({ closeModalFunction }) => {
                             initial="hidden"
                             animate="visible"
                             exit="exit" id="text-area" ref={addFile} >
-                            <textarea id="expandingTextarea"></textarea>
-                            {filesArray.map((file) => file)}
+                            <textarea
+                                ref={textAreaRef}
+                                id="expandingTextarea"
+                                onInput={(e) => {
+                                    setCaption(textAreaRef.current.value);
+                                    captionRef.current = textAreaRef.current.value;
+                                    console.log(textAreaRef.current.value)
+                                }}></textarea>
+                            {localFilesArray.map((file) => file)}
                         </motion.div>}
                     </AnimatePresence>
                     <AnimatePresence
@@ -255,6 +282,22 @@ const CreatePostModal = ({ closeModalFunction }) => {
                             </div>
                         </motion.div>}
                     </AnimatePresence>
+                    {(posting) &&
+                        <div id="posting-in-progress">
+                            Your Post is being uploaded
+                            <ThreeDots
+                                visible={true}
+                                height="80"
+                                width="80"
+                                color="rgb(0, 102, 255)"
+                                radius="9"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                            />
+                        </div>
+
+                    }
                 </div>
 
 
@@ -274,7 +317,7 @@ const CreatePostModal = ({ closeModalFunction }) => {
                         </div>
                     </div>
                     <div id="post-button">
-                        <button>Post</button>
+                        <button onClick={() => handleUploadPost()}>Post</button>
                     </div>
                 </div>
             </div>

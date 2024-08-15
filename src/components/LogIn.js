@@ -14,7 +14,6 @@ const LogIn = () => {
         const user = await signin(email, password);
         if (user !== false) {
             console.log("user logged in");
-            globalVariables.user = user;
             navigate('/chats');
         }
     }   

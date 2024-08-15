@@ -22,40 +22,50 @@ $primary-color: rgb(122, 81, 156);
     }
 }
 
+
+.test {
+    position: absolute;
+    z-index: 90;
+    background-color: aqua;
+    width: 80%;
+    height: 80%;
+    align-items: center;
+}
+
 .scrollbar {
     &::-webkit-scrollbar {
-        width: 12px;
+        width: 0px;
         /* Width of the scrollbar */
     }
 
-    &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        /* Background of the scrollbar track */
-    }
+    // &::-webkit-scrollbar-track {
+    //     background: #f1f1f1;
+    //     /* Background of the scrollbar track */
+    // }
 
-    &::-webkit-scrollbar-thumb {
-        background: #888;
-        /* Background of the scrollbar thumb */
-        border-radius: 6px;
-        /* Rounded corners for the scrollbar thumb */
-    }
+    // &::-webkit-scrollbar-thumb {
+    //     background: #888;
+    //     /* Background of the scrollbar thumb */
+    //     border-radius: 6px;
+    //     /* Rounded corners for the scrollbar thumb */
+    // }
 
-    &::-webkit-scrollbar-thumb:hover {
-        background: #555;
-        /* Background of the scrollbar thumb when hovered */
-    }
+    // &::-webkit-scrollbar-thumb:hover {
+    //     background: #555;
+    //     /* Background of the scrollbar thumb when hovered */
+    // }
 
-    // Firefox styles
-    scrollbar-width: thin;
-    /* Makes the scrollbar thinner */
-    scrollbar-color: #888 #f1f1f1;
-    /* Scrollbar thumb color and track color */
+    // // Firefox styles
+    // scrollbar-width: thin;
+    // /* Makes the scrollbar thinner */
+    // scrollbar-color: #888 #f1f1f1;
+    // /* Scrollbar thumb color and track color */
 
-    &:hover {
-        scrollbar-color: #555 #f1f1f1;
-        /* Scrollbar thumb color when hovered */
-    }
-
+    // &:hover {
+    //     scrollbar-color: #555 #f1f1f1;
+    //     /* Scrollbar thumb color when hovered */
+    // }
+    scrollbar-width: 0px;
     /* Ensure padding and border are included in the width */
 }
 
@@ -97,7 +107,7 @@ $primary-color: rgb(122, 81, 156);
         #create-a-post-header {
             display: flex;
             flex-direction: column;
-            height: 40px;
+            height: 42px;
             align-items: center;
             justify-content: center;
             position: sticky;
@@ -106,16 +116,20 @@ $primary-color: rgb(122, 81, 156);
             border-bottom: 1px solid black;
             padding-bottom: 5px;
             z-index: 10;
+            h2 {
+                font-size: larger;
+                margin: 7px;
+            }
 
             button {
                 position: absolute;
                 right: 20px;
-                top: 6px;
+                top: 4px;
                 background-color: rgb(230, 230, 230);
                 border-width: 0px;
                 border-radius: 50%;
-                width: 35px;
-                height: 35px;
+                width: 32px;
+                height: 32px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -146,7 +160,7 @@ $primary-color: rgb(122, 81, 156);
                 overflow-y: scroll;
                 position: absolute;
                 z-index: 1000;
-                background-color: aqua;
+                background-color: white;
                 textarea {
                     width: 90%;
                     overflow-y: hidden;
@@ -211,6 +225,21 @@ $primary-color: rgb(122, 81, 156);
                         background-color: green;
                     }
                 }
+
+            }
+            #posting-in-progress {
+                height: 100%;
+                width: 420px;
+                z-index: 1000;
+                background-color: rgba(255, 255, 255, 0.678);
+                display: flex;
+                flex-direction: column;
+                font-weight: 800;
+                color: rgb(0, 102, 255);
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                // color: white;
 
             }
         }

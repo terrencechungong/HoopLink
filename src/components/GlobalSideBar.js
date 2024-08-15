@@ -7,13 +7,31 @@ import { FaRegBell } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from './constants';
 import SearchBarModal from './SearchBarModal';
-import { useState } from 'react';
+import { useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const GlobalSideBar = ({ selected }) => {
     // feed, runsfeed, chats, profile, notifications MAKE RED CIRCLE
     const navigate = useNavigate();
     const [showSearchBar, setShowSearchBar] = useState(false);
+    const user = useRef(null);
+    const getUser = useAuth().getUser;
+    // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
+
+    useEffect(() => {
+        const setUser = async () => {
+            user.current = await getUser();
+
+            if (!user.current) {
+                console.log(user)
+                console.log("no user");
+                navigate('/login');
+            }
+        }
+        setUser()
+    });
 
     return (
         <div id="navbar-container">
@@ -45,7 +63,7 @@ const GlobalSideBar = ({ selected }) => {
                 className={`${selected == Navbar.CHATS ? 'selected' : ''}`}
             ><IoChatbubbleOutline size={28} /></button>
             <button
-                onClick={() => navigate('/single-profile-view')}
+                onClick={() => navigate(`/myprofile/${user.current.id}`)}
                 className={`${selected == Navbar.PROFILE ? 'selected' : ''}`}
             ><IoPersonCircleOutline size={28} /></button>
             <button

@@ -1,23 +1,32 @@
 import './styles/single-profile-view.scss'
 import pic from '../components/ChatSettingComponents/piccy.png'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
 import ProfileViewRun from './ProfileViewRun';
 import ProfileViewPost from './ProfileViewPost';
-
+import { useParams } from 'react-router-dom';
+import { GET_USER_DATA_FOR_SELF_VIEW } from './graphql/queries/UserQueries';
+import { useQuery } from '@apollo/client';
 
 const SingleProfileView = () => {
     const [current, setCurrent] = useState('Posts');
     const [posts, setPosts] = useState(true);
     const [runs, setRuns] = useState(false);
     const [media, setMedia] = useState(false);
+    const { authId } = useParams();
+    console.log(authId)
+    // make more secure
 
+    const { data, loading, error } = useQuery(GET_USER_DATA_FOR_SELF_VIEW, {
+        variables: { authId }
+    });
+    console.log({ data, loading, error } )
     let postss = [];
     let runss = [];
-    for (let i = 0; i<25; i++) {
-        runss.push(<ProfileViewRun/>);
-        postss.push(<ProfileViewPost/>);
+    for (let i = 0; i < 25; i++) {
+        runss.push(<ProfileViewRun />);
+        postss.push(<ProfileViewPost />);
     }
 
 
@@ -43,22 +52,32 @@ const SingleProfileView = () => {
 
                 <div id="single-profile-view-container">
                     <div id="single-profile-header">
-                        <img src={pic} />
+                        {!loading ?
+                            <img src={pic} /> :
+                            <div className='skeleton' style={{width: '70px',
+                                height: '70px',
+                                borderRadius: '50%',
+                                margin: '18px',}}>
+
+                            </div>
+                        }
                         <div id="single-profile-header-info">
-                            <div id="username-friend">
-                                <p>
-                                    <strong>bigteethabuilder</strong>
-                                </p>
-                                <button > 
-                                    Add Friend
-                                </button>
-                            </div>
-                            <div id="profile-stats">
-                                <p> <strong>2</strong> posts </p>
-                                <p> <strong>2</strong> friends </p>
-                                <p> <strong>2</strong> runs </p>
-                                <p><strong>2</strong> mvps </p>
-                            </div>
+                            {!loading ?
+                                <div id="username-friend">
+                                    <p>
+                                        <strong>{data.getUserWithAuthId.username}</strong>
+                                    </p>
+                                    <button >
+                                        Add Friend
+                                    </button>
+                                </div> : <p style={{ width: '250px', height: '25px', }} className='skeleton'></p>}
+                            {!loading ?
+                                <div id="profile-stats">
+                                    <p> <strong>{data.getUserWithAuthId.posts.length}</strong> posts </p>
+                                    <p> <strong>{data.getUserWithAuthId.friends.length}</strong> friends </p>
+                                    <p> <strong>{data.getUserWithAuthId.runs.length}</strong> runs </p>
+                                    <p><strong>{data.getUserWithAuthId.mvpCount}</strong> mvps </p>
+                                </div> : <p style={{ width: '275px', height: '25px', }} className='skeleton'></p>}
                         </div>
                     </div>
                     <div id="single-view-profile-content-selection">
