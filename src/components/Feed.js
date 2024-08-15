@@ -37,6 +37,8 @@ const Feed = () => {
     const [addFilesToPost, addFilesToPostData] = useMutation(ADD_FILES_TO_POST)
     const fileData = useRef([]);
 
+    // implemet error handling for when the server is down
+
     useEffect(() => {
         const setUser = async () => {
             if (!user.current) {
@@ -47,7 +49,7 @@ const Feed = () => {
                     }
                 });
                 if (!user.current) {
-                    console.log(user)
+                    // console.log(user)
                     console.log("no user");
                     navigate('/login');
                 }
@@ -82,7 +84,7 @@ const Feed = () => {
 
         // Create Files
         let fileIds = []
-        for (let i = 0; i <= fileData.current.length; i++) {
+        for (let i = 0; i < fileData.current.length; i++) {
             const formData = new FormData();
             formData.append('file', fileData.current[0]);
             console.log(fileData.current[0])
@@ -112,13 +114,6 @@ const Feed = () => {
                 return false;
             }
         }
-        const addedFiles = await addFilesToPost({
-            variables: {
-                postId,
-                fileIds
-            }
-        })
-        console.log(addedFiles);
         return true;
     }
 

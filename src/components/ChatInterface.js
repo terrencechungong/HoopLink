@@ -15,6 +15,8 @@ import { RiChatNewLine } from "react-icons/ri";
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
 import { useAuth } from '../context/AuthContext';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -24,23 +26,34 @@ const ChatInterface = () => {
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
     const user = useRef(null);
+    const [getUserWithAuthId, data] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
     const getUser = useAuth().getUser;
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
         const setUser = async () => {
-            user.current = await getUser();
-
-            console.log(user.current)
             if (!user.current) {
-                console.log(user)
-                console.log("no user");
-                navigate('/login');
+                user.current = await getUser();
+                const userId = await getUserWithAuthId({
+                    variables: {
+                        authId: user.current.id
+                    }
+                });
+                if (!user.current) {
+                    // console.log(user)
+                    console.log("no user");
+                    navigate('/login');
+                }
+                // wait until its done
+                console.log(userId.data.getUserWithAuthId._id)
+                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
+                // console.log(user.current)
+
             }
         }
+        console.log("run")
         setUser()
-    })
-
+    }, [user.current]);
     const invisibleClick = () => {
         console.log()
 

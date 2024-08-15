@@ -242,6 +242,36 @@ $primary-color: rgb(122, 81, 156);
                 // color: white;
 
             }
+            #posting-success {
+                height: 100%;
+                width: 420px;
+                z-index: 1000;
+                background-color: rgba(255, 255, 255, 0.678);
+                display: flex;
+                flex-direction: column;
+                font-weight: 800;
+                color: rgb(2, 137, 0);
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                // color: white;
+
+            }
+            #posting-error {
+                height: 100%;
+                width: 420px;
+                z-index: 1000;
+                background-color: rgba(255, 255, 255, 0.678);
+                display: flex;
+                flex-direction: column;
+                font-weight: 800;
+                color: rgb(168, 31, 0);
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                // color: white;
+
+            }
         }
 
 

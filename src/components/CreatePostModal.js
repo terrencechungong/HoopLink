@@ -10,6 +10,10 @@ import { globalVariables } from '..';
 import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThreeDots } from 'react-loader-spinner';
+import { waitForNSeconds } from './utils/utility';
+import { useNavigate } from 'react-router-dom';
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { BiError } from "react-icons/bi";
 
 const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAreaHeightState, uploadPost, fileData, captionRef }) => {
     const fileInputRef = useRef(null);
@@ -28,7 +32,10 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
     const [caption, setCaption] = captionState;
     const [textAreaHeight, setTextAreaHeight] = textAreaHeightState;
     const textAreaRef = useRef(null);  // Creates a ref object
-    const [posting, setPosting] = useState(false)
+    const [posting, setPosting] = useState(false);
+    const [postSuccessful, setPostSuccessFul] = useState(false);
+    const [postError, setPostError] = useState(false);
+    const refreshOnClick = useRef(null);
 
     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/bmp', 'image/vnd.microsoft.icon', 'image/apng', 'application/pdf', 'video/mp4',
         'video/webm',
@@ -110,7 +117,24 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
         setPosting(true);
         const postCompleted = await uploadPost();
         // show something for erro and success
+        //
+        if (postCompleted) {
+            setPosting(false);
+            setPostSuccessFul(true);
+            await waitForNSeconds(0.7);
+            refreshOnClick.current.click();
+        } else {
+            setPosting(false);
+            setPostError(true);
+            await waitForNSeconds(0.7);
+            setPostError(false)
+            setPostsIsNone(false);
+        }
     }
+    // 9254683000
+    // 7134079848 
+    //altairmeta@mycwt.com
+
 
     const addPostSection = () => {
         if (postsIsNone) {
@@ -298,6 +322,19 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
                         </div>
 
                     }
+                    {(postSuccessful) &&
+                        <div id="posting-success">
+                            Post successful!
+                            <IoIosCheckmarkCircleOutline />
+
+                        </div>
+                    }
+                    {(postError) &&
+                        <div id="posting-error">
+                            There was an issue uploading your post, please try again.
+                            <BiError />
+                        </div>
+                    }
                 </div>
 
 
@@ -321,6 +358,7 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
                     </div>
                 </div>
             </div>
+            <a ref={refreshOnClick} href="/feed" style={{display:'none'}}></a>
         </div>
     )
 }

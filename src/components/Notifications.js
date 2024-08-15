@@ -5,7 +5,7 @@ import pic from './ChatSettingComponents/piccy.png'
 import { RiChatNewLine } from "react-icons/ri";
 import { LuCrown } from "react-icons/lu";
 import { FaLocationDot } from "react-icons/fa6";
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import MvpVoteProgressModal from './MvpVoteProgressModal';
 import { AnimatePresence } from 'framer-motion';
 import NotificationModal from './NotificationModal';
@@ -15,21 +15,42 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { PiCourtBasketballDuotone } from "react-icons/pi";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 
 const Notifications = () => {
     const [showNotification, setShowNotification] = useState(false);
     const [notificationData, setNotificationData] = useState({});
-    const user = useAuth().user;
+    const user = useRef(null);
+    const [getUserWithAuthId, data] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
+    const getUser = useAuth().getUser;
     const navigate = useNavigate()
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        console.log(user)
-        if (!user) {
-            console.log("no user");
-            navigate('/login');
+        const setUser = async () => {
+            if (!user.current) {
+                user.current = await getUser();
+                const userId = await getUserWithAuthId({
+                    variables: {
+                        authId: user.current.id
+                    }
+                });
+                if (!user.current) {
+                    // console.log(user)
+                    console.log("no user");
+                    navigate('/login');
+                }
+                // wait until its done
+                console.log(userId.data.getUserWithAuthId._id)
+                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
+                // console.log(user.current)
+
+            }
         }
-    })
+        console.log("run")
+        setUser()
+    }, [user.current]);
 
     let notis = [];
     const displayNotifModal = (data) => {
