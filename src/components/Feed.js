@@ -36,6 +36,7 @@ const Feed = () => {
     const [getUserWithAuthId, data] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
     const [addFilesToPost, addFilesToPostData] = useMutation(ADD_FILES_TO_POST)
     const fileData = useRef([]);
+    const postLocation = useRef("");
 
     // implemet error handling for when the server is down
 
@@ -72,7 +73,7 @@ const Feed = () => {
                 post: {
                     creator: user.current.dbId,
                     creationTime: (new Date()).toISOString(),
-                    location: "not implemented",
+                    location: postLocation.current,
                     caption: captionRef.current,
                     files: []
                 }
@@ -168,6 +169,7 @@ const Feed = () => {
             fileData={fileData}
             uploadPost={createFilesAndPosts}
             captionRef={captionRef}
+            postLocation={postLocation}
         />;
         if (globalVariables.postModalHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
@@ -200,7 +202,6 @@ const CreateAPost = ({ clickFunction }) => {
                 <img src={pic} />
                 <input type="text" placeholder="Create a new post" onClick={clickFunction} />
             </div>
-
         </div>
     )
 }

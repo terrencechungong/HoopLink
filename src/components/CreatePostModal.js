@@ -1,3 +1,5 @@
+// got to top of page and disable scrolling when doing post uis
+
 import './styles/create-a-post.scss'
 import { useEffect, useState } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
@@ -15,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { BiError } from "react-icons/bi";
 
-const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAreaHeightState, uploadPost, fileData, captionRef }) => {
+const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAreaHeightState, uploadPost, fileData, captionRef, postLocation }) => {
     const fileInputRef = useRef(null);
     const addFile = useRef(null);
     const STORE_FILE = 'store-file';
@@ -72,12 +74,15 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
                 { /* Geocoder options */ });
 
             autocomplete.on('select', (location) => {
-                // check selected location here 
+                console.log(location);
             });
 
             autocomplete.on('suggestions', (suggestions) => {
                 setSuggLocas(suggestions.map(s => s.properties.address_line1 + ', ' + s.properties.address_line2))
             });
+            if (postLocation.current !== "") {
+                handleInputChange("", postLocation.current);
+            }
         }
     }, [locationIsNone, postsIsNone]);
 
@@ -91,6 +96,7 @@ const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAre
             }
         } else {
             value = e.target.value;
+            postLocation.current = value;
         }
 
         const input = document.getElementsByClassName('geoapify-autocomplete-input')[0];
