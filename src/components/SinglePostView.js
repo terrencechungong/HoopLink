@@ -12,9 +12,15 @@ import SinglePostCarousel from './SinglePostCarousel';
 import { globalVariables } from '..';
 import ReactDOM from 'react-dom/client';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_POST_USING_POST_ID } from './graphql/queries/PostQueries';
 import { formatISODate } from './utils/utility';
+import { CREATE_COMMENT_OBJECT } from './graphql/mutations/CommentMutations';
+import { useLazyQuery } from '@apollo/client';
+import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { CHECK_IF_USERS_ARE_FRIENDS } from './graphql/queries/UserQueries';
 
 const SinglePostView = () => {
     const [liked, setLiked] = useState(false);
@@ -25,17 +31,53 @@ const SinglePostView = () => {
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
+    const commentTextRef = useRef(null);
+    const [createCommentMutation, createCommentData] = useMutation(CREATE_COMMENT_OBJECT)
     const { postId } = useParams();
+    const user = useRef(null);
+    const [getUserWithAuthId, getUserAuthIdData] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
+    const getUser = useAuth().getUser;
+    const navigate = useNavigate();
+
     const { data, loading, error } = useQuery(GET_POST_USING_POST_ID, {
         variables: {
             id: postId
         }
     });
-    console.log(data)
+    console.log(data);
 
-    // useEffect(() => {
-    //     console.log(data)
-    // }, [data])
+    useEffect(() => {
+        const setUser = async () => {
+            if (!user.current) {
+                user.current = await getUser();
+                const userId = await getUserWithAuthId({
+                    variables: {
+                        authId: user.current.id
+                    }
+                });
+                if (!user.current) {
+                    // console.log(user)
+                    console.log("no user");
+                    navigate('/login');
+                }
+                // wait until its done
+                console.log(userId.data.getUserWithAuthId._id)
+                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
+                // console.log(user.current)
+            }
+        }
+        console.log("run")
+        setUser()
+    }, [user.current]);
+
+    const likesStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '4px',
+        fontSize: '13px',
+        alignItems: 'center'
+    }
+
 
     let comments = [];
     for (let i = 0; i <= 10; i++) {
@@ -52,6 +94,21 @@ const SinglePostView = () => {
         globalVariables.postCarouselModalEffect = false;
         setIsUp(false);
     }
+
+    const createComment = async () => {
+        await createCommentMutation({
+            variables: {
+                comment: {
+                    text: commentTextRef.current.value,
+                    creator: user.current.dbId,
+                    creationTime: (new Date()).toISOString(),
+                    post: data.post._id
+                }
+            }
+        })
+        commentTextRef.current.value = ""
+    };
+
 
     useEffect(() => {
         const func = function (event) {
@@ -92,15 +149,22 @@ const SinglePostView = () => {
         <div id="single-post-view-screen" ref={parentRef}>
             <div id="single-post-view-container">
                 <div id="single-post-header">
-                    <img src={pic} />
+                    {!loading ? <img src={data.post.creator.profilePhoto} /> : <div className='skeleton' style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '30px',
+                        marginLeft: '20px',
+                    }}>
+
+                    </div>}
                     <div className='post-header-section'>
-                        {!loading && <p><strong>{data.post.creator.firstName}{' '}{data.post.creator.lastName}</strong></p>}
-                        {!loading && <p>@{data.post.creator.username}</p>}
+                        {!loading ? <p><strong>{data.post.creator.firstName}{' '}{data.post.creator.lastName}</strong></p> : <div className='skeleton' style={{ width: '120px', height: '15px' }}></div>}
+                        {!loading ? <p>@{data.post.creator.username}</p> : <div className='skeleton' style={{ width: '120px', height: '15px', marginTop: '5px' }}></div>}
                     </div>
                     <div className='post-header-section'>
                         <p><strong>&bull;</strong></p>
                     </div>
-                    {!loading && <p>{formatISODate(data.post.creationTime)}</p>}
+                    {!loading ? <p>{formatISODate(data.post.creationTime)}</p> : <div className='skeleton' style={{ width: '120px', height: '20px' }}></div>}
                 </div>
                 <div className='single-post-content'>
                     <p>{!loading && data.post.caption}</p>
@@ -110,21 +174,38 @@ const SinglePostView = () => {
                     <hr style={hrStyle}></hr>
                     <div className='single-post-likes-comments'>
                         <button className={liked && 'liked'} onClick={() => setLiked(!liked)}>
-                            {!liked && <FaRegHeart size={33} />}
-                            {liked && <FaHeart size={33} />}
+                            {!liked && <div style={likesStyle}><FaRegHeart size={28} />{!loading && data.post.likers.length} likes</div>}
+                            {liked && <div style={likesStyle}><FaHeart size={28} />{!loading && data.post.likers.length} likes</div>}
                         </button>
-                        <button ><LuSend size={33} /></button>
+                        <button ><LuSend size={28} /></button>
                     </div>
                     <hr style={hrStyle}></hr>
                     <div id="add-comment-div">
-                        <img src={pic} />
-                        <input type="text" placeholder='Leave a comment!' onChange={commentValueChange} />
-                        {commentValue !== "" && <button>Post</button>}
+                        {!loading ? <img src={user.current.dbId} /> :
+                            <div className='skeleton' style={{
+                                width: '38px',
+                                height: '38px',
+                                borderRadius: '25px',
+                                marginLeft: '20px',
+                            }}>
+        
+                            </div>
+                        }
+                        {/* I can keep a like AND Comment state and update when actions are taken for immediate ui updates */}
+                        <input ref={commentTextRef} type="text" placeholder='Leave a comment!' onChange={commentValueChange} />
+                        {commentValue !== "" && <button onClick={() => { createComment() }}>Post</button>}
                     </div>
-                    <div className='single-post-comment-section'>
-                        {comments.length == 0 && "Be the first to leave a comment!"}
-                        {comments}
-                    </div>
+                    {!loading &&
+                        <div className='single-post-comment-section'>
+                            {data.post.comments.length == 0 && "Be the first to leave a comment!"}
+                            {data.post.comments.map((comment) =>
+                                <PostComment
+                                    username={comment.creator.username}
+                                    date={comment.creationTime}
+                                    profilePhoto={comment.creator.profilePhoto}
+                                    text={comment.text} />
+                            )}
+                        </div>}
                 </div>
             </div>
         </div>
@@ -132,13 +213,14 @@ const SinglePostView = () => {
 }
 
 
-const PostComment = () => {
+const PostComment = ({ username, date, profilePhoto, text }) => {
+    console.log(date)
     return (
         <div className='single-post-comment'>
-            <img src={pic} />
+            <img src={profilePhoto} />
             <div className='comment-content'>
-                <p><strong>NAME</strong> &bull; date</p>
-                <p>SDSDSFSDFSDFSDFSDFSDFASDAFSDFDSFDSAF</p>
+                <p><strong>{username}</strong> &bull; {formatISODate(date)}</p>
+                <p>{text}</p>
             </div>
         </div>
     )

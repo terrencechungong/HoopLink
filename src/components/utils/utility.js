@@ -8,11 +8,17 @@ export function waitForNSeconds(n) {
 
 export function formatISODate(isoDateString) {
     // Parse the ISO string into a Date object
-    const date = new Date(Number(isoDateString));
+    let date;
+    if (/^\d+$/.test(isoDateString)) {
+        date = new Date(Number(isoDateString));
+    } else {
+        date = new Date(isoDateString);
+
+    }
 
     // Define an array of month names
-    const months = ["January", "February", "March", "April", "May", "June", 
-                    "July", "August", "September", "October", "November", "December"];
+    const months = ["Jan", "Feb", "Mar", "April", "May", "June", 
+                    "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
     // Extract the day and year from the Date object
     const day = date.getDate();

@@ -8,7 +8,7 @@ const ProfileViewRun = () => {
     return (
         <div className='single-profile-run-view'>
             <div className='single-profile-run-view-wrap'>
-                <p> Profile run bitch</p>
+                <p> Profile run boi</p>
                 <span>&bull;</span>
                 <p className='single-profile-run-view-loca' style={{ color: 'rgb(110, 110, 110)' }}>LOCATION</p>
                 <span>&bull;</span>

@@ -8,7 +8,7 @@ const ProfileViewPost = () => {
     return (
         <div className='single-post-run-view'>
             <div className='single-post-run-view-wrap'>
-                <p style={{ color: "white" }}> Profile run bitch</p>
+                <p style={{ color: "white" }}> Profile run bois</p>
                 <span>&bull;</span>
                 <p className='single-post-run-view-loca' style={{ color: "white" }}>LOCATION</p>
                 <span>&bull;</span>

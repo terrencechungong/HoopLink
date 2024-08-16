@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { supabase } from './supabase-conf'
+import { globalVariables } from "..";
 
 export const signUp = async (email, password, firstName, lastName) => {
 
@@ -26,7 +27,10 @@ export const signin = async (email, password) => {
         email,
         password,
     });
-   
+    const response = await fetch(`http://localhost:3030/getUser?authId=${data.user.id}`);
+    const res = await response.json()
+    console.log(res);
+    localStorage.setItem('myData', JSON.stringify(res.user));
     // console.log("data", data, "error", error)
     return error === null;
 }
