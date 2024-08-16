@@ -30,14 +30,18 @@ export const signin = async (email, password) => {
     const response = await fetch(`http://localhost:3030/getUser?authId=${data.user.id}`);
     const res = await response.json()
     console.log(res);
-    localStorage.setItem('myData', JSON.stringify(res.user));
+    localStorage.setItem('user_object', JSON.stringify(res.user));
     // console.log("data", data, "error", error)
     return error === null;
 }
 
 export const logOut = async () => {
     const { error } = await supabase.auth.signOut();
-    return error === null;
+    if ( error !== null) {
+        localStorage.removeItem('user_object');
+        return true;
+    }
+    return false;
 }
 
 // show error message

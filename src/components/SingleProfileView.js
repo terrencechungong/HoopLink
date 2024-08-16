@@ -30,8 +30,7 @@ const SingleProfileView = () => {
     const userButtonSet = useRef(false);
     const userButtonValue = useRef(false);
     const [wtf, setWtf] = useState(false);
-    const dsds = useAuth().user;
-    const userObj = JSON.parse(localStorage.getItem('myData'));
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
     // make more secure
     const { data, loading, error } = useQuery(GET_USER_DATA_FOR_SELF_VIEW, {
         variables: { authId }

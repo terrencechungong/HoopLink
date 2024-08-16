@@ -25,35 +25,18 @@ const ChatInterface = () => {
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
-    const user = useRef(null);
-    const [getUserWithAuthId, data] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
-    const getUser = useAuth().getUser;
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
+
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
+    
     useEffect(() => {
-        const setUser = async () => {
-            if (!user.current) {
-                user.current = await getUser();
-                const userId = await getUserWithAuthId({
-                    variables: {
-                        authId: user.current.id
-                    }
-                });
-                if (!user.current) {
-                    // console.log(user)
-                    console.log("no user");
-                    navigate('/login');
-                }
-                // wait until its done
-                console.log(userId.data.getUserWithAuthId._id)
-                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
-                // console.log(user.current)
+        console.log(userObj)
 
-            }
+        if (!userObj) { 
+            navigate('/login')
         }
-        console.log("run")
-        setUser()
-    }, [user.current]);
+    })
     const invisibleClick = () => {
         console.log()
 

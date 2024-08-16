@@ -25,8 +25,7 @@ const Feed = () => {
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
     const navigate = useNavigate()
-    const user = useRef(null);
-    const getUser = useAuth().getUser;
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
     const filesState = useState([]);
     const captionState = useState("");
     const captionRef = useRef("");
@@ -42,33 +41,12 @@ const Feed = () => {
     // implemet error handling for when the server is down
 
     useEffect(() => {
-        const setUser = async () => {
-            if (!user.current) {
-                user.current = await getUser();
-                const userId = await getUserWithAuthId({
-                    variables: {
-                        authId: user.current.id
-                    }
-                });
-                if (!user.current) {
-                    // console.log(user)
-                    console.log("no user");
-                    navigate('/login');
-                }
-                // wait until its done
-                console.log(userId)
-                // while () {
-                //     await waitForNSeconds(0.001)
-                // }
-                console.log(userId.data.getUserWithAuthId._id)
-                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
-                // console.log(user.current)
+        console.log(userObj)
 
-            }
+        if (!userObj) { 
+            navigate('/login')
         }
-        console.log("run")
-        setUser()
-    }, [user.current]);
+    })
 
 
     const createFilesAndPosts = async () => {
@@ -76,7 +54,7 @@ const Feed = () => {
         const postData = await createPostObject({
             variables: {
                 post: {
-                    creator: user.current.dbId,
+                    creator: userObj._id,
                     creationTime: (new Date()).toISOString(),
                     location: postLocation.current,
                     caption: captionRef.current,
