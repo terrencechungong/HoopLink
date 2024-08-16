@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 
 const FilesSinglePostSection = ({ filesThumbnails, showModal }) => {
+    console.log(filesThumbnails)
 
     useEffect(() => {
         const classNames = ['one-photo', 'half-photos', 'top-third-fourth', 'bottom-third', 'bottom-fourth'];

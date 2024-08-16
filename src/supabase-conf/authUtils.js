@@ -10,9 +10,14 @@ export const signUp = async (email, password, firstName, lastName) => {
             emailRedirectTo: 'http://localhost:3000/chats',
         },
     })
-
-    console.log("data", data, "error", error);
-    return error === null;
+    if (error !== null) {
+        return false;
+    } else {
+        console.log(data.user);
+        return data.user
+    }
+    // console.log("data", data, "error", error);
+    // return error === null;
 
 }
 
@@ -21,7 +26,7 @@ export const signin = async (email, password) => {
         email,
         password,
     });
-
+   
     // console.log("data", data, "error", error)
     return error === null;
 }

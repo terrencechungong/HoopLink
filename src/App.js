@@ -46,7 +46,7 @@ function App() {
               <Route path="/myprofile/:authId" element={< SingleProfileView />} />
               <Route path="/runs-feed" element={<RunsFeed />} />
               <Route path="/single-run-view" element={<SingleRunView />} />
-              <Route path="/single-post-view" element={<SinglePostView />} />
+              <Route path="/viewpost/:postId" element={<SinglePostView />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/searchresults/:param" element={<SearchResults/>} />
             </Routes>

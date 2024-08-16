@@ -11,6 +11,10 @@ import FilesSinglePostSection from './FilesSinglePostSection';
 import SinglePostCarousel from './SinglePostCarousel';
 import { globalVariables } from '..';
 import ReactDOM from 'react-dom/client';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GET_POST_USING_POST_ID } from './graphql/queries/PostQueries';
+import { formatISODate } from './utils/utility';
 
 const SinglePostView = () => {
     const [liked, setLiked] = useState(false);
@@ -21,6 +25,18 @@ const SinglePostView = () => {
     const modalRoot = useRef(null);
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
+    const { postId } = useParams();
+    const { data, loading, error } = useQuery(GET_POST_USING_POST_ID, {
+        variables: {
+            id: postId
+        }
+    });
+    console.log(data)
+
+    // useEffect(() => {
+    //     console.log(data)
+    // }, [data])
+
     let comments = [];
     for (let i = 0; i <= 10; i++) {
         comments.push(<PostComment />);
@@ -59,7 +75,7 @@ const SinglePostView = () => {
     })
 
     const showModal = () => {
-        let modal = <SinglePostCarousel closeModalFunction={closeModal} allPhotos={[pic, pic2]} />;
+        let modal = <SinglePostCarousel closeModalFunction={closeModal} allPhotos={data.post.files.map(file => file.awsUri)} />;
         if (globalVariables.carouselHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "single-post-carousel-modal-container";
@@ -78,20 +94,19 @@ const SinglePostView = () => {
                 <div id="single-post-header">
                     <img src={pic} />
                     <div className='post-header-section'>
-                        <p><strong>Terrence</strong></p>
-                        <p>@bigterrencebuilding</p>
+                        {!loading && <p><strong>{data.post.creator.firstName}{' '}{data.post.creator.lastName}</strong></p>}
+                        {!loading && <p>@{data.post.creator.username}</p>}
                     </div>
                     <div className='post-header-section'>
                         <p><strong>&bull;</strong></p>
                     </div>
-                    <p>Jul 10, 2029</p>
+                    {!loading && <p>{formatISODate(data.post.creationTime)}</p>}
                 </div>
                 <div className='single-post-content'>
-                    <p>uisdfhishfisbdifubsaiufiusdb
-                        sndfnasdifnskdfdsdfsdfsdfsdfsdfsdfsdfsfsksbfsdjkfksdnf
-                        sdnfksndfkjsnkfdnkjsfksdfsdfsdfsdfsdfs
-                    </p>
-                    <FilesSinglePostSection filesThumbnails={[pic, pic, pic, pic, pic, pic, pic]} showModal={showModal} />
+                    <p>{!loading && data.post.caption}</p>
+                    {!loading &&
+                        <FilesSinglePostSection filesThumbnails={data.post.files.map(file => file.awsUri)} showModal={showModal} />
+                    }
                     <hr style={hrStyle}></hr>
                     <div className='single-post-likes-comments'>
                         <button className={liked && 'liked'} onClick={() => setLiked(!liked)}>
@@ -122,7 +137,7 @@ const PostComment = () => {
         <div className='single-post-comment'>
             <img src={pic} />
             <div className='comment-content'>
-                <p><strong>NAME</strong></p>
+                <p><strong>NAME</strong> &bull; date</p>
                 <p>SDSDSFSDFSDFSDFSDFSDFASDAFSDFDSFDSAF</p>
             </div>
         </div>

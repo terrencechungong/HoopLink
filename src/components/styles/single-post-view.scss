@@ -59,9 +59,10 @@
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
+    background-color: rgb(233, 233, 233);
 
     #single-post-view-container {
-        background-color: grey;
+        background-color: rgb(255, 255, 255);
         max-width: 500px;
         box-sizing: border-box;
         display: flex;
@@ -69,15 +70,18 @@
         margin-top: 30px;
         margin-bottom: 30px;
         flex-direction: column;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.575);
 
         #single-post-header {
             height: 60px;
             width: 100%;
-            background-color: red;
+            background-color: rgb(255, 255, 255);
             border-radius: 14px 14px 0 0;
             display: flex;
             flex-direction: row;
+            margin-bottom: 4px;
             align-items: center;
+            // border-bottom: 2px solid black;
             img {
                 width: 50px;
                 height: 50px;
@@ -97,16 +101,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
             p{
                 margin-left: 29px;
                 width:95%;
             }
             .single-post-files-section {
                 display: grid;
-                background-color: blue;
+                background-color: rgb(255, 255, 255);
                 height: 300px;
                 width: 90%;
-                gap: 5px;
+                gap: 3px;
                 grid-template-rows:  repeat(6, 1fr);
                 grid-template-columns: repeat(6, 1fr);
             }
@@ -115,6 +120,8 @@
                 flex-direction: row;
                 gap: 19px;
                 align-self: flex-start;
+                padding-top: 5px;
+                padding-bottom: 5px;
                 margin-left: 26px;
                 max-width: 100%;
                 button {
@@ -126,21 +133,34 @@
                 }
             }
             #add-comment-div {
+                // background-color: aqua;
+                width: 100%;
+                padding-left: 20px;
+                padding-right: 20px;;
+                padding-top:7px;
+                padding-bottom: 7px;
                 img {
-                    width: 50px;
-                    height: 50px;
+                    width: 38px;
+                    height: 38px;
                     border-radius: 25px;
+                    border: 1px solid black;
                 }
                 input {
                     border-radius: 14px;
                     outline: none;
                     border: none;
-                    width: 250px;
+                    // width: 250px;  make this a text area
+                    border: 1px solid grey;
+                    flex-grow: 1;
                 }
                 button {
                     border-radius: 14px;
                     outline: none;
                     border: none;
+                    background-color: rgb(0, 115, 255);
+                    color: white;
+                    padding-left: 7px;
+                    padding-right:7px;
                 }
                 display: flex;
                 flex-direction: row;
@@ -148,22 +168,30 @@
             }
             .single-post-comment-section {
                 align-self: flex-start;
-                padding: 20px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+                padding-left: 20px;
+                padding-right: 20px;
+                width: 100%;
+                overflow-wrap: anywhere;
                 .single-post-comment {
-                    border-top: 1px solid black;
+                    border-top: 0.1px solid rgb(114, 114, 114);
                     padding-top: 9px;
                     display: flex;
                     flex-direction: row;
                     padding-bottom: 10px;
                     img {
-                        width: 50px;
-                        height: 50px;
+                        width: 38px;
+                        height: 38px;
                         border-radius: 25px;
+                        border: 1px solid black;
                     }
                     .comment-content {
                         padding-left: 10px;
+                        width: 100%;
                         p {
                             margin: 0;
+                            font-size: 13px;
                         }
                         text-align: start;
                     }

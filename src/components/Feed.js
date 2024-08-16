@@ -16,6 +16,7 @@ import { CREATE_FILE_OBJECT } from './graphql/mutations/FileMutations';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 import { ADD_FILES_TO_POST } from './graphql/mutations/PostMutations';
+import { waitForNSeconds } from './utils/utility';
 
 const Feed = () => {
     const parentRef = useRef(null);
@@ -55,6 +56,10 @@ const Feed = () => {
                     navigate('/login');
                 }
                 // wait until its done
+                console.log(userId)
+                // while () {
+                //     await waitForNSeconds(0.001)
+                // }
                 console.log(userId.data.getUserWithAuthId._id)
                 user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
                 // console.log(user.current)
@@ -87,21 +92,21 @@ const Feed = () => {
         let fileIds = []
         for (let i = 0; i < fileData.current.length; i++) {
             const formData = new FormData();
-            formData.append('file', fileData.current[0]);
-            console.log(fileData.current[0])
+            formData.append('file', fileData.current[i]);
+            console.log(fileData.current[i])
 
             try {
                 const response = await fetch('http://localhost:3030/upload', {
                     method: 'POST',
                     body: formData,
                 });
-
+// fix filetype ting
                 if (response.ok) {
                     const result = await response.json();
                     console.log(result)
                     const fileMutationData = await createFileObject({
                         variables: {
-                            file: { ...result, fileType: fileData.current[0].type, post: postId }
+                            file: { ...result, fileType: fileData.current[i].type, post: postId }
                         }
                     });
                     console.log(fileMutationData.data.createFile._id);
