@@ -35,9 +35,10 @@ const Feed = () => {
     const [createFileObject, createFileMutationData] = useMutation(CREATE_FILE_OBJECT);
     const { data, loading, error } = useQuery(GET_USER_FEED, {
         variables: {
-            userId: (userObj ? userObj._id : null)
+            id: (userObj ? userObj._id : null)
         }
     });
+    console.log(loading, data ,userObj._id)
     // use data to populate this page, same approach for runs feed
     const fileData = useRef([]);
     const postLocation = useRef("");
@@ -110,10 +111,10 @@ const Feed = () => {
 
 
 
-    let feedPosts = [];
-    for (let i = 0; i <= 40; i++) {
-        feedPosts.push(<FeedPost />);
-    }
+    // let feedPosts = [];
+    // for (let i = 0; i <= 40; i++) {
+    //     feedPosts.push(<FeedPost />);
+    // }
 
     const closeModal = () => {
         globalVariables.postsShowingPostsModal = true;
@@ -177,18 +178,26 @@ const Feed = () => {
         <div className="feed-container" ref={parentRef}>
             <GlobalSideBar selected={Navbar.FEED} />
             <div className="feed">
-                <CreateAPost clickFunction={() => showModal()} />
-                {feedPosts}
+                <CreateAPost clickFunction={() => showModal()} profilePhoto={userObj.profilePhoto}/>
+                {!loading && 
+                // add more info of course
+                <div>
+                    {data.getUserFeed.map(post =><FeedPost
+                        caption={post.caption}
+                        creator={post.creator}
+                        creationTime={post.creationTime}/>)}
+                </div>
+                }
             </div>
         </div>
     );
 }
 
-const CreateAPost = ({ clickFunction }) => {
+const CreateAPost = ({ clickFunction, profilePhoto }) => {
     return (
         <div className='create-a-post'>
             <div className='top-half'>
-                <img src={pic} />
+                <img src={profilePhoto} />
                 <input type="text" placeholder="Create a new post" onClick={clickFunction} />
             </div>
         </div>

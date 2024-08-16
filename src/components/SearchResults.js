@@ -3,12 +3,20 @@ import GlobalSideBar from './GlobalSideBar';
 import './styles/search-results.scss'
 import { useParams } from 'react-router-dom';
 import ProfileSearchResultCard from './ProfileSearchResultCard';
+import { SEARCH_FOR_USERS } from './graphql/queries/UserQueries';
+import { useQuery } from '@apollo/client';
 
 const SearchResults = () => {
     const PEOPLE = 'PEOPLE';
     const LOCATIONS = 'LOCATIONS';
     const [selected, setSelected] = useState(PEOPLE);
     const { param } = useParams();
+    const {data,loading,error} = useQuery(SEARCH_FOR_USERS, {
+        variables: {
+            query: param
+        }
+    });
+    console.log(error)
 
     let peopleRes = [<ProfileSearchResultCard />];
     let locaRes = [];
@@ -30,7 +38,10 @@ const SearchResults = () => {
                     >Run Locations</p>
                 </div>
                 <div id="person-search-results-container">
-                    {(selected == PEOPLE) && peopleRes}
+                    {((selected == PEOPLE) && !loading) && 
+                    data.searchForUsers.map(user => <ProfileSearchResultCard user={user}/>)
+                    
+                    }
                     {(selected == LOCATIONS) && locaRes}
                 </div>
 

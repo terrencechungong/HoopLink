@@ -6,6 +6,7 @@ export const GET_POST_USING_POST_ID = gql`
             _id
             creator {
                 _id
+                authId
                 username
                 firstName
                 lastName

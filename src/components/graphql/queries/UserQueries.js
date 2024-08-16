@@ -42,3 +42,15 @@ export const CHECK_IF_USERS_ARE_FRIENDS = gql`
         areUsersFriends(aId: $currentUserId, bId: $loggedInUserId)
     }
 `
+
+export const SEARCH_FOR_USERS = gql`
+    query SearchForUsers($query: String!) {
+        searchForUsers(query: $query) {
+            authId
+            username
+            firstName
+            lastName
+            profilePhoto
+        }
+    }
+`

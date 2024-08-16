@@ -4,34 +4,32 @@ import { useState } from 'react'
 import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
+import { useRef } from 'react';
 import { LuSend } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
+import { formatISODate } from './utils/utility';
+import { useNavigate } from 'react-router-dom';
 
-const FeedPost = ({ caption, creator, }) => {
+const FeedPost = ({ caption, creator, creationTime}) => {
     const [liked, setLiked] = useState(false);
     const [seeMore, setSeeMore] = useState(false);
-    const text = "Elon Musk is hauling ass on his “Gigafactory of Compute \
-    project in Memphis. But a whiplash deal, NDAs, and backroom \
-    promises made to the city have lawmakers demanding answers. \
-    Musk is hauling ass on his “Gigafactory of Compute \
-    project in Memphis. But a whiplash deal, NDAs, and backroom \
-    promises made to the city have lawmakers demanding answers. \
-    on Musk is hauling ass on his “Gigafactory of Compute \
-    project in Memphis. But a whiplash deal, NDAs, and backroom \
-    promises made to the city have lawmakers demanding answers. \
-    Musk is hauling ass on his “Gigafactory of Compute \
-    project in Memphis. But a whiplash deal, NDAs, and backroom \
-    promises made to the city have lawmakers demanding answers."
+    const text = caption
+    const myProfileRef = useRef(null)
 
 
     return (
         <div className="feed-post-container">
             <div className='feed-post-info'>
-                <img src={pic} alt='lt=profile photo' />
-                <p><strong>Terrence</strong></p>
-                <p>@bigterrencebuilding</p>
+                <img src={creator.profilePhoto} alt='lt=profile photo'  style={{cursor:'pointer'}} onClick={() => {
+                    if (myProfileRef.current) {
+                        myProfileRef.current.click()
+                    }
+                }} />
+                <a ref={myProfileRef} href={`/myprofile/${creator.authId}`} />
+                <p><strong>{creator.firstName}</strong></p>
+                <p>@{creator.username}</p>
                 <p><strong>&bull;</strong></p>
-                <p>Jul 10, 2029</p>
+                <p>{formatISODate(creationTime)}</p>
             </div>
             <div className="feed-post-content">
                 {/* make what shows up conditional */}

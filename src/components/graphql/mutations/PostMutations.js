@@ -40,8 +40,8 @@ export const ADD_FILES_TO_POST = gql`
 
 
 export const GET_USER_FEED = gql`
-    query GetUserFeed($userrrId: ID!) {
-        getUserFeed(userId: $userrrId) {
+    query GetUserFeed($id: ID!) {
+        getUserFeed(userId: $id) {
             _id
             files {
                 awsUri
