@@ -36,5 +36,40 @@ export const ADD_FILES_TO_POST = gql`
     mutation AddFilesToPost($postId: ID!, $fileIds: [String!]!) {
         addFilesToPost(postId: $postId, fileIds: $fileIds)
     }
+`
 
+
+export const GET_USER_FEED = gql`
+    query GetUserFeed($userrrId: ID!) {
+        getUserFeed(userId: $userrrId) {
+            _id
+            files {
+                awsUri
+            }
+            caption
+            creationTime
+            location
+            comments {
+                creator {
+                    profilePhoto
+                    username
+                    authId
+                }
+                text
+                creationTime
+            }
+            likers {
+                username
+                profilePhoto
+                authId
+            }
+            creator {
+                username
+                profilePhoto
+                authId
+                firstName
+                lastName
+            }
+        }
+    }
 `

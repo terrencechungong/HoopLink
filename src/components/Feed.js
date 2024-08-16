@@ -9,11 +9,11 @@ import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { CREATE_POST_OBJECT } from './graphql/mutations/PostMutations';
+import { CREATE_POST_OBJECT, GET_USER_FEED } from './graphql/mutations/PostMutations';
 import { ADD_POST_TO_USER_OBJECT } from './graphql/mutations/UserMutations';
 import { useMutation } from '@apollo/client';
 import { CREATE_FILE_OBJECT } from './graphql/mutations/FileMutations';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 import { ADD_FILES_TO_POST } from './graphql/mutations/PostMutations';
 import { waitForNSeconds } from './utils/utility';
@@ -32,9 +32,13 @@ const Feed = () => {
     const textAreaHeightState = useState("");
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
     const [createPostObject, createPostMutationData] = useMutation(CREATE_POST_OBJECT)
-    const [createFileObject, createFileMutationData] = useMutation(CREATE_FILE_OBJECT)
-    const [getUserWithAuthId, data] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
-    const [addFilesToPost, addFilesToPostData] = useMutation(ADD_FILES_TO_POST)
+    const [createFileObject, createFileMutationData] = useMutation(CREATE_FILE_OBJECT);
+    const { data, loading, error } = useQuery(GET_USER_FEED, {
+        variables: {
+            userId: (userObj ? userObj._id : null)
+        }
+    });
+    // use data to populate this page, same approach for runs feed
     const fileData = useRef([]);
     const postLocation = useRef("");
 
@@ -46,7 +50,9 @@ const Feed = () => {
         if (!userObj) { 
             navigate('/login')
         }
-    })
+    });
+
+
 
 
     const createFilesAndPosts = async () => {

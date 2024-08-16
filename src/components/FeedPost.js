@@ -7,7 +7,7 @@ import { IoIosSend } from "react-icons/io";
 import { LuSend } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 
-const FeedPost = () => {
+const FeedPost = ({ caption, creator, }) => {
     const [liked, setLiked] = useState(false);
     const [seeMore, setSeeMore] = useState(false);
     const text = "Elon Musk is hauling ass on his “Gigafactory of Compute \
