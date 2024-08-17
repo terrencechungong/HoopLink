@@ -7,12 +7,14 @@ import pic from '../components/ChatSettingComponents/piccy.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { CiSquarePlus } from "react-icons/ci";
 
 const NewChatModal = ({ closeModal }) => {
     const [isUp, setIsUp] = useState(false);
     const [showFriendsList, setShowFriendsList] = useState(false);
     const index = useRef(0);
     const [addedUsers, setAddedUsers] = useState([]);
+    const [userFocused, setUserFocused] = useState(false)
     const [userOptions, setUserOptions] = useState([{ profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
     { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
     { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
@@ -23,6 +25,7 @@ const NewChatModal = ({ closeModal }) => {
 
     useEffect(() => {
         const func = function (event) {
+            if (userFocused) { setUserFocused(false) }
             if (globalVariables.newChatModalEffect) {
                 const middleDiv = document.querySelector('.new-chat-modal-container');
                 if (!middleDiv) {
@@ -56,14 +59,14 @@ const NewChatModal = ({ closeModal }) => {
             return text
         }
     }
-   
+
 
     const addUserToSection = (userId) => {
-        if (index.current == 1) {
+        if (index.current == 0) {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '246px';
         }
-        if (index.current == 2) {
+        if (index.current == 1) {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '366px';
         }
@@ -76,11 +79,11 @@ const NewChatModal = ({ closeModal }) => {
     const removeFromUserSection = (userId) => {
         const user = addedUsers.find(user => user.id === userId);
         setAddedUsers(addedUsers.filter(user => user.id !== userId));
-        if (index.current == 3) {
+        if (index.current == 2) {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '246px';
         }
-        if (index.current == 2) {
+        if (index.current == 1) {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '126px';
         }
@@ -118,10 +121,18 @@ const NewChatModal = ({ closeModal }) => {
                                 <IoCloseCircleOutline size={15} onClick={() => { removeFromUserSection(user.id) }} />
                             </div>
                         ))}
+                        <div className='individual-dropdown-selection'
+                            onClick={(e) => {
+                                setUserFocused(true); e.stopPropagation()
+                                e.stopPropagation()
+                            }}
+                        >
+                            <p>Choose friends to add</p>
+                        </div>
                     </div>
                 </div>
                 <div style={{ position: 'relative' }}>
-                    <div className='selection-options-added-members' onClick={(e) => {
+                    {userFocused && <div className='selection-options-added-members' onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation()
                     }}>
@@ -139,7 +150,7 @@ const NewChatModal = ({ closeModal }) => {
                                         {`${concatNameForDropDown(user.name)}`}
                                     </p>
                                 </div>)}
-                    </div>
+                    </div>}
                     <h2><strong>Description: </strong></h2>
                     <textarea placeholder='Ex: Chat for the greatest hoopers in the city'></textarea>
                 </div>
