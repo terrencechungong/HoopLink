@@ -15,6 +15,7 @@ export const GET_CHAT_MESSAGES = gql`
                 text
                 creationTime
                 sender {
+                    _id
                     username
                     profilePhoto
                 }

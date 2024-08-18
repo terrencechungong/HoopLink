@@ -7,6 +7,7 @@ export const NEW_MESSAGE_SUBSCRIPTION = gql`
          text
         creationTime
         sender {
+            _id
             username
             profilePhoto
         }

@@ -182,8 +182,14 @@ const ChatInterface = () => {
                             </div>
                             <div className="messages-container-inner" >
                                 {chatMessages.map((message) => {
+                                    console.log(JSON.stringify(message.sender));
+                                    console.log(userObj._id)
+                                    console.log(JSON.stringify(userObj));
+                                    console.log(userObj._id == message.sender._id);
+                                    console.log(userObj._id , message.sender);
+
                                     return (
-                                        <div >
+                                        <div style={{alignSelf: (message.sender._id == userObj._id) ? 'flex-end' : ""}}>
                                             <p style={{ color: 'black' }}>{message.sender.username}</p>
                                             <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
                                                 <img style={{ width: '45px', height: '45px', borderRadius: '25px' }} src={message.sender.profilePhoto} />

@@ -38,6 +38,7 @@ export const signin = async (email, password) => {
 export const logOut = async () => {
     const { error } = await supabase.auth.signOut();
     if ( error !== null) {
+        localStorage.removeItem('myData');
         localStorage.removeItem('user_object');
         return true;
     }
