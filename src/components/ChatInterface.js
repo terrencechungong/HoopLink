@@ -21,7 +21,8 @@ import { CREATE_CHAT } from './graphql/mutations/ChatMutations';
 import { useMutation, useSubscription } from '@apollo/client';
 import { GET_CHAT_MESSAGES } from './graphql/queries/MessageQueries';
 import { GET_USER_CHATS_LIST } from './graphql/queries/ChatQueries';
-import {NEW_MESSAGE_SUBSCRIPTION} from './graphql/subscriptions/NewMessage'
+import { NEW_MESSAGE_SUBSCRIPTION } from './graphql/subscriptions/NewMessage'
+import { CREATE_MESSAGE_OBJECT } from './graphql/mutations/MessageMutations';
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -32,6 +33,8 @@ const ChatInterface = () => {
     const [chatMessages, setChatMessages] = useState([])
     const [createChatMutation, createChatData] = useMutation(CREATE_CHAT);
     const navigate = useNavigate();
+    const messageContainer = useRef(null);
+    const textAreaRef = useRef(null);
     const userObj = JSON.parse(localStorage.getItem('user_object'));
     const { chatId } = useParams();
     const { data: currentChat, loading: loadingCurrentChat, error: errorLoadingChat } = useQuery(GET_CHAT_MESSAGES, {
@@ -40,7 +43,7 @@ const ChatInterface = () => {
         }
     });
     console.log(currentChat)
-
+    const [createMessageMutaton, createMessageData] = useMutation(CREATE_MESSAGE_OBJECT);
     const { data: chatData, loading: loadingChatData, error: errorLoadingChats } = useQuery(GET_USER_CHATS_LIST, {
         variables: {
             userId: userObj._id
@@ -55,11 +58,17 @@ const ChatInterface = () => {
         variables: { chatId: chatId },
         onData: ({ data }) => {
             console.log(message)
-          console.log('New message received:', data.data.messageSent);
-          // show new message button
-          setChatMessages(prevMessages => [...prevMessages, data.data.messageSent]);
+            console.log('New message received:', data.data.messageSent);
+            // show new message button
+            setChatMessages(prevMessages => [...prevMessages, data.data.messageSent]);
+            messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
+            // messageContainer.current.scrollIntoView({ behavior: "smooth" });
+            // chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+
+
         }
-      });
+    });
+
 
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
@@ -72,13 +81,18 @@ const ChatInterface = () => {
 
 
     useEffect(() => {
-        console.log(userObj)
+        // console.log(userObj)
+        if (messageContainer.current) {
+            console.log("snasnfkjsdnkjfnsk")
+            messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
+            // messageContainer.current.scrollIntoView({ behavior: "smooth" });
 
+        } 
 
         if (!userObj) {
             navigate('/login')
         }
-    })
+    });
 
     const createChatHandler = async (chatData) => {
         await createChatMutation({
@@ -130,6 +144,21 @@ const ChatInterface = () => {
         modalLoaded.current = true;
     }
 
+    const executeCreateMessage = async () => {
+        // add files later
+        const text = textAreaRef.current.value;
+        console.log("inner text", text)
+        await createMessageMutaton({ variables:
+            {
+                message: {
+                    sender: userObj._id,
+                    chat: chatId,
+                    text: text,
+                }
+            }
+        })
+    }
+
     if (loadingChatData || loadingCurrentChat || errorLoadingChat || errorLoadingChats) {
         return <p>Loading...</p>
     } else {
@@ -146,17 +175,17 @@ const ChatInterface = () => {
 
                 <div id="chat-interface-container" ref={stylingRef}>
                     <div className="messages-container-outer">
-                        <div className='messages-container-middle'>
+                        <div className='messages-container-middle'  ref={messageContainer}>
                             <div className='chat-title'>
                                 {currentChat.chat.chatName}
                                 <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
                             </div>
-                            <div className="messages-container-inner">
+                            <div className="messages-container-inner" >
                                 {chatMessages.map((message) => {
                                     return (
                                         <div >
-                                            <p style={{color:'black'}}>{message.sender.username}</p>
-                                            <div style={{display:'flex', flexDirection:'row', gap: '4px'}}>
+                                            <p style={{ color: 'black' }}>{message.sender.username}</p>
+                                            <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
                                                 <img style={{ width: '45px', height: '45px', borderRadius: '25px' }} src={message.sender.profilePhoto} />
                                                 <p className={message.sender._id == userObj._id ? "me" : "other"}>{message.text}</p>
                                             </div>
@@ -168,8 +197,8 @@ const ChatInterface = () => {
                             </div>
                             <div className="chat-input" >
                                 <button id="add-files"><BsPaperclip size={18} /></button>
-                                <textarea ></textarea>
-                                <button id="send-message"><FiSend size={18} /></button>
+                                <textarea ref={textAreaRef}></textarea>
+                                <button onClick={() => { executeCreateMessage()}} id="send-message"><FiSend size={18} /></button>
                             </div>
                         </div>
                     </div>
