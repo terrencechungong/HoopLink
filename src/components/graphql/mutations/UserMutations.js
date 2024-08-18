@@ -54,3 +54,15 @@ export const REMOVE_NOTIFICATION_FROM_USER_OBJECT = gql`
         removeNotification(userId: $userId, notifId: $notifId)
     }
 `
+
+export const SEND_FRIEND_REQUEST = gql`
+    mutation SendFriendRequest($sender: String!, $reciever: String!) {
+        sendFriendRequest(sender: $sender, reciever: $reciever)
+    }
+`
+
+export const ADD_FRIEND = gql`
+    mutation AddFriend($userId: ID!, $friendId: ID!) {
+        addFriend(userId: $userId, friendId: $friendId)
+    }
+`

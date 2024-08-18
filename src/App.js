@@ -18,16 +18,40 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, split } from '@apollo/client';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import {NextUIProvider} from "@nextui-org/react";
 import Notifications from './components/Notifications';
 import SearchResults from './components/SearchResults';
 
 function App() {
+  const httpLink = new HttpLink({
+    uri: 'http://localhost:8080/graphql',
+  });
+  
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: 'ws://localhost:8080/subscriptions',
+    }),
+  );
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+    },
+    wsLink,
+    httpLink,
+  );
+
   const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    uri: "http://localhost:8080/graphql"
-  })
+    link: splitLink,
+    cache: new InMemoryCache()
+  });
+
+// WebSocket link for subscriptio
 
   return (
     <NextUIProvider>
@@ -41,7 +65,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/editprofile" element={<EditProfile />} />
               <Route path="/feed" element={<Feed />} />
-              <Route path="/chats" element={<ChatInterface />} />
+              <Route path="/chat/:chatId" element={<ChatInterface />} />
               <Route path="/profile" element={<ViewProfile />} />
               <Route path="/myprofile/:authId" element={< SingleProfileView />} />
               <Route path="/runs-feed" element={<RunsFeed />} />

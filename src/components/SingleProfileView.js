@@ -7,7 +7,7 @@ import ProfileViewRun from './ProfileViewRun';
 import ProfileViewPost from './ProfileViewPost';
 import { useParams } from 'react-router-dom';
 import { GET_USER_DATA_FOR_SELF_VIEW } from './graphql/queries/UserQueries';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,8 @@ import { CHECK_IF_USERS_ARE_FRIENDS } from './graphql/queries/UserQueries';
 import { useAuth } from '../context/AuthContext';
 import { waitForNSeconds } from './utils/utility';
 import { globalVariables } from '..';
+import { ADD_FRIEND } from './graphql/mutations/UserMutations';
+import { SEND_FRIEND_REQUEST } from './graphql/mutations/UserMutations';
 
 const SingleProfileView = () => {
     const [current, setCurrent] = useState('Posts');
@@ -24,7 +26,8 @@ const SingleProfileView = () => {
     const { authId } = useParams();
     const user = useRef(null);
     const [getUserWithAuthId, getUserAuthIdData] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
-    const getUser = useAuth().getUser;
+    const [addFriend, addFriendData] = useMutation(ADD_FRIEND);
+    const  [sendFriendRequest, friendRequestData] = useMutation(SEND_FRIEND_REQUEST);
     const [areUsersFriends, getAreUsersFriends] = useLazyQuery(CHECK_IF_USERS_ARE_FRIENDS);
     const navigate = useNavigate();
     const userButtonSet = useRef(false);
@@ -95,6 +98,28 @@ const SingleProfileView = () => {
         }
     }
 
+    const friendAction = async (e, recieverId) => {
+        console.log(e.target.innerText, recieverId);
+        if (e.target.innerText == "Add Friend") {
+            await sendFriendRequest({
+                variables: {
+                    sender: userObj._id,
+                    reciever: recieverId
+                }
+            })
+        } else if (e.target.innerText == "Accept Friend Request") {
+            await addFriend({
+                variables: {
+                    userId: userObj._id,
+                    friendId: recieverId,
+                }
+            })
+        }
+            return "";
+
+        // update cache with user info
+    }
+
 
     return (
         <div id="single-profile-view-screen">
@@ -113,6 +138,7 @@ const SingleProfileView = () => {
                             }}>
 
                             </div>
+                            // refactor and give it a viewer Id so i dont need to make extra queries and checks. i can do upfront
                         }
                         <div id="single-profile-header-info">
                             {wtf ?
@@ -124,8 +150,8 @@ const SingleProfileView = () => {
                                         <button className={'is-self-view'}>
                                             Edit Profile
                                         </button> :
-                                        (<button>
-                                            {userButtonValue.current ? "Friends" : "Add Friend"}
+                                        (<button onClick={(e) => friendAction(e, data.getUserWithAuthId._id)}>
+                                            {userButtonValue.current ? "Friends" : (data.getUserWithAuthId.recievedFriendRequests.includes(userObj._id) ? "Requested" : (data.getUserWithAuthId.sentFriendRequests.includes(userObj._id)  ? "Accept Friend Request" : "Add Friend"))}
                                         </button>)
                                     }
                                 </div> : <p style={{ width: '250px', height: '25px', }} className='skeleton'></p>}

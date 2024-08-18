@@ -25,6 +25,8 @@ export const GET_USER_DATA_FOR_SELF_VIEW = gql`
             runs {
                 runName
             }
+            recievedFriendRequests
+            sentFriendRequests
         }
     }
 `
@@ -51,6 +53,18 @@ export const SEARCH_FOR_USERS = gql`
             firstName
             lastName
             profilePhoto
+        }
+    }
+`
+
+export const GET_USERS_FRIENDS = gql`
+    query GetUsersFriends($userId: ID!) {
+        getUserFriends(userId: $userId) {
+            _id
+            username
+            profilePhoto
+            firstName
+            lastName
         }
     }
 `

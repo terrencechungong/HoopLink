@@ -3,8 +3,10 @@ import pic from './ChatSettingComponents/defaultprofile.png'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useEffect } from 'react'
 import { logOut } from '../supabase-conf/authUtils'
+import { useNavigate } from 'react-router-dom'
 
 const EditProfile = () => {
+    const navigate = useNavigate()
 
     useEffect(() => {
         const buttons = document.querySelectorAll('button');
@@ -62,7 +64,11 @@ const EditProfile = () => {
                     </div>
                 </div>
                 <div>
-                    <button style={{backgroundColor:'white'}} onClick={() => {logOut()}}>Logout</button>
+                    <button style={{backgroundColor:'white'}}
+                    onClick={async () => {
+                        await logOut();
+                        navigate('/login');
+                    }}>Logout</button>
                 </div>
             </div>
         </div>

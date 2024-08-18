@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { GoSidebarCollapse } from "react-icons/go";
 import { RiChatNewLine } from "react-icons/ri";
 import { GoSidebarExpand } from "react-icons/go";
-const SideBar = ({stylingRef, showModal}) => {
+const SideBar = ({ stylingRef, showModal, chatData }) => {
     const [expanded, setExpanded] = useState(false);
 
     let chats = [
@@ -23,21 +23,20 @@ const SideBar = ({stylingRef, showModal}) => {
             stylingRef.current.style.width = '100%'
         }
     }
-
     return (
         <div className='sidebar-container'>
             <div id="sidebar-buttons-wrapper">
 
-            <button className="sidebar-toggle" onClick={() => toggleShow()}>
-                {expanded && <GoSidebarCollapse size={32} />}
-                {!expanded && <GoSidebarExpand size={32} />}
-            </button>
-            <button id="new-chat-creator-button" onClick={() => showModal('NEW_CHAT')}><RiChatNewLine size={30} /></button>
+                <button className="sidebar-toggle" onClick={() => toggleShow()}>
+                    {expanded && <GoSidebarCollapse size={32} />}
+                    {!expanded && <GoSidebarExpand size={32} />}
+                </button>
+                <button id="new-chat-creator-button" onClick={() => showModal('NEW_CHAT')}><RiChatNewLine size={30} /></button>
             </div>
-            {chats.map(el => (
+            {chatData.map(chat => (
                 <div className='chat-row'>
-                    <img src={pic} width="50px" height="50px" style={{ borderRadius: '24px' }} />
-                    <p>{el}</p>
+                    <img src={chat.chatPhoto} width="50px" height="50px" style={{ borderRadius: '24px' }} />
+                    <p>{chat.chatName}</p>
                 </div>
             ))}
         </div>

@@ -16,6 +16,7 @@ import { waitForNSeconds } from './utils/utility';
 import { useNavigate } from 'react-router-dom';
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { BiError } from "react-icons/bi";
+import { updateUserObj } from '../supabase-conf/authUtils';
 
 const CreatePostModal = ({ closeModalFunction, filesState, captionState, textAreaHeightState, uploadPost, fileData, captionRef, postLocation }) => {
     const fileInputRef = useRef(null);

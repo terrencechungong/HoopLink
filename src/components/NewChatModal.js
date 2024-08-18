@@ -9,19 +9,13 @@ import { useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { CiSquarePlus } from "react-icons/ci";
 
-const NewChatModal = ({ closeModal }) => {
+const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
     const [isUp, setIsUp] = useState(false);
     const [showFriendsList, setShowFriendsList] = useState(false);
     const index = useRef(0);
     const [addedUsers, setAddedUsers] = useState([]);
     const [userFocused, setUserFocused] = useState(false)
-    const [userOptions, setUserOptions] = useState([{ profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
-    { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
-    { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
-    { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
-    { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() },
-    { profilePhoto: pic, name: "eiroerieoir", id: uuidv4() }
-    ]);
+    const [userOptions, setUserOptions] = useState(usersFriends);
 
     useEffect(() => {
         const func = function (event) {
@@ -60,6 +54,47 @@ const NewChatModal = ({ closeModal }) => {
         }
     }
 
+    const executeCreateChat = async () => {
+        // get data
+        // users is addedUsers ids
+
+
+        // chatName: String!
+        const chatName = document.getElementById('chat-name-input').value;
+        if (chatName == "") {
+            alert("must have a chat name");
+            return
+        }
+        // chatCreator: User
+        const chatCreator = creatorId;
+        // chatMembers: [User!]
+        const chatMembers = addedUsers.map(user => user._id).concat([creatorId]); // add the creator
+        // isDm: Boolean! 
+        const isDm = chatMembers.length == 2;
+        // creationTime: String!
+        const creationTime = (new Date()).toISOString();
+        // lastMessageTime: String change this
+        const lastMessageTime = (new Date()).toISOString();
+        // isRunChat: Boolean!
+        const isRunChat = false;
+        // isActive: Boolean!
+        const isActive = true;
+
+
+        await createChat({
+            chatName,
+            chatCreator,
+            chatMembers,
+            isDm,
+            creationTime,
+            lastMessageTime,
+            isRunChat,
+            isActive,
+            chatCreator
+        })
+
+    }
+
 
     const addUserToSection = (userId) => {
         if (index.current == 0) {
@@ -70,15 +105,15 @@ const NewChatModal = ({ closeModal }) => {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '366px';
         }
-        const user = userOptions.find(user => user.id === userId);
+        const user = userOptions.find(user => user._id === userId);
         setAddedUsers((prev) => [...prev, user]);
         index.current += 1;
         // removeUserFromOptions(userId)
     }
 
     const removeFromUserSection = (userId) => {
-        const user = addedUsers.find(user => user.id === userId);
-        setAddedUsers(addedUsers.filter(user => user.id !== userId));
+        const user = addedUsers.find(user => user._id === userId);
+        setAddedUsers(addedUsers.filter(user => user._id !== userId));
         if (index.current == 2) {
             const userSection = document.getElementById(`added-members-to-section`);
             userSection.style.width = '246px';
@@ -101,24 +136,24 @@ const NewChatModal = ({ closeModal }) => {
                 <button id="close-create-new-chat-modal" onClick={closeModal}><SlClose size={25} /></button>
                 <div>
                     <h2><strong>Chat Name: </strong></h2>
-                    <input type="text" placeholder='e.g. New chat name' />
+                    <input id="chat-name-input" type="text" placeholder='e.g. New chat name' />
                 </div>
                 <div>
                     <h2><strong>Add members to your new chat: </strong></h2>
                     <div id='added-members-to-section'>
                         {addedUsers.map((user, index) => (
-                            <div key={user.id} id={`added-person-${index}`} className='individual-dropdown-selection'
+                            <div key={user._id} id={`added-person-${index}`} className='individual-dropdown-selection'
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation()
-                                    // removeUserFromOptions(user.id)
+                                    // removeUserFromOptions(user._id)
                                 }}
                             >
                                 <img src={user.profilePhoto} />
                                 <p>
-                                    {`${concatNameForDropDown(user.name)}`}
+                                    {`${concatNameForDropDown(user.username)}`}
                                 </p>
-                                <IoCloseCircleOutline size={15} onClick={() => { removeFromUserSection(user.id) }} />
+                                <IoCloseCircleOutline size={15} onClick={() => { removeFromUserSection(user._id) }} />
                             </div>
                         ))}
                         <div className='individual-dropdown-selection'
@@ -136,25 +171,25 @@ const NewChatModal = ({ closeModal }) => {
                         e.preventDefault();
                         e.stopPropagation()
                     }}>
-                        {userOptions.filter(userOption => !addedUsers.some(addedUser => addedUser.id === userOption.id))
+                        {userOptions.filter(userOption => !addedUsers.some(addedUser => addedUser._id === userOption._id))
                             .map((user, index) =>
-                                <div key={user.id} id={`user-${index}`} className='individual-dropdown-selection'
+                                <div key={user._id} id={`user-${index}`} className='individual-dropdown-selection'
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        addUserToSection(user.id);
+                                        addUserToSection(user._id);
                                     }}
                                 >
                                     <img src={user.profilePhoto} />
                                     <p>
-                                        {`${concatNameForDropDown(user.name)}`}
+                                        {`${concatNameForDropDown(user.username)}`}
                                     </p>
                                 </div>)}
                     </div>}
                     <h2><strong>Description: </strong></h2>
                     <textarea placeholder='Ex: Chat for the greatest hoopers in the city'></textarea>
                 </div>
-                <button onClick={() => { addUserToSection() }}>Create</button>
+                <button onClick={() => { executeCreateChat() }}>Create</button>
             </div>
         </div>
     );

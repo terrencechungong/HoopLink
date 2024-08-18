@@ -26,3 +26,11 @@ export const REMOVE_USER_FROM_CHAT_OBJECT = gql`
         addMessageToChat(chatId: $chatId, userId: $userId)
     }
 `
+
+export const CREATE_CHAT = gql`
+    mutation CreateChat($chat: CreateChatInput!) {
+        createChat(chat: $chat) {
+            _id
+        }
+    }
+`

@@ -17,6 +17,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
 import { ADD_FILES_TO_POST } from './graphql/mutations/PostMutations';
 import { waitForNSeconds } from './utils/utility';
+import { updateUserObj } from '../supabase-conf/authUtils';
 
 const Feed = () => {
     const parentRef = useRef(null);
@@ -105,6 +106,7 @@ const Feed = () => {
                 return false;
             }
         }
+        updateUserObj(userObj.authId)
         return true;
     }
 

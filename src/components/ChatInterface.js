@@ -10,13 +10,18 @@ import { BsPaperclip } from "react-icons/bs";
 import { FiSend } from "react-icons/fi";
 import NewChatModal from './NewChatModal';
 import { globalVariables } from '..';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RiChatNewLine } from "react-icons/ri";
 import GlobalSideBar from './GlobalSideBar';
 import { Navbar } from './constants';
 import { useAuth } from '../context/AuthContext';
-import { useLazyQuery } from '@apollo/client';
-import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { GET_USER_ID_FROM_AUTH_ID, GET_USERS_FRIENDS } from './graphql/queries/UserQueries';
+import { CREATE_CHAT } from './graphql/mutations/ChatMutations';
+import { useMutation, useSubscription } from '@apollo/client';
+import { GET_CHAT_MESSAGES } from './graphql/queries/MessageQueries';
+import { GET_USER_CHATS_LIST } from './graphql/queries/ChatQueries';
+import {NEW_MESSAGE_SUBSCRIPTION} from './graphql/subscriptions/NewMessage'
 
 const ChatInterface = () => {
     const stylingRef = useRef(null);
@@ -24,19 +29,65 @@ const ChatInterface = () => {
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
     const [expanded, setExpanded] = useState(false);
+    const [chatMessages, setChatMessages] = useState([])
+    const [createChatMutation, createChatData] = useMutation(CREATE_CHAT);
     const navigate = useNavigate();
     const userObj = JSON.parse(localStorage.getItem('user_object'));
+    const { chatId } = useParams();
+    const { data: currentChat, loading: loadingCurrentChat, error: errorLoadingChat } = useQuery(GET_CHAT_MESSAGES, {
+        variables: {
+            chatId: chatId
+        }
+    });
+    console.log(currentChat)
+
+    const { data: chatData, loading: loadingChatData, error: errorLoadingChats } = useQuery(GET_USER_CHATS_LIST, {
+        variables: {
+            userId: userObj._id
+        }
+    });
+    const { data, loading, error } = useQuery(GET_USERS_FRIENDS, {
+        variables: {
+            userId: userObj._id
+        }
+    });
+    const { data: message, loading: messageLoading, error: messageError } = useSubscription(NEW_MESSAGE_SUBSCRIPTION, {
+        variables: { chatId: chatId },
+        onData: ({ data }) => {
+            console.log(message)
+          console.log('New message received:', data.data.messageSent);
+          // show new message button
+          setChatMessages(prevMessages => [...prevMessages, data.data.messageSent]);
+        }
+      });
 
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
-    
+    useEffect(() => {
+        if (!loadingCurrentChat) {
+            setChatMessages(currentChat.chat.messages)
+        }
+
+    }, [loadingCurrentChat]);
+
+
     useEffect(() => {
         console.log(userObj)
 
-        if (!userObj) { 
+
+        if (!userObj) {
             navigate('/login')
         }
     })
+
+    const createChatHandler = async (chatData) => {
+        await createChatMutation({
+            variables: {
+                chat: chatData
+            }
+        })
+    }
+
     const invisibleClick = () => {
         console.log()
 
@@ -52,8 +103,6 @@ const ChatInterface = () => {
             modalLoaded.current = false;
             globalVariables.newChatModalEffect = false;
         }
-
-
     }
 
     const showModal = (modalType) => {
@@ -63,7 +112,13 @@ const ChatInterface = () => {
             globalVariables.settingsModalEffect = true;
 
         } else {
-            modal = <NewChatModal closeModal={invisibleClick} />;
+            console.log(data.getUserFriends)
+            modal = <NewChatModal
+                closeModal={invisibleClick}
+                createChat={createChatHandler}
+                usersFriends={data.getUserFriends}
+                creatorId={userObj._id}
+            />;
             globalVariables.newChatModalEffect = true;
         }
 
@@ -75,38 +130,53 @@ const ChatInterface = () => {
         modalLoaded.current = true;
     }
 
+    if (loadingChatData || loadingCurrentChat || errorLoadingChat || errorLoadingChats) {
+        return <p>Loading...</p>
+    } else {
+        console.log(errorLoadingChat, currentChat, errorLoadingChat)
+        return (
+            <div id='outermost-parent' className='outermost-parent' ref={parentRef}>
+                <GlobalSideBar selected={Navbar.CHATS} />
 
-    let messages = []
-    for (let i = 0; i <= 80; i++) {
-        messages.push(<p className="me">yoooyy</p>)
-        messages.push(<p className="other">yoooyy</p>)
-    }
 
-    return (
-        <div id='outermost-parent' className='outermost-parent' ref={parentRef}>
-            <GlobalSideBar selected={Navbar.CHATS} />
-            <SideBar stylingRef={stylingRef} showModal={showModal} />
 
-            <div id="chat-interface-container" ref={stylingRef}>
-                <div className="messages-container-outer">
-                    <div className='messages-container-middle'>
-                        <div className='chat-title'>
-                            New Chat!!!
-                            <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
-                        </div>
-                        <div className="messages-container-inner">
-                            {messages.map(message => message)}
-                        </div>
-                        <div className="chat-input" >
-                            <button id="add-files"><BsPaperclip size={18} /></button>
-                            <textarea ></textarea>
-                            <button id="send-message"><FiSend size={18} /></button>
+                <SideBar chatData={chatData.getUserChats} stylingRef={stylingRef} showModal={showModal} />
+
+
+
+                <div id="chat-interface-container" ref={stylingRef}>
+                    <div className="messages-container-outer">
+                        <div className='messages-container-middle'>
+                            <div className='chat-title'>
+                                {currentChat.chat.chatName}
+                                <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
+                            </div>
+                            <div className="messages-container-inner">
+                                {chatMessages.map((message) => {
+                                    return (
+                                        <div >
+                                            <p style={{color:'black'}}>{message.sender.username}</p>
+                                            <div style={{display:'flex', flexDirection:'row', gap: '4px'}}>
+                                                <img style={{ width: '45px', height: '45px', borderRadius: '25px' }} src={message.sender.profilePhoto} />
+                                                <p className={message.sender._id == userObj._id ? "me" : "other"}>{message.text}</p>
+                                            </div>
+                                        </div>
+
+                                    );
+
+                                })}
+                            </div>
+                            <div className="chat-input" >
+                                <button id="add-files"><BsPaperclip size={18} /></button>
+                                <textarea ></textarea>
+                                <button id="send-message"><FiSend size={18} /></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default ChatInterface;
