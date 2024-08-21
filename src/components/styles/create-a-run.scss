@@ -64,12 +64,12 @@
             button {
                 position: absolute;
                 right: 20px;
-                top: 2px;
+                top: 4px;
                 background-color: rgb(230, 230, 230);
                 border-width: 0px;
                 border-radius: 50%;
-                width: 35px;
-                height: 35px;
+                width: 31px;
+                height: 31px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -87,9 +87,9 @@
             display: flex;
             flex-direction: column;
             padding: 12px;
-            width: 92%;
+            width: 96%;
             gap: 15px;
-
+            align-self: center;
 
             .create-run-content-section {
                 display: flex;

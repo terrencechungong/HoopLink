@@ -1,11 +1,12 @@
 import './styles/sidebar-style.scss'
 import pic from './ChatSettingComponents/piccy.png';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { GoSidebarCollapse } from "react-icons/go";
 import { RiChatNewLine } from "react-icons/ri";
 import { GoSidebarExpand } from "react-icons/go";
 const SideBar = ({ stylingRef, showModal, chatData }) => {
     const [expanded, setExpanded] = useState(false);
+    const chatLink = useRef(null);
 
     let chats = [
         "marker", "revolution", "clip", "branch", "flashlight", "apple", "mirror",
@@ -34,7 +35,12 @@ const SideBar = ({ stylingRef, showModal, chatData }) => {
                 <button id="new-chat-creator-button" onClick={() => showModal('NEW_CHAT')}><RiChatNewLine size={30} /></button>
             </div>
             {chatData.map(chat => (
-                <div className='chat-row'>
+                <div className='chat-row' style={{cursor:'pointer'}} onClick={() => {
+                    if (chatLink.current) {
+                        chatLink.current.click();
+                    }
+                }}>
+                    <a ref={chatLink} href={`/chat/${chat._id}`} style={{ display: 'none' }} />
                     <img src={chat.chatPhoto} width="50px" height="50px" style={{ borderRadius: '24px' }} />
                     <p>{chat.chatName}</p>
                 </div>

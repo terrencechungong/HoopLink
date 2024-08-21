@@ -25,7 +25,7 @@ const FeedPost = ({ caption, creator, creationTime}) => {
                         myProfileRef.current.click()
                     }
                 }} />
-                <a ref={myProfileRef} href={`/myprofile/${creator.authId}`} />
+                <a ref={myProfileRef} href={`/profile/${creator.authId}`} />
                 <p><strong>{creator.firstName}</strong></p>
                 <p>@{creator.username}</p>
                 <p><strong>&bull;</strong></p>

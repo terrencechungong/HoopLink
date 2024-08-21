@@ -11,7 +11,7 @@ const ProfileSearchResultCard = ({user}) => {
                         linkRef.current.click()
                     }
                 }}/>
-                <a ref={linkRef} href={`/myprofile/${user.authId}`} style={{display:'none'}}></a>
+                <a ref={linkRef} href={`/profile/${user.authId}`} style={{display:'none'}}></a>
                 {/* show ... if name is too long */}
                 <div>
                 <p>{`${user.firstName} ${user.lastName}`}</p>

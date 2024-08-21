@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom/client'
 import AddMemberModal from './AddMemberModal';
 import { setGlobalVariable, getGlobalVariable, globalVariables } from '../../index';
 
-const ChatMembers = () => {
+const ChatMembers = ({ chatMembers }) => {
     const parentRef = useRef(null);
     const modalLoaded = useRef(false);
     const modalRoot = useRef(null);
@@ -45,15 +45,19 @@ const ChatMembers = () => {
 
     return (
         <div className="chat-members-modal" ref={parentRef}>
-
             <div className="chat-member-row member-add" onClick={() => addMemberClick()}>
                 <img src={defaultpic} />
-                <button style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}><CiSquarePlus size={22}/> Add a member</button>
+                <button style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}><CiSquarePlus size={22} /> Add a member</button>
             </div>
-            {names.map(name =>
-                <div className="chat-member-row">
-                    <img src={pic} />
-                    <p>{name}</p>
+            {chatMembers.map(user =>
+                <div className="chat-member-row" style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        const aTag = document.getElementById(`${user.authId}`);
+                        if (aTag) aTag.click();
+                    }}>
+                    <a id={user.authId} href={`/profile/${user.authId}`} />
+                    <img src={user.profilePhoto} />
+                    <p>{user.username}</p>
                 </div>
             )}
         </div>

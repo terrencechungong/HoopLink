@@ -8,7 +8,7 @@ import ChatPastRuns from './ChatSettingComponents/ChatPastRuns';
 import { globalVariables } from '..';
 import { SlClose } from 'react-icons/sl';
 
-const ChatSettings = ({ closeModal }) => {
+const ChatSettings = ({ closeModal, chatMembers }) => {
     const overlay = useRef(null);
     const [isUp, setIsUp] = useState(false);
     const [current, setCurrent] = useState('Members');
@@ -84,7 +84,7 @@ const ChatSettings = ({ closeModal }) => {
                     </div>
                     <button onClick={() => closeModal()}><SlClose size={25} /></button>
                 </div>
-                {members && <ChatMembers />}
+                {members && <ChatMembers chatMembers={chatMembers} />}
                 {about && <ChatAbout />}
                 {files && <ChatFiles />}
                 {pastRuns && <ChatPastRuns />}

@@ -14,7 +14,7 @@ const LogIn = () => {
         const user = await signin(email, password);
         if (user !== false) {
             console.log("user logged in");
-            navigate('/chats');
+            navigate('/feed');
         }
     }   
 

@@ -16,21 +16,14 @@ const GlobalSideBar = ({ selected }) => {
     // feed, runsfeed, chats, profile, notifications MAKE RED CIRCLE
     const navigate = useNavigate();
     const [showSearchBar, setShowSearchBar] = useState(false);
-    const user = useRef(null);
-    const getUser = useAuth().getUser;
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
+
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        const setUser = async () => {
-            user.current = await getUser();
-
-            if (!user.current) {
-                console.log(user)
-                console.log("no user");
-                navigate('/login');
-            }
+        if (!userObj) {
+            navigate('/login')
         }
-        setUser()
     });
 
     return (
@@ -59,11 +52,17 @@ const GlobalSideBar = ({ selected }) => {
                 className={`${selected == Navbar.RUNS_FEED ? 'selected' : ''}`}
             ><MdOutlineSportsBasketball size={28} /></button>
             <button
-                onClick={() => navigate('/chats')}
+                onClick={() => {
+                    if (userObj.chats.length > 0) {
+                        navigate(`/chat/${userObj.chats[0]._id}`)
+                    } else {
+                        navigate(`chat/NEW_CHAT`)
+                    }
+                }}
                 className={`${selected == Navbar.CHATS ? 'selected' : ''}`}
             ><IoChatbubbleOutline size={28} /></button>
             <button
-                onClick={() => navigate(`/myprofile/${user.current.id}`)}
+                onClick={() => navigate(`/profile/${userObj.authId}`)}
                 className={`${selected == Navbar.PROFILE ? 'selected' : ''}`}
             ><IoPersonCircleOutline size={28} /></button>
             <button

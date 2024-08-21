@@ -1,33 +1,62 @@
 #feed-run-container {
     width: 600px;
     background-color: rgb(255, 255, 255);
-    // GRID
-    display: grid;
-    gap: 6px;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     border-radius: 13px;
     box-shadow: 0px 2px 3px rgb(143, 143, 143);
-    position: relative;
+    display: flex;
+    flex-direction: column;
+
     #dots {
-        position: absolute;
-        right: 9px;
-        top: 3px;
-        background-color: rgb(196, 196, 196);
+        align-self: flex-end;
+        padding: 5px;
+        margin: 2px;
+        background-color: rgb(233, 233, 233);
         border-radius: 14px;
         cursor: pointer;
-        padding-left: 2px;
-        padding-top: 2px;
-        padding-right: 2px;
+        font-size: 10px;
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        justify-content: space-between;
+        align-items: center;
+
         &:hover {
-            color: white;
+            background-color: rgb(196, 196, 196);
         }
     }
-    .feed-run-section {
-        padding: 5px;
-        p {
-            margin: 0;
-            padding: 0px;
+
+    #content-section {
+        display: grid;
+        gap: 6px;
+        grid-template-rows:  repeat(auto-fill, minmax( 10px, 65px));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        border-radius: 13px;
+        position: relative;
+        flex-grow: 1;
+
+        .feed-run-section {
+            display: flex;
+            flex-direction: column;
+            padding: 5px;
+
+            p {
+                margin: 0;
+                padding: 0px;
+            }
+
+            #run-name {
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            #run-creator-section {
+                &:hover {
+                    background-color: rgb(231, 231, 231);
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

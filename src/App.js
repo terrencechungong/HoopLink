@@ -67,9 +67,9 @@ function App() {
               <Route path="/feed" element={<Feed />} />
               <Route path="/chat/:chatId" element={<ChatInterface />} />
               <Route path="/profile" element={<ViewProfile />} />
-              <Route path="/myprofile/:authId" element={< SingleProfileView />} />
+              <Route path="/profile/:authId" element={< SingleProfileView />} />
               <Route path="/runs-feed" element={<RunsFeed />} />
-              <Route path="/single-run-view" element={<SingleRunView />} />
+              <Route path="/run/:runId" element={<SingleRunView />} />
               <Route path="/viewpost/:postId" element={<SinglePostView />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/searchresults/:param" element={<SearchResults/>} />

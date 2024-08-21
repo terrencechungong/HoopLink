@@ -61,6 +61,7 @@ export const GET_USERS_FRIENDS = gql`
     query GetUsersFriends($userId: ID!) {
         getUserFriends(userId: $userId) {
             _id
+            authId
             username
             profilePhoto
             firstName

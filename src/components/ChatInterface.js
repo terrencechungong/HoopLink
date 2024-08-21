@@ -87,7 +87,7 @@ const ChatInterface = () => {
             messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
             // messageContainer.current.scrollIntoView({ behavior: "smooth" });
 
-        } 
+        }
 
         if (!userObj) {
             navigate('/login')
@@ -122,7 +122,10 @@ const ChatInterface = () => {
     const showModal = (modalType) => {
         let modal;
         if (modalType == 'SETTINGS') {
-            modal = <ChatSettings closeModal={invisibleClick} />
+            modal = <ChatSettings
+                closeModal={invisibleClick}
+                chatMembers={currentChat.chat.chatMembers}
+            />
             globalVariables.settingsModalEffect = true;
 
         } else {
@@ -148,7 +151,8 @@ const ChatInterface = () => {
         // add files later
         const text = textAreaRef.current.value;
         console.log("inner text", text)
-        await createMessageMutaton({ variables:
+        await createMessageMutaton({
+            variables:
             {
                 message: {
                     sender: userObj._id,
@@ -159,7 +163,7 @@ const ChatInterface = () => {
         })
     }
 
-    if (loadingChatData || loadingCurrentChat || errorLoadingChat || errorLoadingChats) {
+    if (loadingChatData || loadingCurrentChat) {
         return <p>Loading...</p>
     } else {
         console.log(errorLoadingChat, currentChat, errorLoadingChat)
@@ -175,23 +179,23 @@ const ChatInterface = () => {
 
                 <div id="chat-interface-container" ref={stylingRef}>
                     <div className="messages-container-outer">
-                        <div className='messages-container-middle'  ref={messageContainer}>
+                        <div className='messages-container-middle' ref={messageContainer}>
                             <div className='chat-title'>
                                 {currentChat.chat.chatName}
                                 <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
                             </div>
                             <div className="messages-container-inner" >
-                                {chatMessages.map((message) => {
+                                {chatId !== 'NEW_CHAT' ? chatMessages.map((message) => {
                                     console.log(JSON.stringify(message.sender));
                                     console.log(userObj._id)
                                     console.log(JSON.stringify(userObj));
                                     console.log(userObj._id == message.sender._id);
-                                    console.log(userObj._id , message.sender);
+                                    console.log(userObj._id, message.sender);
 
                                     return (
-                                        <div style={{alignSelf: (message.sender._id == userObj._id) ? 'flex-end' : ""}}>
-                                            <p style={{ color: 'black' }}>{message.sender.username}</p>
-                                            <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
+                                        <div style={{ alignSelf: (message.sender._id == userObj._id) ? 'flex-end' : "" }}>
+                                            <p style={{ color: 'grey', alignSelf: (message.sender._id == userObj._id) ? 'flex-end' : "", fontSize: '14px' }}>{message.sender.username}</p>
+                                            <div style={{ display: 'flex', flexDirection: (message.sender._id == userObj._id) ? 'row-reverse' : 'row', gap: '4px' }}>
                                                 <img style={{ width: '45px', height: '45px', borderRadius: '25px' }} src={message.sender.profilePhoto} />
                                                 <p className={message.sender._id == userObj._id ? "me" : "other"}>{message.text}</p>
                                             </div>
@@ -199,12 +203,16 @@ const ChatInterface = () => {
 
                                     );
 
-                                })}
+                                }) :
+
+                                    <p>Start a new Chat!</p>
+
+                                }
                             </div>
                             <div className="chat-input" >
                                 <button id="add-files"><BsPaperclip size={18} /></button>
                                 <textarea ref={textAreaRef}></textarea>
-                                <button onClick={() => { executeCreateMessage()}} id="send-message"><FiSend size={18} /></button>
+                                <button onClick={() => { executeCreateMessage() }} id="send-message"><FiSend size={18} /></button>
                             </div>
                         </div>
                     </div>

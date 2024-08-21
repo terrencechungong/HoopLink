@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import MakeMvpVoteModal from './MakeMvpVoteModal';
 import { motion, AnimatePresence } from 'framer-motion'
 import MvpVoteProgressModal from './MvpVoteProgressModal';
-
+import { useParams } from 'react-router-dom';
+import { GET_RUN_DATA } from './graphql/queries/RunQueries';
+import { useQuery } from '@apollo/client';
 
 const SingleRunView = () => {
     const parentRef = useRef(null);
@@ -18,6 +20,12 @@ const SingleRunView = () => {
     const modalDiv = useRef(false);
     const [isUp, setIsUp] = useState(false);
     const [showProgress, setShowProgress] = useState(false);
+    const { runId } = useParams();
+    const { data, loading, error } = useQuery(GET_RUN_DATA, {
+        variables: {
+            runId: runId
+        }
+    });
 
     const navigate = useNavigate();
 
@@ -60,7 +68,7 @@ const SingleRunView = () => {
     }
 
     const hideVotingProgress = () => {
-       setShowProgress(false)
+        setShowProgress(false)
     }
 
     const showModal = () => {
@@ -76,81 +84,98 @@ const SingleRunView = () => {
         modalLoaded.current = true;
         globalVariables.makeMvpVoteModalEffect = true;
     }
-    
 
-    return (
-        <div id="single-run-view-screen" ref={parentRef}>
-            <AnimatePresence
-            initial={false}
-            mode="wait"
-            >
-            {showProgress && < MvpVoteProgressModal handleClose={hideVotingProgress}/>}
-            </AnimatePresence>
-            <div id="single-run-view-container">
-                <div id="single-run-view-header">
-                    <p>RUN NAME</p>
-                    <button onClick={goBack}><IoIosArrowRoundBack size={30} /></button>
-                </div>
-                <div id="single-run-view-content">
-                    <div className='single-run-section'>
-                        <p><strong>RUN NAME</strong></p>
-                        <p>NAME HERE</p>
-                    </div>
-                    <div className='single-run-section'>
-                        <p><strong>RUN CREATOR</strong></p>
-                        <p>CREATOR NAME</p>
-                    </div>
-                    <div className='single-run-section'>
-                        <p><strong>RUN CHAT</strong></p>
-                        <p>CHAT LINK</p>
-                    </div>
-                </div>
-                <div id="single-run-view-content">
-                    <div className='single-run-section'>
-                        <p><strong>RUN STATUS</strong></p>
-                        <RunStatus runStatus={'IN_PROGRESS'} />
-                    </div>
-                    <div className='single-run-section'>
-                        <p><strong>MVP WINNER</strong></p>
-                        <MvpVoteStatus votingStatus={'IN_PROGRESS'} showModal={showModal} showVoteProgress={showProgModal}/>
-                    </div>
-                </div>
-                <div className='single-run-location-section'>
-                    <div id="location-text">
-                        <h4><strong>Location</strong></h4>
-                        <MdOutlineLocationOn size={20} />
-                    </div>
-                    <div id="map">
-                        <GoogleMapReact
-                            bootstrapURLKeys={{ key: "USE_PROCESS_ENV" }}
-                            defaultCenter={{
-                                lat: 10.99835602,
-                                lng: 77.01502627
-                            }}
-                            defaultZoom={11}
-                        >
-                        </GoogleMapReact>
+    if (loading) {
 
+    } else {
+        console.log(data, error)
+        return (
+            <div id="single-run-view-screen" ref={parentRef}>
+                <AnimatePresence
+                    initial={false}
+                    mode="wait"
+                >
+                    {showProgress && < MvpVoteProgressModal handleClose={hideVotingProgress} />}
+                </AnimatePresence>
+                <div id="single-run-view-container">
+                    <div id="single-run-view-header">
+                        <p>Run Details</p>
+                        <button onClick={goBack}><IoIosArrowRoundBack size={30} /></button>
                     </div>
-                </div>
+                    <div id="single-run-view-content">
+                        <div className='single-run-section'>
+                            <p><strong>Run Name</strong></p>
+                            <p>{data.run.runName}</p>
+                        </div>
+                        <div className='single-run-section'>
+                            <p><strong>Run Creator</strong></p>
+                            <div id="run-creator-name-and-picture" onClick={() => navigate(`/profile/${data.run.runCreator.authId}`)} >
+                                <img height={"25px"} width={"25px"} style={{ borderRadius: '45px' }} src={data.run.runCreator.profilePhoto} />
+                                <p >{data.run.runCreator.username}</p>
+                            </div>
+                        </div>
+                        <div className='single-run-section' style={{ cursor: 'pointer' }}>
+                            <p style={{
+                                color: "rgb(65, 65, 65)",
+                                backgroundColor: 'rgb(224, 224, 224)',
+                                padding: '4px',
+                                borderRadius: '6px',
+                                boxShadow: '1px 1px 4px rgb(100, 100, 100, 0.42)'
+                            }}><strong>View Players</strong></p>
+                        </div>
+                    </div>
+                    <div id="single-run-view-content">
+                        <div className='single-run-section'>
+                            <p><strong>Run Status</strong></p>
+                            <RunStatus
+                                runStatus={data.run.runStatus}
+                                startDate={data.run.startDate}
+                                startTime={data.run.startTime}
+                            />
+                        </div>
+                        <div className='single-run-section'>
+                            <p><strong>Mvp Winner</strong></p>
+                            <MvpVoteStatus votingStatus={"IN_PROGRESS"} showModal={showModal} showVoteProgress={showProgModal} />
+                        </div>
+                    </div>
+                    <div className='single-run-location-section'>
+                        <div id="location-text">
+                            <h4><strong>Location</strong></h4>
+                            <MdOutlineLocationOn size={20} />
+                        </div>
+                        <div id="map">
+                            <GoogleMapReact
+                                bootstrapURLKeys={{ key: "USE_PROCESS_ENV" }}
+                                defaultCenter={{
+                                    lat: 10.99835602,
+                                    lng: 77.01502627
+                                }}
+                                defaultZoom={11}
+                            >
+                            </GoogleMapReact>
 
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 
-const RunStatus = ({ runStatus }) => {
+const RunStatus = ({ runStatus, startDate, startTime }) => {
     if (runStatus == 'NOT_STARTED') {
-        return (<div className='in-progress'>
+        return (<div className='in-progress' style={{maxWidth:'170px', overflowWrap:'anywhere'}}>
             <div className="light"></div>
-            <p>Starting 8/3/2029 @ 3:30</p>
+            <p>Starting {`${startDate}`} @{` ${startTime}`}</p>
         </div>)
     } else if (runStatus == 'IN_PROGRESS') {
-        return <div className='complete'>
-            <div className="light"></div>
-            <p>This run is happening now!</p>
-        </div>
+        return (
+            <div className='complete'>
+                <div className="light"></div>
+                <p>Ongoing</p>
+            </div>)
     } else {
         return (<div className='not-started'>
             <div className="light"></div>
@@ -161,8 +186,8 @@ const RunStatus = ({ runStatus }) => {
 
 
 const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress }) => {
-    const voted = true;
-    // const voted = false;
+    // const voted = true;
+    const voted = false;
 
     if (votingStatus == 'NOT_STARTED') {
         return (<div className='not-started'>
@@ -172,21 +197,21 @@ const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress }) => {
     } else if (votingStatus == 'IN_PROGRESS') {
         if (voted) {
             return <div className='alr-voted'>
-            <div className="light"></div>
-            <div className='extra-text' onClick={() => showVoteProgress()}>
-                <p>View voting progress</p>
+                <div className="light"></div>
+                <div className='extra-text' onClick={() => showVoteProgress()}>
+                    <p>View voting progress</p>
+                </div>
             </div>
-        </div>
         } else {
             return <div className='in-progress'>
-            <div className="light"></div>
-            <div className='extra-text' onClick={() => showModal()}>
-                <p>Voting Underway!</p>
-                <p>Click here to vote</p>
+                <div className="light"></div>
+                <div className='extra-text' onClick={() => showModal()}>
+                    <p>Voting Underway!</p>
+                    <p>Click here to vote</p>
+                </div>
             </div>
-        </div>
         }
-       
+
     } else {
         return (<div className='complete'>
             <div className="light"></div>

@@ -1,21 +1,19 @@
-
 import { useEffect, useState } from 'react';
 import './styles/new-chat-modal.scss'
+import './styles/add-and-display-users.scss'
 import { globalVariables } from '..';
 import { SlClose } from "react-icons/sl";
-import pic from '../components/ChatSettingComponents/piccy.png'
-import { IoCloseCircleOutline } from "react-icons/io5";
 import { useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { CiSquarePlus } from "react-icons/ci";
+import { AddedUsersDropdown, AddedUserDisplay } from './AddUsersDropdown';
+
 
 const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
     const [isUp, setIsUp] = useState(false);
     const [showFriendsList, setShowFriendsList] = useState(false);
-    const index = useRef(0);
     const [addedUsers, setAddedUsers] = useState([]);
-    const [userFocused, setUserFocused] = useState(false)
+    const [userFocused, setUserFocused] = useState(false);
     const [userOptions, setUserOptions] = useState(usersFriends);
+    const index = useRef(0);
 
     useEffect(() => {
         const func = function (event) {
@@ -44,15 +42,6 @@ const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
         };
 
     });
-
-
-    const concatNameForDropDown = (text) => {
-        if (text.length > 14) {
-            return `${text.substring(0, 13)}...`
-        } else {
-            return text
-        }
-    }
 
     const executeCreateChat = async () => {
         // get data
@@ -95,22 +84,6 @@ const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
 
     }
 
-
-    const addUserToSection = (userId) => {
-        if (index.current == 0) {
-            const userSection = document.getElementById(`added-members-to-section`);
-            userSection.style.width = '246px';
-        }
-        if (index.current == 1) {
-            const userSection = document.getElementById(`added-members-to-section`);
-            userSection.style.width = '366px';
-        }
-        const user = userOptions.find(user => user._id === userId);
-        setAddedUsers((prev) => [...prev, user]);
-        index.current += 1;
-        // removeUserFromOptions(userId)
-    }
-
     const removeFromUserSection = (userId) => {
         const user = addedUsers.find(user => user._id === userId);
         setAddedUsers(addedUsers.filter(user => user._id !== userId));
@@ -127,6 +100,8 @@ const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
     }
 
 
+
+
     // on hover show more info asbout the user
 
     return (
@@ -138,54 +113,19 @@ const NewChatModal = ({ closeModal, createChat, creatorId, usersFriends }) => {
                     <h2><strong>Chat Name: </strong></h2>
                     <input id="chat-name-input" type="text" placeholder='e.g. New chat name' />
                 </div>
-                <div>
-                    <h2><strong>Add members to your new chat: </strong></h2>
-                    <div id='added-members-to-section'>
-                        {addedUsers.map((user, index) => (
-                            <div key={user._id} id={`added-person-${index}`} className='individual-dropdown-selection'
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation()
-                                    // removeUserFromOptions(user._id)
-                                }}
-                            >
-                                <img src={user.profilePhoto} />
-                                <p>
-                                    {`${concatNameForDropDown(user.username)}`}
-                                </p>
-                                <IoCloseCircleOutline size={15} onClick={() => { removeFromUserSection(user._id) }} />
-                            </div>
-                        ))}
-                        <div className='individual-dropdown-selection'
-                            onClick={(e) => {
-                                setUserFocused(true); e.stopPropagation()
-                                e.stopPropagation()
-                            }}
-                        >
-                            <p>Choose friends to add</p>
-                        </div>
-                    </div>
-                </div>
+                <AddedUserDisplay
+                    addedUsers={addedUsers}
+                    removeFromUserSection={removeFromUserSection}
+                    setUserFocused={setUserFocused}
+                    modalType={"new chat"} />
+
                 <div style={{ position: 'relative' }}>
-                    {userFocused && <div className='selection-options-added-members' onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation()
-                    }}>
-                        {userOptions.filter(userOption => !addedUsers.some(addedUser => addedUser._id === userOption._id))
-                            .map((user, index) =>
-                                <div key={user._id} id={`user-${index}`} className='individual-dropdown-selection'
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        addUserToSection(user._id);
-                                    }}
-                                >
-                                    <img src={user.profilePhoto} />
-                                    <p>
-                                        {`${concatNameForDropDown(user.username)}`}
-                                    </p>
-                                </div>)}
-                    </div>}
+                    {userFocused && <AddedUsersDropdown
+                        userOptionState={[userOptions, setUserOptions]}
+                        addedUsersState={[addedUsers, setAddedUsers]}
+                        index={index}
+                    />
+                    }
                     <h2><strong>Description: </strong></h2>
                     <textarea placeholder='Ex: Chat for the greatest hoopers in the city'></textarea>
                 </div>
