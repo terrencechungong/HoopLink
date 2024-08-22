@@ -17,7 +17,7 @@ import { Navbar } from './constants';
 import { useAuth } from '../context/AuthContext';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_USER_ID_FROM_AUTH_ID, GET_USERS_FRIENDS } from './graphql/queries/UserQueries';
-import { CREATE_CHAT } from './graphql/mutations/ChatMutations';
+import { CREATE_CHAT, REMOVE_USER_FROM_CHAT_OBJECT } from './graphql/mutations/ChatMutations';
 import { useMutation, useSubscription } from '@apollo/client';
 import { GET_CHAT_MESSAGES } from './graphql/queries/MessageQueries';
 import { GET_USER_CHATS_LIST } from './graphql/queries/ChatQueries';
@@ -49,6 +49,7 @@ const ChatInterface = () => {
             userId: userObj._id
         }
     });
+    const [removeUserFromChat, _] = useMutation(REMOVE_USER_FROM_CHAT_OBJECT);
     const { data, loading, error } = useQuery(GET_USERS_FRIENDS, {
         variables: {
             userId: userObj._id
@@ -126,6 +127,10 @@ const ChatInterface = () => {
             modal = <ChatSettings
                 closeModal={invisibleClick}
                 chatMembers={currentChat.chat.chatMembers}
+                removeUserFromChat={removeUserFromChat}
+                chatId={chatId}
+                userId={userObj._id}
+                authId={userObj.authId}
             />
             globalVariables.settingsModalEffect = true;
 
@@ -186,7 +191,7 @@ const ChatInterface = () => {
                                 <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
                             </div>
                             <div className="messages-container-inner" >
-                                {chatId !== 'NEW_CHAT' ? chatMessages.map((message) => {
+                                {chatData.getUserChats.length > 0  ? chatMessages.map((message) => {
                                     // console.log(JSON.stringify(message.sender));
                                     // console.log(userObj._id)
                                     // console.log(JSON.stringify(userObj));

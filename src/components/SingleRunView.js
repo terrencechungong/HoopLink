@@ -182,6 +182,10 @@ const SingleRunView = () => {
                                 }}
                                 defaultZoom={11}
                             >
+                                <LocationMarker
+                                    lat={10.99835602}
+                                    lng={77.01502627}
+                                />
                             </GoogleMapReact>
 
                         </div>
@@ -249,5 +253,18 @@ const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress, userHasVoted
         </div>)
     }
 }
+
+
+const LocationMarker = ({ lat, lng }) => (
+    <div style={{
+        color: 'red',
+        // transform: 'translate(-50%, -100%)',
+        fontSize:'30px',
+        position: 'absolute'
+    }}>
+        🏀
+    </div>
+);
+
 
 export default SingleRunView;

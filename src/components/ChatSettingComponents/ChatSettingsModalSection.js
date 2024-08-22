@@ -2,8 +2,9 @@ import './styles/chat-settings-members.scss'
 import defaultpic from './defaultprofile.png'
 import { FaPencilAlt } from 'react-icons/fa';
 import { FaDoorOpen } from 'react-icons/fa';
+import { updateUserObj } from '../../supabase-conf/authUtils';
 
-const ChatSettingsModalSection = () => {
+const ChatSettingsModalSection = ({removeUser, chatId, userId, authId}) => {
     return (
         <div className="chat-settings-modal">
             <div className='chat-photo-settings-modal'>
@@ -19,7 +20,23 @@ const ChatSettingsModalSection = () => {
                 <button>Edit</button>
             </div>
             <div className="leave-chat-button">
-                <button style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>Leave Chat <FaDoorOpen/></button>
+                <button 
+                onClick={async () => {
+                    const refreshButton = document.getElementById('chat-icon-on-navbar');
+                    if (window.confirm("Are you sure you want to leave this chat?")) {
+                        await removeUser({
+                            variables: {
+                                chatId: chatId,
+                                userId: userId
+                            }
+                        })
+                        await updateUserObj(authId);
+                    }
+                    if (refreshButton) {
+                        refreshButton.click()
+                    }
+                }}
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>Leave Chat <FaDoorOpen/></button>
             </div>
         </div>
     )

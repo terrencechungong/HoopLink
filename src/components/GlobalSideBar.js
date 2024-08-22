@@ -52,11 +52,12 @@ const GlobalSideBar = ({ selected }) => {
                 className={`${selected == Navbar.RUNS_FEED ? 'selected' : ''}`}
             ><MdOutlineSportsBasketball size={28} /></button>
             <button
+                id="chat-icon-on-navbar"
                 onClick={() => {
                     if (userObj.chats.length > 0) {
                         navigate(`/chat/${userObj.chats[0]._id}`)
                     } else {
-                        navigate(`chat/NEW_CHAT`)
+                        navigate(`/chat/NEW_CHAT`)
                     }
                 }}
                 className={`${selected == Navbar.CHATS ? 'selected' : ''}`}

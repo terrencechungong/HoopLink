@@ -17,13 +17,13 @@ export const ADD_MESSAGE_TO_CHAT_OBJECT = gql`
 
 export const ADD_USER_TO_CHAT_OBJECT = gql`
     mutation AddUserToChatObject($chatId: ID!, $userId: ID!) {
-        addMessageToChat(chatId: $chatId, userId: $userId)
+        addUserToChat(chatId:$chatId, userId: $userId)
     }
 `
 
 export const REMOVE_USER_FROM_CHAT_OBJECT = gql`
     mutation RemoveUserFromChatObject($chatId: ID!, $userId: ID!) {
-        addMessageToChat(chatId: $chatId, userId: $userId)
+        removeUserFromChat(chatId: $chatId, userId: $userId)
     }
 `
 
