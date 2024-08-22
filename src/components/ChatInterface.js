@@ -74,7 +74,7 @@ const ChatInterface = () => {
     // IF MODAL IS ALREADY UP MAKE DISPLAY NOT NONE
 
     useEffect(() => {
-        if (!loadingCurrentChat) {
+        if (!loadingCurrentChat && currentChat) {
             console.log("sdsmid")
             setChatMessages(currentChat.chat.messages)
         }
@@ -187,7 +187,7 @@ const ChatInterface = () => {
                     <div className="messages-container-outer">
                         <div className='messages-container-middle' ref={messageContainer}>
                             <div className='chat-title'>
-                                {currentChat.chat.chatName}
+                               {currentChat &&  currentChat.chat.chatName}
                                 <button onClick={() => showModal('SETTINGS')}><MdOutlineInfo size={28} /></button>
                             </div>
                             <div className="messages-container-inner" >
@@ -211,7 +211,7 @@ const ChatInterface = () => {
 
                                 }) :
 
-                                    <p>Start a new Chat!</p>
+                                    <div style={{color:'black', alignSelf:'center'}}> <strong>Click the Chat Icon in the sidebar to the left to start a new Chat!</strong></div>
 
                                 }
                             </div>
