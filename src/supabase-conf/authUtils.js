@@ -1,6 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { supabase } from './supabase-conf'
-import { globalVariables } from "..";
 
 export const signUp = async (email, password, firstName, lastName) => {
 
