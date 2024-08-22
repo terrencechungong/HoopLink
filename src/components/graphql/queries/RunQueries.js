@@ -38,6 +38,19 @@ export const GET_RUN_DATA = gql`
       profilePhoto
       username
     }
+    players {
+      _id
+      profilePhoto
+      username
+    }
+    mvpVotes {
+      voter {
+        _id
+      }
+      nominee {
+        _id
+      }
+    }
   }
 }
 `

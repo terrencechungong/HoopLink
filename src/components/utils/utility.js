@@ -29,8 +29,8 @@ export function formatISODate(isoDateString) {
     return `${months[month]}, ${day} ${year}`;
 }
 
-export const concatNameForDropDown = (text) => {
-    if (text.length > 14) {
+export const concatNameForDropDown = (text, maximum = 14) => {
+    if (text.length > maximum) {
         return `${text.substring(0, 13)}...`
     } else {
         return text

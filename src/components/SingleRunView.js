@@ -12,6 +12,8 @@ import MvpVoteProgressModal from './MvpVoteProgressModal';
 import { useParams } from 'react-router-dom';
 import { GET_RUN_DATA } from './graphql/queries/RunQueries';
 import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { CREATE_VOTE_OBJECT_MUTATION } from './graphql/mutations/RunMutations';
 
 const SingleRunView = () => {
     const parentRef = useRef(null);
@@ -21,11 +23,15 @@ const SingleRunView = () => {
     const [isUp, setIsUp] = useState(false);
     const [showProgress, setShowProgress] = useState(false);
     const { runId } = useParams();
+    const [hasVoted, setHasVoted] = useState(false);
     const { data, loading, error } = useQuery(GET_RUN_DATA, {
         variables: {
             runId: runId
         }
     });
+    const [createVoteMutation, createVoteMutationData] = useMutation(CREATE_VOTE_OBJECT_MUTATION)
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
+
 
     const navigate = useNavigate();
 
@@ -40,6 +46,17 @@ const SingleRunView = () => {
         globalVariables.makeMvpVoteModalEffect = false;
         setIsUp(false);
     }
+
+    useEffect(() => {
+        if (!loading) {
+            for (const player of data.run.mvpVotes) {
+                if (player.voter._id == userObj._id) {
+                    setHasVoted(true);
+                    return
+                }
+            }
+        }
+    }, [loading])
 
     useEffect(() => {
         globalVariables.makeMvpVoteModalHasBeenShown = false;
@@ -71,8 +88,15 @@ const SingleRunView = () => {
         setShowProgress(false)
     }
 
+
     const showModal = () => {
-        let modal = <MakeMvpVoteModal closeModalFunction={closeModal} reload={reload} />;
+        let modal = <MakeMvpVoteModal
+            closeModalFunction={closeModal} reload={reload}
+            players={data.run.players}
+            createVote={createVoteMutation} 
+            voterId={userObj._id}
+            runId={data.run._id}
+            />;
         if (globalVariables.makeMvpVoteModalHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "make-a-vote-modal-container";
@@ -88,7 +112,9 @@ const SingleRunView = () => {
     if (loading) {
 
     } else {
-        console.log(data, error)
+        console.log(data, error);
+        // const hasUserVoted = data.run.mvpVotes.
+
         return (
             <div id="single-run-view-screen" ref={parentRef}>
                 <AnimatePresence
@@ -135,7 +161,7 @@ const SingleRunView = () => {
                         </div>
                         <div className='single-run-section'>
                             <p><strong>Mvp Winner</strong></p>
-                            <MvpVoteStatus votingStatus={"IN_PROGRESS"} showModal={showModal} showVoteProgress={showProgModal} />
+                            <MvpVoteStatus votingStatus={"IN_PROGRESS"} showModal={showModal} showVoteProgress={showProgModal} userHasVoted={hasVoted} />
                         </div>
                     </div>
                     <div className='single-run-location-section'>
@@ -166,7 +192,7 @@ const SingleRunView = () => {
 
 const RunStatus = ({ runStatus, startDate, startTime }) => {
     if (runStatus == 'NOT_STARTED') {
-        return (<div className='in-progress' style={{maxWidth:'170px', overflowWrap:'anywhere'}}>
+        return (<div className='in-progress' style={{ maxWidth: '170px', overflowWrap: 'anywhere' }}>
             <div className="light"></div>
             <p>Starting {`${startDate}`} @{` ${startTime}`}</p>
         </div>)
@@ -185,9 +211,9 @@ const RunStatus = ({ runStatus, startDate, startTime }) => {
 }
 
 
-const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress }) => {
+const MvpVoteStatus = ({ votingStatus, showModal, showVoteProgress, userHasVoted }) => {
     // const voted = true;
-    const voted = false;
+    const voted = userHasVoted;
 
     if (votingStatus == 'NOT_STARTED') {
         return (<div className='not-started'>

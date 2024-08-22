@@ -9,8 +9,8 @@ export const CREATE_RUN_OBJECT_MUTATION = gql`
 `
 
 export const CREATE_VOTE_OBJECT_MUTATION = gql`
- mutation CreateVote($vote: CreateVoteInput!) {
-    createVote(vote: $vote) {
+ mutation CreateVote($vote: CreateVoteInput!, $run: ID!) {
+    createVote(vote: $vote, run: $run) {
      _id
    }
  }

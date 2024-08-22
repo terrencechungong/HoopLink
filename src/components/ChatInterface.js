@@ -74,6 +74,7 @@ const ChatInterface = () => {
 
     useEffect(() => {
         if (!loadingCurrentChat) {
+            console.log("sdsmid")
             setChatMessages(currentChat.chat.messages)
         }
 
@@ -186,11 +187,11 @@ const ChatInterface = () => {
                             </div>
                             <div className="messages-container-inner" >
                                 {chatId !== 'NEW_CHAT' ? chatMessages.map((message) => {
-                                    console.log(JSON.stringify(message.sender));
-                                    console.log(userObj._id)
-                                    console.log(JSON.stringify(userObj));
-                                    console.log(userObj._id == message.sender._id);
-                                    console.log(userObj._id, message.sender);
+                                    // console.log(JSON.stringify(message.sender));
+                                    // console.log(userObj._id)
+                                    // console.log(JSON.stringify(userObj));
+                                    // console.log(userObj._id == message.sender._id);
+                                    // console.log(userObj._id, message.sender);
 
                                     return (
                                         <div style={{ alignSelf: (message.sender._id == userObj._id) ? 'flex-end' : "" }}>

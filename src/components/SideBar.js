@@ -6,7 +6,6 @@ import { RiChatNewLine } from "react-icons/ri";
 import { GoSidebarExpand } from "react-icons/go";
 const SideBar = ({ stylingRef, showModal, chatData }) => {
     const [expanded, setExpanded] = useState(false);
-    const chatLink = useRef(null);
 
     let chats = [
         "marker", "revolution", "clip", "branch", "flashlight", "apple", "mirror",
@@ -36,11 +35,12 @@ const SideBar = ({ stylingRef, showModal, chatData }) => {
             </div>
             {chatData.map(chat => (
                 <div className='chat-row' style={{cursor:'pointer'}} onClick={() => {
-                    if (chatLink.current) {
-                        chatLink.current.click();
+                    const aTag = document.getElementById(`chat-${chat._id}`);
+                    if (aTag) {
+                        aTag.click();
                     }
                 }}>
-                    <a ref={chatLink} href={`/chat/${chat._id}`} style={{ display: 'none' }} />
+                    <a id={`chat-${chat._id}`} href={`/chat/${chat._id}`} style={{ display: 'none' }} />
                     <img src={chat.chatPhoto} width="50px" height="50px" style={{ borderRadius: '24px' }} />
                     <p>{chat.chatName}</p>
                 </div>
