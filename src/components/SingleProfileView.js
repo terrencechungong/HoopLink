@@ -27,7 +27,7 @@ const SingleProfileView = () => {
     const user = useRef(null);
     const [getUserWithAuthId, getUserAuthIdData] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
     const [addFriend, addFriendData] = useMutation(ADD_FRIEND);
-    const  [sendFriendRequest, friendRequestData] = useMutation(SEND_FRIEND_REQUEST);
+    const [sendFriendRequest, friendRequestData] = useMutation(SEND_FRIEND_REQUEST);
     const [areUsersFriends, getAreUsersFriends] = useLazyQuery(CHECK_IF_USERS_ARE_FRIENDS);
     const navigate = useNavigate();
     const userButtonSet = useRef(false);
@@ -43,11 +43,11 @@ const SingleProfileView = () => {
     useEffect(() => {
         console.log(userObj)
 
-        if (!userObj) { 
+        if (!userObj) {
             navigate('/login')
         }
         console.log("wtf bruh", data)
-        if (!data ) {
+        if (!data) {
             return
         }
         // console.log(data)
@@ -115,7 +115,7 @@ const SingleProfileView = () => {
                 }
             })
         }
-            return "";
+        return "";
 
         // update cache with user info
     }
@@ -151,7 +151,7 @@ const SingleProfileView = () => {
                                             Edit Profile
                                         </button> :
                                         (<button onClick={(e) => friendAction(e, data.getUserWithAuthId._id)}>
-                                            {userButtonValue.current ? "Friends" : (data.getUserWithAuthId.recievedFriendRequests.includes(userObj._id) ? "Requested" : (data.getUserWithAuthId.sentFriendRequests.includes(userObj._id)  ? "Accept Friend Request" : "Add Friend"))}
+                                            {userButtonValue.current ? "Friends" : (data.getUserWithAuthId.recievedFriendRequests.includes(userObj._id) ? "Requested" : (data.getUserWithAuthId.sentFriendRequests.includes(userObj._id) ? "Accept Friend Request" : "Add Friend"))}
                                         </button>)
                                     }
                                 </div> : <p style={{ width: '250px', height: '25px', }} className='skeleton'></p>}
@@ -170,8 +170,18 @@ const SingleProfileView = () => {
                         <p className={`${media ? 'selectedContent' : ''}`} onClick={() => handleModalSelection('Media')}>Media</p>
                     </div>
                     <div id="single-profile-view-posts-container">
-                        {posts && postss}
-                        {runs && runss}
+                        {(posts && loading) && <p>loading</p>}
+                        {(posts && !loading) && data.getUserWithAuthId.posts.map(post => {
+                            return (
+                                <ProfileViewPost caption={post.caption} postId={post._id} creationTime={post.creationTime} />
+                            )
+                        })}
+                        {(runs && loading) && <p>loading runs</p>}
+                        {(runs && !loading) && data.getUserWithAuthId.runs.map(run => {
+                            return (
+                                <ProfileViewRun runName={run.runName} runId={run._id} creationTime={run.creationTime} />
+                            )
+                        })}
                     </div>
                 </div>
             </div>

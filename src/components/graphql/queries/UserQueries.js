@@ -14,6 +14,7 @@ export const GET_USER_DATA_FOR_SELF_VIEW = gql`
             mvpCount
             profilePhoto
             posts {
+                _id
                 caption
                 creationTime
             }
@@ -23,6 +24,7 @@ export const GET_USER_DATA_FOR_SELF_VIEW = gql`
                 authId
             }
             runs {
+                _id
                 runName
             }
             recievedFriendRequests

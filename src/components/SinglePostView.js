@@ -1,10 +1,6 @@
 import './styles/single-post-view.scss'
-import pic from './ChatSettingComponents/piccy.png';
-import pic2 from './ChatSettingComponents/defaultprofile.png';
 import { useState, useRef, useEffect } from 'react'
 import { FaRegHeart } from "react-icons/fa";
-import { FaRegComment } from "react-icons/fa6";
-import { IoIosSend } from "react-icons/io";
 import { LuSend } from "react-icons/lu";
 import { FaHeart } from "react-icons/fa";
 import FilesSinglePostSection from './FilesSinglePostSection';
@@ -16,11 +12,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_POST_USING_POST_ID } from './graphql/queries/PostQueries';
 import { formatISODate } from './utils/utility';
 import { CREATE_COMMENT_OBJECT } from './graphql/mutations/CommentMutations';
-import { useLazyQuery } from '@apollo/client';
-import { GET_USER_ID_FROM_AUTH_ID } from './graphql/queries/UserQueries';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { CHECK_IF_USERS_ARE_FRIENDS } from './graphql/queries/UserQueries';
 
 const SinglePostView = () => {
     const [liked, setLiked] = useState(false);
@@ -34,9 +26,8 @@ const SinglePostView = () => {
     const commentTextRef = useRef(null);
     const [createCommentMutation, createCommentData] = useMutation(CREATE_COMMENT_OBJECT)
     const { postId } = useParams();
-    const user = useRef(null);
-    const [getUserWithAuthId, getUserAuthIdData] = useLazyQuery(GET_USER_ID_FROM_AUTH_ID);
-    const getUser = useAuth().getUser;
+    const userObj = JSON.parse(localStorage.getItem('user_object'));
+
     const navigate = useNavigate();
 
     const { data, loading, error } = useQuery(GET_POST_USING_POST_ID, {
@@ -47,28 +38,10 @@ const SinglePostView = () => {
     console.log(data);
 
     useEffect(() => {
-        const setUser = async () => {
-            if (!user.current) {
-                user.current = await getUser();
-                const userId = await getUserWithAuthId({
-                    variables: {
-                        authId: user.current.id
-                    }
-                });
-                if (!user.current) {
-                    // console.log(user)
-                    console.log("no user");
-                    navigate('/login');
-                }
-                // wait until its done
-                console.log(userId.data.getUserWithAuthId._id)
-                user.current = { ...user.current, dbId: userId.data.getUserWithAuthId._id }
-                // console.log(user.current)
-            }
+        if (!userObj) {
+            navigate('/login')
         }
-        console.log("run")
-        setUser()
-    }, [user.current]);
+    });
 
     const likesStyle = {
         display: 'flex',
@@ -100,7 +73,7 @@ const SinglePostView = () => {
             variables: {
                 comment: {
                     text: commentTextRef.current.value,
-                    creator: user.current.dbId,
+                    creator: userObj._id,
                     creationTime: (new Date()).toISOString(),
                     post: data.post._id
                 }
@@ -181,7 +154,7 @@ const SinglePostView = () => {
                     </div>
                     <hr style={hrStyle}></hr>
                     <div id="add-comment-div">
-                        {!loading ? <img src={user.current.dbId} /> :
+                        {!loading ? <img src={userObj.profilePhoto} /> :
                             <div className='skeleton' style={{
                                 width: '38px',
                                 height: '38px',
