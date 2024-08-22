@@ -7,9 +7,6 @@ export const signUp = async (email, password, firstName, lastName) => {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-            emailRedirectTo: 'http://localhost:3000/chats',
-        },
     })
     if (error !== null) {
         return false;
@@ -27,7 +24,7 @@ export const signin = async (email, password) => {
         email,
         password,
     });
-    const response = await fetch(`http://localhost:3030/getUser?authId=${data.user.id}`);
+    const response = await fetch(`https://hoop-link-server-e8dbd41faeef.herokuapp.com/getUser?authId=${data.user.id}`);
     const res = await response.json()
     console.log(res);
     localStorage.setItem('user_object', JSON.stringify(res.user));
@@ -46,7 +43,7 @@ export const logOut = async () => {
 }
 
 export const updateUserObj = async (authId) => {
-    const response = await fetch(`http://localhost:3030/getUser?authId=${authId}`);
+    const response = await fetch(`https://hoop-link-server-e8dbd41faeef.herokuapp.com/getUser?authId=${authId}`);
     const res = await response.json()
     console.log(res);
     console.logJSON.stringify(res.user)

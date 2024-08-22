@@ -28,12 +28,12 @@ import SearchResults from './components/SearchResults';
 
 function App() {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:8080/graphql',
+    uri: 'https://hoop-link-server-e8dbd41faeef.herokuapp.com/graphql',
   });
   
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: 'ws://localhost:8080/subscriptions',
+      url: 'wss://hoop-link-server-e8dbd41faeef.herokuapp.com/subscriptions',
     }),
   );
 

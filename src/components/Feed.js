@@ -80,9 +80,8 @@ const Feed = () => {
             const formData = new FormData();
             formData.append('file', fileData.current[i]);
             console.log(fileData.current[i])
-
             try {
-                const response = await fetch('http://localhost:3030/upload', {
+                const response = await fetch('https://hoop-link-server-e8dbd41faeef.herokuapp.com/upload', {
                     method: 'POST',
                     body: formData,
                 });
