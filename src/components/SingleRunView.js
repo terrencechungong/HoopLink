@@ -93,10 +93,10 @@ const SingleRunView = () => {
         let modal = <MakeMvpVoteModal
             closeModalFunction={closeModal} reload={reload}
             players={data.run.players}
-            createVote={createVoteMutation} 
+            createVote={createVoteMutation}
             voterId={userObj._id}
             runId={data.run._id}
-            />;
+        />;
         if (globalVariables.makeMvpVoteModalHasBeenShown == false) {
             modalDiv.current = document.createElement('div');
             modalDiv.current.id = "make-a-vote-modal-container";
@@ -121,7 +121,11 @@ const SingleRunView = () => {
                     initial={false}
                     mode="wait"
                 >
-                    {showProgress && < MvpVoteProgressModal handleClose={hideVotingProgress} />}
+                    {showProgress && < MvpVoteProgressModal
+                        handleClose={hideVotingProgress}
+                        players={data.run.players}
+                        votes={data.run.mvpVotes}
+                    />}
                 </AnimatePresence>
                 <div id="single-run-view-container">
                     <div id="single-run-view-header">
@@ -202,7 +206,7 @@ const RunStatus = ({ runStatus, startDate, startTime }) => {
                 <div className="light"></div>
                 <p>Ongoing</p>
             </div>)
-    } else {
+    } else { /// COMPLETE
         return (<div className='not-started'>
             <div className="light"></div>
             <p>This run ended 8/3/2029 @ 3:30</p>

@@ -45,9 +45,11 @@ export const GET_RUN_DATA = gql`
     }
     mvpVotes {
       voter {
+        username
         _id
       }
       nominee {
+        username
         _id
       }
     }
