@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.11.4",
+    "@emotion/styled": "^11.13.0",
     "@geoapify/geocoder-autocomplete": "^2.0.1",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@internationalized/date": "^3.5.5",
