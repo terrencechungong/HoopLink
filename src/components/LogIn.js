@@ -1,6 +1,6 @@
 import './styles/signup.scss'
 import { useAuth } from '../context/AuthContext'
-import {signin} from '../supabase-conf/authUtils'
+import { signin } from '../supabase-conf/authUtils'
 import { useNavigate } from "react-router-dom";
 import { globalVariables } from '..';
 
@@ -16,18 +16,20 @@ const LogIn = () => {
             console.log("user logged in");
             navigate('/feed');
         }
-    }   
+    }
 
     return (
         <div className="signup-container">
             <div id='auth-background'></div>
             <div className="login-card">
-                <h3>Sign in to your account</h3>
-                <p>Start organizing pick-up games the right way.</p>
-                <input id='email' type='text' placeholder='Email' className='signup-input' />
-                <input id='password' type='password' placeholder='Password' className='signup-input' />
-                <button className="auth-continue-button" onClick={handleClick}>Log in</button>
-                <p classNames="bottom-text">Don't have an account? <span onClick={() => navigate('/signup')}>Register</span></p>
+                <div id="inputwrapper">
+                    <h3>Sign in to your account</h3>
+                    <p>Start organizing pick-up games the right way.</p>
+                    <input id='email' type='text' placeholder='Email' className='signup-input' />
+                    <input id='password' type='password' placeholder='Password' className='signup-input' />
+                    <button className="auth-continue-button" onClick={handleClick}>Log in</button>
+                    <p classNames="bottom-text">Don't have an account? <span onClick={() => navigate('/signup')}>Register</span></p>
+                </div>
             </div>
         </div>
     )
